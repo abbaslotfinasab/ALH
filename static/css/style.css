@@ -166,7 +166,7 @@
 }
 
 .why-card {
-  background: #ffffff;
+  background: #f8fafc;
   border: 1px solid #eef2f7;
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
