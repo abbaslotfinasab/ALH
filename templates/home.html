@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}خانه | ALH{% endblock %}
+{% block content %}
+
+<section class="hero-section py-5">
+    <div class="container-fluid px-lg-5">
+        <div class="row g-5 align-items-stretch">
+
+            <!-- ستون متن -->
+            <div class="col-lg-6 d-flex">
+                <div class="hero-card ground-box text-white rounded shadow-sm p-4 flex-fill d-flex flex-column">
+                    <h1 class="hero-title mb-3">توسعه‌دهنده محصولات دیجیتال | سایت و اپلیکیشن</h1>
+
+                    <p class="hero-subtitle">
+                        من عباس لطفی نسب هستم ، با بیش از ۷ سال تجربه در توسعه اپلیکیشن و سایت، مسیر حرفه‌ای خودم را از
+                        ساخت اپلیکیشن‌های موبایل آغاز کردم و بعد وارد دنیای وب شدم.
+                    </p>
+                    <p class="hero-subtitle">
+                        تلاش کرده‌ام محصولاتی بسازم که هم از نظر طراحی زیبا باشند و هم از نظر عملکرد مطمئن و سریع.
+                    </p>
+                    <p class="hero-subtitle">
+                        همیشه دنبال یادگیری و کشف فناوری‌های تازه بوده‌ام و خودم را با تغییرات سریع دنیای تکنولوژی وفق
+                        داده‌ام.
+                    </p>
+                    <p class="hero-subtitle">
+                        هر پروژه برای من یک فرصت تازه است برای خلق یک ارزش واقعی.
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- ستون تصویر / اسلایدر -->
+            <div class="col-lg-6 d-flex">
+                <div class="hero-media flex-fill overflow-hidden shadow-sm">
+                    <div id="sliderCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+                        <div class="carousel-inner ratio ratio-16x9">
+                            <div class="carousel-item active">
+                                <img src="{% static 'images/hero.jpg' %}" class="d-block w-100"
+                                     alt="پیش‌نمایش پروژه‌ها" loading="eager" fetchpriority="high">
+                            </div>
+                            <!-- اسلایدهای بیشتر در صورت نیاز -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<section id="services" class="services-section py-5">
+    <div class="container">
+        <!-- تیتر و زیرتیتر -->
+        <div class="text-center mb-5">
+            <h2 class="section-title">چی کار می‌کنم؟</h2>
+            <p class="section-subtitle">به تیم‌ها و کسب‌وکارها کمک می‌کنم ایده‌ها را به محصول دیجیتال واقعی تبدیل
+                کنند.</p>
+        </div>
+
+        <!-- کارت‌ها -->
+        <div class="row g-4">
+            <!-- 1. اندروید -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="service-card h-100 p-4 rounded-4 shadow-sm">
+                    <div class="service-icon-wrap mb-3">
+                        <i class="fa-brands fa-android service-icon" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">توسعه اپلیکیشن</h3>
+                    <p class="text-muted mb-3">
+                        ساخت اپلیکیشن‌های مولتی پلتفرم با Kotlin، رابط کاربری زیبا و تجربه کاربری روان.
+                    </p>
+                    <ul class="list-unstyled small mb-4">
+                        <li class="mb-1">Jetpack + Compose</li>
+                        <li class="mb-1">Clean Architecture</li>
+                        <li class="mb-1">Unit Test</li>
+                    </ul>
+                    <div class="mt-auto d-flex align-items-center justify-content-between">
+                        <span class="badge rounded-pill badge-soft-teal">۷+ سال تجربه</span>
+                        <a href="#" class="more-link my-2">
+                            <span>بیشتر</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. وب و وب‌اپ -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="service-card h-100 p-4 rounded-4 shadow-sm">
+                    <div class="service-icon-wrap mb-3">
+                        <i class="fa-solid fa-code service-icon" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">طراحی سایت</h3>
+                    <p class="text-muted mb-3">
+                        طراحی و توسعه ‌سایت‌های مدرن و پویا با پایتون؛ سریع، امن و مقیاس‌پذیر
+                    </p>
+                    <ul class="list-unstyled small mb-4">
+                        <li class="mb-1">Django</li>
+                        <li class="mb-1">React</li>
+                        <li class="mb-1">DRF + ORM</li>
+                    </ul>
+                    <div class="mt-auto d-flex align-items-center justify-content-between">
+                        <span class="badge rounded-pill badge-soft-teal">5+ سال تجربه</span>
+                        <a href="#" class="more-link my-2">
+                            <span>بیشتر</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. بهبود و پشتیبانی -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="service-card h-100 p-4 rounded-4 shadow-sm">
+                    <div class="service-icon-wrap mb-3">
+                        <i class="fa-solid fa-gauge-high service-icon" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">پشتیبانی فنی</h3>
+                    <p class="text-muted mb-3">
+                        بهینه‌سازی عملکرد، رفع باگ و بروزرسانی پروژه‌های موجود؛ گزارش شفاف و منظم.
+                    </p>
+                    <ul class="list-unstyled small mb-4">
+                        <li class="mb-1">Refactor & Clean Code</li>
+                        <li class="mb-1">Monitoring & Logging</li>
+                        <li class="mb-1">Security & Hardening</li>
+                    </ul>
+                    <div class="mt-auto d-flex align-items-center justify-content-between">
+                        <span class="badge rounded-pill badge-soft-teal">پشتیبانی ماهانه</span>
+                        <a href="#" class="more-link my-2">
+                            <span>بیشتر</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="why-me" class="why-section py-5">
+    <div class="container">
+        <!-- تیتر -->
+        <div class="text-center mb-5 text-center">
+            <h2 class="section-title">چرا با من؟</h2>
+            <p class="section-subtitle">مزیت من ترکیبی از تجربه، دانش و تمرکز روی نیاز واقعی شماست.</p>
+        </div>
+
+        <!-- کارت‌ها -->
+        <div class="row g-4">
+            <!-- 1. کیفیت و پایداری -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="why-card h-100 p-4 rounded-4 shadow-sm text-center">
+                    <div class="why-icon-wrap mb-3">
+                        <i class="fa-solid fa-shield-halved why-icon" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">کیفیت و پایداری</h3>
+                    <p class="text-muted mb-0">
+                        کد تمیز و مقیاس‌پذیر می‌نویسم تا محصول در طول زمان قابل توسعه و پایدار بماند.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2. سرعت و شفافیت -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="why-card h-100 p-4 rounded-4 shadow-sm text-center">
+                    <div class="why-icon-wrap mb-3">
+                        <i class="fa-solid fa-bolt why-icon" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">سرعت و شفافیت</h3>
+                    <p class="text-muted mb-0">
+                        توسعه چابک با تحویل‌های مرحله‌ای، زمان‌بندی مشخص و گزارش‌های شفاف.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. تجربه کاربر -->
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="why-card h-100 p-4 rounded-4 shadow-sm text-center">
+                    <div class="why-icon-wrap mb-3">
+                        <i class="fa-solid fa-users why-icon" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">تجربه کاربر</h3>
+                    <p class="text-muted mb-0">
+                        تمرکز بر سادگی، سرعت و رضایت کاربر؛ چون تجربه خوب یعنی موفقیت محصول.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="process-alt" class="process-alt-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">مراحل همکاری</h2>
+            <p class="section-subtitle">مسیر پروژه از ایده تا محصول نهایی.</p>
+        </div>
+
+        <div class="timeline row row-cols-1 row-cols-md-4 g-4">
+            <div class="col">
+                <div class="timeline-item text-center p-4 h-100 rounded-4 shadow-sm">
+                    <span class="timeline-dot">۱</span>
+                    <h3 class="h6 fw-bold mt-3 mb-2">کشف نیاز</h3>
+                    <p class="text-muted small mb-0">اهداف، محدوده و معیارهای موفقیت.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="timeline-item text-center p-4 h-100 rounded-4 shadow-sm">
+                    <span class="timeline-dot">۲</span>
+                    <h3 class="h6 fw-bold mt-3 mb-2">طراحی راه‌حل</h3>
+                    <p class="text-muted small mb-0">طراحی فنی/UX و انتخاب تکنولوژی.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="timeline-item text-center p-4 h-100 rounded-4 shadow-sm">
+                    <span class="timeline-dot">۳</span>
+                    <h3 class="h6 fw-bold mt-3 mb-2">توسعه چابک</h3>
+                    <p class="text-muted small mb-0">اسپرینت، دمو و بازخورد مستمر.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="timeline-item text-center p-4 h-100 rounded-4 shadow-sm">
+                    <span class="timeline-dot">۴</span>
+                    <h3 class="h6 fw-bold mt-3 mb-2">تحویل و پشتیبانی</h3>
+                    <p class="text-muted small mb-0">دیپلوی و نگه‌داری دوره‌ای.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="brands" class="brands-section py-5">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="section-title">همکاری های من</h2>
+            <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
+        </div>
+
+        <div class="row g-4 align-items-center justify-content-center">
+            <!-- لوگو 1 -->
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="brand-logo-wrap">
+                    <img src="{% static 'images/tdf.png' %}" class="img-fluid brand-logo" alt="SavanTech">
+                </div>
+            </div>
+            <!-- لوگو 2 -->
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="brand-logo-wrap">
+                    <img src="{% static 'images/utechia.png' %}" class="img-fluid brand-logo" alt="Utica">
+                </div>
+            </div>
+            <!-- لوگوهای بیشتر... -->
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="brand-logo-wrap">
+                    <img src="{% static 'images/powergrow.png' %}" class="img-fluid brand-logo" alt="Utica">
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="brand-logo-wrap">
+                    <img src="{% static 'images/cipolla.jpg' %}" class="img-fluid brand-logo" alt="Utica">
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="brand-logo-wrap">
+                    <img src="{% static 'images/SwanLogo.png' %}" class="img-fluid brand-logo" alt="Utica">
+                </div>
+            </div>
+
+              <div class="col-6 col-md-3 col-lg-2">
+                <div class="brand-logo-wrap">
+                    <img src="{% static 'images/ispx.jpg' %}" class="img-fluid brand-logo" alt="Utica">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="cta-final" class="cta-banner py-5">
+  <div class="container">
+    <div class="cta-box rounded-4 shadow-sm p-4 p-lg-5">
+      <div class="row g-4 align-items-center">
+        <!-- متن -->
+        <div class="col-lg-8">
+          <h2 class="h3 h2-lg fw-bold mb-2 cta-title">همکاری کنیم؟</h2>
+          <p class="lead mb-0 cta-text">
+            اگر به دنبال توسعه‌دهنده‌ای برای تیم‌تان هستید یا پروژه‌ای برای شروع دارید،
+            خوشحال می‌شوم با شما همکاری کنم.
+          </p>
+        </div>
+
+        <!-- دکمه‌ها -->
+        <div class="col-lg-4">
+          <div class="d-flex gap-2 gap-lg-3 justify-content-lg-end">
+            <a href="#contact" class="btn btn-primary btn-lg px-4">شروع همکاری</a>
+            <a href="#contact" class="btn btn-outline-secondary btn-lg px-4">گفتگو برای استخدام</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

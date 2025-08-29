@@ -1,0 +1,257 @@
+.navbar-brand img {
+    height: 60px; /* یا هر عددی */
+    object-fit: contain;
+}
+
+.navbar-brand span {
+    color: #003c70; /* رنگ teal */
+    font-weight: 700; /* ضخیم‌تر برای بولد بودن */
+    font-size: 1.25rem; /* کمی بزرگ‌تر از متن عادی */
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+
+}
+
+.request-section {
+    background: linear-gradient(to right, #f8f9fa, #fff);
+}
+
+.form-wrapper {
+    border-left: 4px solid #003c70;
+}
+
+
+.ground-box {
+  display: flex;
+  min-height: 400px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(to bottom right, #003c70, #007bff);
+}
+
+.carousel img {
+    height: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+@media (max-width: 992px) {
+    .form-wrapper {
+        border-left: none;
+        border-top: 4px solid #0d6efd;
+    }
+
+    .carousel img {
+        max-height: 320px;
+    }
+}
+
+/* تیتر Hero */
+.hero-title {
+  font-size: 1.8rem;      /* حدود 32px روی دسکتاپ */
+  font-weight: 500;
+}
+
+/* متن زیرتیتر Hero */
+.hero-subtitle {
+  font-size: 1.2rem;  /* حدود 18px */
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* برابری قد ستون‌ها */
+.hero-card,
+.hero-media {
+  display: flex;
+  flex-direction: column;
+}
+
+/* بهبود نسبت تصویر: جلوگیری از قد بیش‌ازحد */
+.hero-media .ratio {
+  height: 100%;
+}
+
+/* سکشن خدمات – هماهنگ با برند */
+.services-section {
+  background: #f6f9fc; /* روشن و تمیز */
+}
+
+.section-title {
+  color: #003c70;         /* رنگ تیتر منتخب تو */
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.section-subtitle {
+  color: #5f6b7a;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* کارت‌ها */
+.service-card {
+  background: #ffffff;
+  border: 1px solid #eef2f7;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  border-color: #e3ebf3;
+}
+
+/* آیکون در سَر کارت */
+.service-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #003c70 0%, #22c7b7 100%);
+  box-shadow: 0 6px 16px rgba(34,199,183,0.25);
+}
+
+.service-icon {
+  font-size: 26px;
+  color: #fff;
+}
+
+/* مدال/نشان نرم (teal لطیف) */
+.badge-soft-teal {
+  background: rgba(34,199,183,0.12);
+  color: #0b3e54;
+  border: 1px solid rgba(34,199,183,0.28);
+}
+
+/* لینک داخل کارت */
+.service-card .link-primary {
+  color: #003c70;
+}
+.service-card .link-primary:hover {
+  color: #022c50;
+  text-decoration: underline;
+}
+
+/* ریسپانسیو: فاصله تیتر و اندازه‌ها */
+@media (max-width: 992px) {
+  .section-title { font-size: 1.6rem; }
+}
+.more-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    line-height: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-weight: 200;
+    text-decoration: none;
+    border: 2px solid #003c70 ;
+    color: #0d6efd ;
+    flex-direction: row;
+}
+
+.more-link:hover {
+    color: #0b263f;
+    border-color: transparent !important;
+}
+
+/* WHY ME */
+.why-section {
+    background: linear-gradient(to left, #fff, #f9f9f9);
+    border-top: 1px solid #eef2f7;   /* تفکیک نرم از سکشن قبلی */
+}
+
+.why-card {
+  background: #ffffff;
+  border: 1px solid #eef2f7;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  border-color: #e3ebf3;
+}
+
+.why-icon { color: #003c70!important; font-size: 26px; }
+
+/* ریسپانسیو تیتر سکشن (هم‌راستا با پالت قبلی) */
+.section-title { color: #003c70; font-weight: 800; letter-spacing: -0.2px; }
+.section-subtitle { color: #5f6b7a; max-width: 720px; margin: 0 auto; }
+@media (max-width: 992px) {
+  .section-title { font-size: 1.6rem; }
+}
+
+/* Process – shared */
+.process-section, .process-alt-section { background: #f8fafc; }
+.process-card, .timeline-item {
+  background:#fff; border:1px solid #eef2f7;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.process-card:hover, .timeline-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  border-color:#e3ebf3;
+}
+
+/* numbered badge */
+.process-step { position: relative; }
+.process-badge, .timeline-dot {
+  display:inline-grid; place-items:center;
+  width:40px; height:40px; border-radius:12px;
+  background: linear-gradient(135deg, #003c70 0%, #22c7b7 100%);
+  color:#fff; font-weight:700;
+  box-shadow:0 6px 16px rgba(34,199,183,.25);
+}
+
+/* section headings (reuse from earlier) */
+.section-title { color:#003c70; font-weight:800; letter-spacing:-.2px; }
+.section-subtitle { color:#5f6b7a; max-width:720px; margin:0 auto; }
+
+@media (max-width: 992px){
+  .section-title { font-size:1.6rem; }
+}
+
+
+.brands-section {
+  background: #f8fafc!important;
+  border-top: 1px solid #eef2f7;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.brand-logo-wrap {
+  text-align: center;
+  padding: 12px;
+}
+
+.brand-logo {
+  max-height: 60px;
+  opacity: 0.7;
+  filter: grayscale(100%);
+  transition: all .3s ease;
+}
+
+.brand-logo:hover {
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+/* CTA Final */
+.cta-banner { background: #f8fafc; border-top: 1px solid #eef2f7; }
+
+.cta-box {
+  background:
+    linear-gradient(135deg, rgba(34,199,183,0.06) 0%, rgba(0,60,112,0.05) 100%);
+  border: 1px solid #e6eef6;
+}
+
+.cta-title { color: #003c70; }
+.cta-text  { color: #334155; line-height: 1.8; }
+
+@media (min-width: 992px) {
+  .h2-lg { font-size: 2rem; } /* ~32px دسکتاپ */
+}
+

@@ -1,0 +1,149 @@
+{% load static %}
+{% load i18n %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+<head>
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seo_title }}</title>
+    <meta name="description" content="{{ seo_description }}">
+    <meta name="keywords" content="{{ seo_keywords }}">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'images/simple-logo.png' %}" type="image/x-icon">
+    {% if canonical_url %}
+        <link rel="canonical" href="{{ canonical_url }}">{% endif %}
+
+    <meta property="og:title" content="{{ seo_title }}">
+    <meta property="og:description" content="{{ seo_description }}">
+    <meta property="og:image" content="{% static 'images/logo.jpg' %}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta name="twitter:title" content="{{ seo_title }}">
+    <meta name="twitter:description" content="{{ seo_description }}">
+    <meta name="twitter:image" content="{% static 'images/logo.jpg' %}">
+
+
+    <script src="https://kit.fontawesome.com/1228ed801f.js" crossorigin="anonymous"></script>
+
+    {% block extra_head %}{% endblock %}
+
+
+    <style>
+
+    </style>
+
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "IranianShiningPhoenix",
+        "url": "https://www.iranianshiningphoenix.com/",
+        "logo": "https://www.iranianshiningphoenix.com/static/images/logo.jpg/"
+        }
+    </script>
+
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TXPGHMF2');</script>
+    <!-- End Google Tag Manager -->
+
+
+</head>
+<body>
+
+
+<header>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <!-- دکمه موبایل -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span><i class="fa fa-bars text-primary"></i></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="">خانه</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="">کاردیدها</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="">روز‌نوشت‌ها</a>
+                        </li>
+
+                         <li class="nav-item">
+                            <a class="nav-link" href="">رویدادها</a>
+                        </li>
+
+                         <li class="nav-item">
+                            <a class="nav-link" href="">پژوهش‌ها</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="">همکاری</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">من کیم؟</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- لوگو -->
+                <a class="navbar-brand d-flex align-items-center" href="">
+                    <span class="fw-bold fs-5">عباس لطفی نسب</span>
+                    <img src="{% static 'images/logo.png' %}" alt="abbaslotfinasab" height="50">
+                </a>
+
+            </div>
+        </nav>
+    </header>
+</header>
+
+
+<!-- محتوای متغیر -->
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- فوتر -->
+<footer class="bg-white border-top mt-5">
+    <div class="container text-center py-4">
+        <p class="mb-1">© 2025 عباس لطفی نسب - ALH</p>
+    </div>
+</footer>
+
+</body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TXPGHMF2"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+</html>
