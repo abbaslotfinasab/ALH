@@ -243,8 +243,7 @@
 .cta-banner { background: #f8fafc; border-top: 1px solid #eef2f7; }
 
 .cta-box {
-  background:
-    linear-gradient(135deg, rgba(34,199,183,0.06) 0%, rgba(0,60,112,0.05) 100%);
+  background: #fff;
   border: 1px solid #e6eef6;
 }
 
