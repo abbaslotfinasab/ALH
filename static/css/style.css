@@ -223,6 +223,7 @@
 }
 
 .brand-logo-wrap {
+    background: #fff;
   text-align: center;
   padding: 12px;
 }
@@ -240,7 +241,7 @@
   transform: scale(1.05);
 }
 /* CTA Final */
-.cta-banner { background: #f8fafc; border-top: 1px solid #eef2f7; }
+.cta-banner { background: #f8fafc; }
 
 .cta-box {
   background: #fff;
