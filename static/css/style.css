@@ -287,3 +287,34 @@
     transform: scale(1.1);
 }
 
+/* Availability */
+.availability-card {
+  background: #f6f9fc;
+  border-color: #e6eef6 !important;
+}
+
+.availability-badge {
+  display: inline-block;
+  padding: .38rem .7rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .8rem;
+  color: #fff;
+  background: linear-gradient(135deg, #22c7b7 0%, #003c70 100%);
+  box-shadow: 0 6px 16px rgba(34,199,183,.18);
+}
+
+.availability-badge.busy {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  box-shadow: 0 6px 16px rgba(249,115,22,.18);
+}
+
+.availability-icon {
+  color: #22c7b7;
+  font-size: 1rem;
+}
+
+.availability-icon.busy {
+  color: #f59e0b;
+}
+
