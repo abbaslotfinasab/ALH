@@ -1,4 +1,12 @@
 from django.shortcuts import render
 
+from experience.models import Company
+
+
 def home(request):
-    return render(request, 'home.html')
+    companies = (
+        Company.objects.filter(is_active=True)
+        .prefetch_related("experiences__projects")
+        .order_by("name")
+    )
+    return render(request, "home.html", {"companies": companies})
