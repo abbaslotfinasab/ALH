@@ -9,7 +9,7 @@ class CompanyWriteSerializer(serializers.ModelSerializer):
 class CompanyReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ["id", "name", "logo", "website", "location", "is_active"]
+        fields = ["id", "name", "logo", "website", "is_active"]
 
 class ProjectWriteSerializer(serializers.ModelSerializer):
     class Meta:
