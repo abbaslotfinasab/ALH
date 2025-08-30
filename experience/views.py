@@ -21,7 +21,6 @@ def experience(request):
 
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["is_active"]
     search_fields = ["name"]
@@ -34,7 +33,6 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 class ExperienceViewSet(viewsets.ModelViewSet):
     queryset = Experience.objects.select_related("company").prefetch_related("projects")
-    permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["company", "employment_type", "start_date", "end_date"]
     search_fields = ["title", "company__name", "description"]
@@ -54,7 +52,6 @@ class ExperienceViewSet(viewsets.ModelViewSet):
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.select_related("experience","experience__company")
-    permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["experience"]
     search_fields = ["name", "description", "technologies"]
