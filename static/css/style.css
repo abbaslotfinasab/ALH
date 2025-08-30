@@ -363,3 +363,7 @@
 /* تیترهای سکشن (هماهنگ با پالت) */
 .section-title { color:#003c70; font-weight:800; letter-spacing:-.2px; }
 .section-subtitle { color:#5f6b7a; max-width:720px; margin:0 auto; }
+
+.experience-section {
+  background: #f8fafc!important;
+}
