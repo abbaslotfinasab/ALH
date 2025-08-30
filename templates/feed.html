@@ -22,9 +22,7 @@
     <div id="sentinel" class="py-4 text-center text-muted small">در حال بارگذاری…</div>
   </div>
 </section>
-{% endblock %}
 
-{% block extra_scripts %}
 <script>
 (function(){
   const API_BASE = "/api/posts/posts/";
@@ -132,3 +130,5 @@
   fetchMore(true);
 })();
 </script>
+
+{% endblock %}
