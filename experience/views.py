@@ -23,8 +23,8 @@ class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ["is_active", "location"]
-    search_fields = ["name", "location"]
+    filterset_fields = ["is_active"]
+    search_fields = ["name"]
     ordering_fields = ["name"]
     ordering = ["name"]
 
