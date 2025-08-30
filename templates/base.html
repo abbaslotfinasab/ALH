@@ -131,9 +131,80 @@
 </div>
 
 <!-- فوتر -->
-<footer class="bg-white border-top mt-5">
-    <div class="container text-center py-4">
-        <p class="mb-1">© 2025 عباس لطفی نسب - ALH</p>
+<footer class="footer bg-dark text-white pt-5 pb-4">
+    <div class="container">
+        <div class="row">
+
+            <!-- Logo + Description -->
+            <div class="col-md-4 mb-4">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home:home-view' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="PowerGrow" height="60">
+                    <span class="fw-bold fs-5 d-none d-lg-inline">PowerGrow</span>
+                </a>
+                <p class="small">
+                    باشگاه ورزشی حجاب
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-2 mb-4 text-end">
+                <h6 class="fw-bold mb-3">دسترسی سریع</h6>
+                <ul class="list-unstyled">
+                   <li>
+                            <a class="footer-link" href="">خانه</a>
+                        </li>
+
+                        <li>
+                            <a class="footer-link" href="">کاردیدها</a>
+                        </li>
+
+                        <li>
+                            <a class="footer-link" href="">روز‌نوشت‌ها</a>
+                        </li>
+
+                         <li>
+                            <a class="footer-link" href="">رویدادها</a>
+                        </li>
+
+                         <li>
+                            <a class="footer-link" href="">پژوهش‌ها</a>
+                        </li>
+
+                        <li>
+                            <a class="footer-link" href="">همکاری</a>
+                        </li>
+                        <li>
+                            <a class="footer-link" href="">من کیم؟</a>
+                        </li>
+
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-md-3 mb-4 text-end">
+                <h6 class="fw-bold mb-3">راه های ارتباطی</h6>
+            </div>
+
+            <!-- Social Media -->
+            <div class="col-md-3 mb-4">
+                <h6 class="fw-bold mb-3">مارا دنبال کنید</h6>
+                <div class="d-flex gap-3">
+                    <a href="//instagram.com/power__grow/?__pwa=1#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="//linkedin.com/company/phoenixfamily" class="social-icon"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="//wa.link/eai49n" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    <a href="//telegram.me/power_grow" class="social-icon"><i
+                            class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-center pt-4 border-top mt-4"
+             style="border-color: rgba(255,255,255,0.1) !important; direction: ltr">
+            <p class="small mb-0">&copy; 2025 Abbas Lotfinasab. All Rights Reserved.</p>
+        </div>
     </div>
 </footer>
 
