@@ -162,12 +162,10 @@
 /* WHY ME */
 .why-section {
     background: #f8fafc;
-    border-top: 1px solid #eef2f7;   /* تفکیک نرم از سکشن قبلی */
 }
 
 .why-card {
   background: #ffffff;
-  border: 1px solid #eef2f7;
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .why-card:hover {
@@ -188,7 +186,7 @@
 /* Process – shared */
 .process-section, .process-alt-section { background: #f8fafc; }
 .process-card, .timeline-item {
-  background:#fff; border:1px solid #eef2f7;
+  background:#fff;
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .process-card:hover, .timeline-item:hover {
@@ -218,8 +216,6 @@
 
 .brands-section {
   background: #f8fafc!important;
-  border-top: 1px solid #eef2f7;
-  border-bottom: 1px solid #eef2f7;
 }
 
 .brand-logo-wrap {
