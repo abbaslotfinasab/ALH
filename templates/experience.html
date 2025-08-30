@@ -18,7 +18,7 @@
                   data-bs-toggle="collapse" data-bs-target="#collapse{{ company.id }}"
                   aria-expanded="true" aria-controls="collapse{{ company.id }}">
             {% if company.logo %}
-            <img src="{{ company.logo}}" alt="{{ company.name }}" height="28" class="rounded">
+            <img src="{{ company.logo.url}}" alt="{{ company.name }}" height="28" class="rounded">
             {% endif %}
             <strong class="me-auto">{{ company.name }}</strong>
             {% if company.website %}
