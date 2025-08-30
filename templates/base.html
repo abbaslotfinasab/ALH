@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" href="{% static 'images/simple-logo.png' %}" type="image/x-icon">
     {% if canonical_url %}
-        <link rel="canonical" href="{{ canonical_url }}">{% endif %}
+    <link rel="canonical" href="{{ canonical_url }}">
+    {% endif %}
 
     <meta property="og:title" content="{{ seo_title }}">
     <meta property="og:description" content="{{ seo_description }}">
@@ -41,11 +42,11 @@
 
     <script type="application/ld+json">
         {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "IranianShiningPhoenix",
-        "url": "https://www.iranianshiningphoenix.com/",
-        "logo": "https://www.iranianshiningphoenix.com/static/images/logo.jpg/"
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "IranianShiningPhoenix",
+            "url": "https://www.iranianshiningphoenix.com/",
+            "logo": "https://www.iranianshiningphoenix.com/static/images/logo.jpg/"
         }
     </script>
 
@@ -84,22 +85,22 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="">خانه</a>
+                            <a class="nav-link" href="{% url 'home:home-view' %}">خانه</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="">کاردیدها</a>
+                            <a class="nav-link" href="{% url 'experience:experience-view' %}">کاردیدها</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="">روز‌نوشت‌ها</a>
                         </li>
 
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="">رویدادها</a>
                         </li>
 
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="">پژوهش‌ها</a>
                         </li>
 
@@ -147,32 +148,32 @@
             <div class="col-md-2 mb-4 text-end">
                 <h6 class="fw-bold mb-3">دسترسی سریع</h6>
                 <ul class="list-unstyled">
-                   <li>
-                            <a class="footer-link" href="">خانه</a>
-                        </li>
+                    <li>
+                        <a class="footer-link" href="{% url 'home:home-view' %}">خانه</a>
+                    </li>
 
-                        <li>
-                            <a class="footer-link" href="">کاردیدها</a>
-                        </li>
+                    <li>
+                        <a class="footer-link" href="{% url 'experience:experience-view' %}">کاردیدها</a>
+                    </li>
 
-                        <li>
-                            <a class="footer-link" href="">روز‌نوشت‌ها</a>
-                        </li>
+                    <li>
+                        <a class="footer-link" href="">روز‌نوشت‌ها</a>
+                    </li>
 
-                         <li>
-                            <a class="footer-link" href="">رویدادها</a>
-                        </li>
+                    <li>
+                        <a class="footer-link" href="">رویدادها</a>
+                    </li>
 
-                         <li>
-                            <a class="footer-link" href="">پژوهش‌ها</a>
-                        </li>
+                    <li>
+                        <a class="footer-link" href="">پژوهش‌ها</a>
+                    </li>
 
-                        <li>
-                            <a class="footer-link" href="">همکاری</a>
-                        </li>
-                        <li>
-                            <a class="footer-link" href="">من کیم؟</a>
-                        </li>
+                    <li>
+                        <a class="footer-link" href="">همکاری</a>
+                    </li>
+                    <li>
+                        <a class="footer-link" href="">من کیم؟</a>
+                    </li>
 
                 </ul>
             </div>
@@ -187,34 +188,34 @@
             </div>
 
             <!-- Availability / وضعیت همکاری -->
-<div class="col-md-3 mb-4">
-  <h6 class="fw-bold mb-3">وضعیت همکاری</h6>
+            <div class="col-md-3 mb-4">
+                <h6 class="fw-bold mb-3">وضعیت همکاری</h6>
 
-  <div class="availability-card p-3 rounded-4 border">
-    <div class="d-flex align-items-center justify-content-between mb-2">
-      <span class="availability-badge">آماده همکاری</span>
-      <i class="fa-solid fa-circle-check availability-icon" aria-hidden="true"></i>
-    </div>
+                <div class="availability-card p-3 rounded-4 border">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="availability-badge">آماده همکاری</span>
+                        <i class="fa-solid fa-circle-check availability-icon" aria-hidden="true"></i>
+                    </div>
 
-    <p class="small text-muted mb-3">
-      در حال حاضر ظرفیت پذیرش پروژه جدید و همکاری تیمی وجود دارد.
-    </p>
+                    <p class="small text-muted mb-3">
+                        در حال حاضر ظرفیت پذیرش پروژه جدید و همکاری تیمی وجود دارد.
+                    </p>
 
-  </div>
+                </div>
 
-  <!-- حالت جایگزین (وقتی مشغولی) — اگر لازم شد اینو فعال کن و بلوک بالا رو غیرفعال -->
-  <!--
-  <div class="availability-card p-3 rounded-4 border mt-3">
-    <div class="d-flex align-items-center justify-content-between mb-2">
-      <span class="availability-badge busy">در حال حاضر مشغول</span>
-      <i class="fa-solid fa-hourglass-half availability-icon busy" aria-hidden="true"></i>
-    </div>
-    <p class="small text-muted mb-3">
-      امکان شروع همکاری از ماه آینده. اگر عجله دارید پیام بگذارید تا هماهنگ کنیم.
-    </p>
-  </div>
-  -->
-</div>
+                <!-- حالت جایگزین (وقتی مشغولی) — اگر لازم شد اینو فعال کن و بلوک بالا رو غیرفعال -->
+                <!--
+                <div class="availability-card p-3 rounded-4 border mt-3">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="availability-badge busy">در حال حاضر مشغول</span>
+                    <i class="fa-solid fa-hourglass-half availability-icon busy" aria-hidden="true"></i>
+                  </div>
+                  <p class="small text-muted mb-3">
+                    امکان شروع همکاری از ماه آینده. اگر عجله دارید پیام بگذارید تا هماهنگ کنیم.
+                  </p>
+                </div>
+                -->
+            </div>
 
 
         </div>

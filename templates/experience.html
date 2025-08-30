@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h1 class="section-title">کاردیدها</h1>
+      <p class="section-subtitle">شرکت‌هایی که با آن‌ها همکاری کرده‌ام و پروژه‌هایی که انجام داده‌ام.</p>
+    </div>
+
+    <div class="accordion" id="companiesAcc">
+      {% for company in companies %}
+      <div class="accordion-item mb-3 rounded-4 overflow-hidden border-0 shadow-sm">
+        <h2 class="accordion-header" id="heading{{ company.id }}">
+          <button class="accordion-button d-flex align-items-center gap-3" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#collapse{{ company.id }}"
+                  aria-expanded="true" aria-controls="collapse{{ company.id }}">
+            {% if company.logo %}
+            <img src="{{ company.logo}}" alt="{{ company.name }}" height="28" class="rounded">
+            {% endif %}
+            <strong class="me-auto">{{ company.name }}</strong>
+            {% if company.website %}
+            <small class="text-muted d-none d-md-inline">{{ company.website }}</small>
+            {% endif %}
+          </button>
+        </h2>
+        <div id="collapse{{ company.id }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ company.id }}" data-bs-parent="#companiesAcc">
+          <div class="accordion-body">
+
+            {% for exp in company.experiences.all %}
+            <div class="exp-card p-3 p-md-4 mb-3 rounded-4 border">
+              <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                <div class="fw-bold">
+                  {{ exp.title }}
+                  {% if exp.employment_type %}<span class="badge bg-light text-dark border ms-2">{{ exp.employment_type }}</span>{% endif %}
+                </div>
+                <div class="text-muted small">
+                  {{ exp.start_date|date:"Y/m" }} – {% if exp.end_date %}{{ exp.end_date|date:"Y/m" }}{% else %}اکنون{% endif %}
+                </div>
+              </div>
+
+              {% if exp.description %}
+              <p class="mb-3 text-muted">{{ exp.description }}</p>
+              {% endif %}
+
+              {% if exp.projects.all %}
+              <div class="row g-3">
+                {% for pr in exp.projects.all %}
+                <div class="col-12 col-md-6">
+                  <div class="project-card p-3 rounded-4 bg-white border h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                      <h3 class="h6 fw-bold mb-0">{{ pr.name }}</h3>
+                      {% if pr.role %}<span class="badge rounded-pill badge-soft-teal">{{ pr.role }}</span>{% endif %}
+                    </div>
+                    {% if pr.description %}<p class="small text-muted mb-2">{{ pr.description }}</p>{% endif %}
+
+                    {% if pr.technologies %}
+                      <div class="d-flex flex-wrap gap-1">
+                        {% for tech in pr.tech_list %}
+                          <span class="badge bg-light text-dark border">{{ tech }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+
+                    {% if pr.link_demo or pr.screenshot %}
+                    <div class="mt-3 d-flex align-items-center gap-2">
+                      {% if pr.link_demo %}<a href="{{ pr.link_demo }}" target="_blank" class="btn btn-sm btn-outline-secondary">دمو</a>{% endif %}
+                      {% if pr.screenshot %}<a href="{{ pr.screenshot.url }}" target="_blank" class="btn btn-sm btn-outline-secondary">تصویر</a>{% endif %}
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="alert alert-light border">هنوز سابقه‌ای ثبت نشده است.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
