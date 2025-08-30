@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('', include('home.urls')),  # صفحه اصلی به اپ home وصل میشه
     path('experience/', include('experience.urls')),  # صفحه اصلی به اپ home وصل میشه
+    path('post/', include('post.urls')),  # صفحه اصلی به اپ home وصل میشه
+
 ]

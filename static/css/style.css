@@ -367,3 +367,17 @@
 .experience-section {
   background: #f8fafc!important;
 }
+
+/* pills */
+.tag-pill{ border-radius:50px; border:1px solid #dbe7f3; }
+.tag-pill.active{ background:#003c70; color:#fff; border-color:#003c70; }
+
+/* card */
+.post-card{ transition: box-shadow .2s ease, transform .2s ease; border:1px solid #e6eef6; }
+.post-card:hover{ box-shadow:0 12px 28px rgba(0,0,0,.08); transform: translateY(-2px); }
+.post-card .btn-light:hover{ background:#f1f5f9; }
+.btn-primary{ background:#22c7b7; border-color:#22c7b7; }
+
+/* headings (هماهنگ با قبل) */
+.section-title{ color:#003c70; font-weight:800; }
+.section-subtitle{ color:#5f6b7a; }
