@@ -318,3 +318,48 @@
   color: #f59e0b;
 }
 
+/* کارت شرکت */
+.company-card { border-color:#e6eef6 !important; background:#fff; }
+.company-card:hover { box-shadow:0 14px 28px rgba(0,0,0,0.08); }
+
+/* لوگوی شرکت */
+.company-logo { width:48px; height:48px; border-radius:12px; object-fit:cover; }
+.company-logo.placeholder {
+  display:grid; place-items:center; background:#f1f5f9; color:#64748b; font-weight:800;
+}
+
+/* خطوط تجربه (استایل تایم‌لاین ظریف بدون آکاردئون) */
+.experiences { position:relative; }
+.exp-line {
+  border:1px solid #eef2f7 !important; background:#f8fafc;
+  position:relative;
+}
+.exp-line::before {
+  content:""; position:absolute; right:18px; top:-12px; bottom:-12px;
+  width:2px; background:linear-gradient(180deg, #003c70 0%, rgba(34,199,183,0.6) 100%);
+  opacity:.12; border-radius:2px;
+}
+.exp-dot {
+  width:10px; height:10px; border-radius:50%;
+  background:linear-gradient(135deg, #003c70 0%, #22c7b7 100%);
+  box-shadow:0 0 0 4px rgba(34,199,183,.15);
+}
+
+/* کارت پروژه کوچک */
+.project-mini { border-color:#eef2f7 !important; background:#fff; transition:transform .2s, box-shadow .2s, border-color .2s; }
+.project-mini:hover {
+  transform: translateY(-3px);
+  box-shadow:0 10px 22px rgba(0,0,0,.07);
+  border-color:#e3ebf3 !important;
+}
+
+/* مدال نرم teal برای نقش */
+.badge-soft-teal {
+  background: rgba(34,199,183,.12);
+  color:#0b3e54;
+  border:1px solid rgba(34,199,183,.28);
+}
+
+/* تیترهای سکشن (هماهنگ با پالت) */
+.section-title { color:#003c70; font-weight:800; letter-spacing:-.2px; }
+.section-subtitle { color:#5f6b7a; max-width:720px; margin:0 auto; }
