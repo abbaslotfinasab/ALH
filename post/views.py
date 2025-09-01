@@ -38,7 +38,7 @@ def detail(request, slug):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(is_published=True).prefetch_related("tags")
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = {"tags__id": ["exact"], "tags__name": ["exact"], "is_published": ["exact"]}
+    filterset_fields = {"tags__id": ["exact"], "tags__name": ["exact"], "is_published": ["exact"], "created_at": ["date", "date__gte", "date__lte"]}
     search_fields = ["title", "content"]
     ordering_fields = ["created_at", "views", "likes"]
     ordering = ["-created_at"]
