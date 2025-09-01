@@ -12,8 +12,8 @@ from .permissions import IsStaffOrReadOnly
 
 
 def feed(request):
-    # فقط قالب فید، داده‌ها با JS/API لود می‌شود
-    return render(request, "feed.html")
+    tags = Tag.objects.all().order_by("name")
+    return render(request, "feed.html", {"tags": tags})
 
 def detail(request, slug):
     post = get_object_or_404(Post.objects.prefetch_related("tags"), slug=slug, is_published=True)
