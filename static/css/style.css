@@ -482,3 +482,26 @@
   .btn-outline-primary{ color:#003c70; border-color:#bcd3e8; }
   .btn-outline-primary:hover{ background:#003c70; color:#fff; border-color:#003c70; }
   .bg-light-subtle{ background:#f6f9fc; }
+
+    .timeline{ position:relative; padding: .25rem 0 .25rem 0; }
+  .timeline::before{
+    content:""; position:absolute; inset:0 50% 0 auto; width:2px; background:#e6eef6;
+  }
+  .tl-item{ position:relative; padding: .75rem 0 .75rem 0; }
+  .tl-dot{
+    position:absolute; right:calc(50% - 6px); top: 14px; width:12px; height:12px;
+    border-radius:50%; background:#003c70; box-shadow:0 0 0 4px #f8fafc;
+  }
+  .tl-content{
+    background:#fff; border:1px solid #e6eef6; border-radius:16px; padding: .9rem 1rem;
+    margin-right: calc(50% + 16px);  /* کارت سمت راست خط */
+  }
+  @media (max-width: 992px){
+    .timeline::before{ right: 12px; }
+    .tl-dot{ right: 6px; }
+    .tl-content{ margin-right: 28px; }
+  }
+
+  .btn-primary{ background:#22c7b7; border-color:#22c7b7; }
+  .btn-outline-primary{ color:#003c70; border-color:#bcd3e8; }
+  .btn-outline-primary:hover{ background:#003c70; color:#fff; border-color:#003c70; }

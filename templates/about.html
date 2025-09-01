@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="about-hero py-5" style="background:#f8fafc">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <h1 class="fw-bold mb-2" style="color:#003c70">من کیم؟</h1>
+        <p class="lead text-muted m-0">
+          توسعه‌دهندهٔ محصولات دیجیتال (وب و موبایل). عاشقِ ساختن چیزهایی که ساده، سریع و قابل‌اتکا باشند.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <img src="{% static 'images/avatar.jpg' %}" class="rounded-circle shadow-sm" alt="Abbas Lotfinasab" width="96" height="96">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <!-- خلاصه -->
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+          <h2 class="h5 fw-bold mb-3" style="color:#003c70">خلاصهٔ حرفه‌ای</h2>
+          <p class="mb-2">
+            از سال ۱۳۹۷ برنامه‌نویسی را با اندروید شروع کردم، بعد وارد دنیای وب شدم و امروز روی توسعهٔ محصولاتی تمرکز دارم
+            که هم از نظر معماری قابل‌نگهداری و مقیاس‌پذیر باشند و هم برای کاربر تجربه‌ای ساده و لذت‌بخش بسازند.
+          </p>
+          <p class="mb-2">
+            در شرکت‌های <strong>سوان‌تک</strong> و <strong>یوتیکا</strong> به‌عنوان اندروید دولوپر کار کردم و سپس به سوان‌تک بازگشتم.
+            این سال‌ها به‌صورت فریلنس نیز پروژه‌های وب/اپ را از صفر تا استقرار انجام داده‌ام.
+          </p>
+          <p class="mb-0">
+            اکنون با <strong>Django + DRF</strong> در بک‌اند و <strong>Bootstrap</strong> در فرانت (و تجربهٔ اندروید نیتیو/React Native)
+            محصولاتی می‌سازم که سریع، امن و آمادهٔ رشد باشند.
+          </p>
+        </div>
+      </div>
+
+      <!-- مشخصات سریع -->
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+          <h2 class="h6 fw-bold mb-3" style="color:#003c70">مشخصات سریع</h2>
+          <ul class="list-unstyled small m-0">
+            <li class="mb-2"><i class="fa-regular fa-id-badge ms-2 text-primary"></i> نام: عباس لطفی نسب</li>
+            <li class="mb-2"><i class="fa-regular fa-clock ms-2 text-primary"></i> شروع کار: ۱۳۹۷</li>
+            <li class="mb-2"><i class="fa-solid fa-graduation-cap ms-2 text-primary"></i> مدرک: لیسانس نرم‌افزار</li>
+            <li class="mb-2"><i class="fa-solid fa-laptop-code ms-2 text-primary"></i> نقش فعلی: توسعه‌دهندهٔ Full-Stack (وب/موبایل)</li>
+            <li class="mb-2"><i class="fa-regular fa-envelope ms-2 text-primary"></i> ایمیل: info@abbaslotfinasab.ir</li>
+          </ul>
+          <div class="mt-3 d-flex flex-wrap gap-2">
+            <a href="{% static 'docs/resume.pdf' %}" class="btn btn-sm btn-outline-primary rounded-3 px-3">رزومه PDF</a>
+            <a href="{% url 'collab:page' %}" class="btn btn-sm btn-primary rounded-3 px-3">شروع همکاری</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+      <h2 class="h5 fw-bold mb-3" style="color:#003c70">مسیر شغلی</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="d-flex justify-content-between">
+              <strong>فریلنسری (وب/موبایل)</strong>
+              <span class="text-muted small">۱۴۰۱ تاکنون</span>
+            </div>
+            <p class="text-muted small mb-0">طراحی و توسعهٔ سایت‌ها و اپ‌ها: تحلیل، پیاده‌سازی، استقرار و نگهداری.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="d-flex justify-content-between">
+              <strong>سوان‌تک — Android Developer</strong>
+              <span class="text-muted small">۱۴۰۰–۱۴۰۱</span>
+            </div>
+            <p class="text-muted small mb-0">توسعهٔ اپ‌های اندرویدی با تمرکز بر Performance و معماری تمیز.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="d-flex justify-content-between">
+              <strong>یوتیکا — Android Developer</strong>
+              <span class="text-muted small">۱۳۹۹–۱۴۰۰</span>
+            </div>
+            <p class="text-muted small mb-0">پیاده‌سازی فیچرها، همگام‌سازی با API و بهبود UX.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="d-flex justify-content-between">
+              <strong>شروع با اندروید نیتیو</strong>
+              <span class="text-muted small">۱۳۹۷</span>
+            </div>
+            <p class="text-muted small mb-0">شروع مسیر با Kotlin/Java و بعد توسعهٔ وب با Django/DRF.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- مهارت‌ها -->
+    <div class="row g-4 mt-1">
+      <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+          <h3 class="h6 fw-bold mb-3" style="color:#003c70">فنی — وب</h3>
+          <div class="d-flex flex-wrap gap-2 small">
+            <span class="badge bg-light text-dark border">Django</span>
+            <span class="badge bg-light text-dark border">DRF</span>
+            <span class="badge bg-light text-dark border">PostgreSQL</span>
+            <span class="badge bg-light text-dark border">Redis</span>
+            <span class="badge bg-light text-dark border">Celery</span>
+            <span class="badge bg-light text-dark border">Bootstrap (RTL)</span>
+            <span class="badge bg-light text-dark border">SEO/Core Web Vitals</span>
+            <span class="badge bg-light text-dark border">Nginx</span>
+            <span class="badge bg-light text-dark border">Docker (اختیاری)</span>
+          </div>
+          <hr>
+          <h3 class="h6 fw-bold mb-3" style="color:#003c70">موبایل</h3>
+          <div class="d-flex flex-wrap gap-2 small">
+            <span class="badge bg-light text-dark border">Android (Kotlin)</span>
+            <span class="badge bg-light text-dark border">Clean Architecture</span>
+            <span class="badge bg-light text-dark border">Jetpack</span>
+            <span class="badge bg-light text-dark border">React Native (MVP)</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+          <h3 class="h6 fw-bold mb-3" style="color:#003c70">Workflow و ابزارها</h3>
+          <div class="d-flex flex-wrap gap-2 small">
+            <span class="badge bg-light text-dark border">Git/GitLab</span>
+            <span class="badge bg-light text-dark border">CI/CD</span>
+            <span class="badge bg-light text-dark border">Unit Test</span>
+            <span class="badge bg-light text-dark border">Monitoring/Logging</span>
+            <span class="badge bg-light text-dark border">Restful API</span>
+            <span class="badge bg-light text-dark border">Performance</span>
+          </div>
+          <hr>
+          <h3 class="h6 fw-bold mb-3" style="color:#003c70">ارزش‌ها</h3>
+          <ul class="small text-muted mb-0">
+            <li>یکپارچگیِ فنی: از موبایل تا بک‌اند.</li>
+            <li>کد تمیز و قابل‌نگهداری؛ تحویل‌های مرحله‌ای.</li>
+            <li>حل مسئله تا انتها؛ تعهد به نتیجه.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- نقل‌قول/گواهی (اختیاری) -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+      <div class="d-flex align-items-start gap-3">
+        <i class="fa-solid fa-quote-right fs-3 text-primary ms-1"></i>
+        <p class="m-0 text-muted">
+          «در همکاری با عباس، بیشترین چیزی که دیدیم نظم در تحویل‌ها و کیفیت کد بود.
+          مشکلات سخت را رها نمی‌کند تا حل شوند.»
+          <span class="d-block small mt-1">— مدیر فنی (نمونه)</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- CTA پایانی -->
+    <div class="text-center mt-5">
+      <div class="p-4 p-md-5 rounded-4 shadow-sm bg-white border">
+        <h3 class="h6 fw-bold mb-2" style="color:#003c70">اگر به دنبال توسعه‌دهنده‌ای برای تیم‌تان هستید یا پروژه‌ای برای شروع دارید، خوشحال می‌شوم همکاری کنیم.</h3>
+        <p class="text-muted small mb-3">زمان پاسخ‌دهی: حداکثر ۲۴ ساعت کاری.</p>
+        <div class="d-flex justify-content-center gap-2">
+          <a href="{% url 'collab:page' %}#project-form" class="btn btn-primary rounded-3 px-4">ثبت اطلاعات پروژه</a>
+          <a href="{% url 'collab:page' %}#hire-form" class="btn btn-outline-primary rounded-3 px-4">درخواست مصاحبه</a>
+          <a href="{% static 'docs/resume.pdf' %}" class="btn btn-light rounded-3 px-4" target="_blank">رزومه PDF</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+{% endblock %}
