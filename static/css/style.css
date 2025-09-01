@@ -381,3 +381,77 @@
 /* headings (هماهنگ با قبل) */
 .section-title{ color:#003c70; font-weight:800; }
 .section-subtitle{ color:#5f6b7a; }
+
+/* ظرف کلی */
+.search-wrap {
+  background: #ffffff;
+  border: 1px solid #e6eef6;
+}
+
+/* اینپوت سرچ */
+.search-input {
+  background: #f8fafc;
+  border: 1px solid #e8eff6;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.search-input:focus-within {
+  background: #fff;
+  border-color: #bcd3e8;
+  box-shadow: 0 8px 22px rgba(0, 60, 112, 0.08);
+}
+.search-input .search-ico {
+  color: #7a8a9a;
+}
+.search-input input::placeholder {
+  color: #9aa7b3;
+}
+.btn-clear {
+  color: #8b99a6;
+  padding: .25rem .5rem;
+  border: 0;
+  background: transparent;
+}
+.btn-clear:hover { color: #003c70; }
+
+/* چیپ تاریخ */
+.date-chip {
+  background: #f8fafc;
+  border: 1px solid #e8eff6;
+}
+.date-chip:focus-within {
+  background: #fff;
+  border-color: #bcd3e8;
+  box-shadow: 0 8px 22px rgba(0, 60, 112, 0.08);
+}
+
+/* دکمه‌های فیلتر/ریست */
+.btn-filter {
+  background: #003c70; color: #fff; border: 1px solid #003c70;
+  border-radius: 10rem; padding: .5rem .9rem; font-weight: 600;
+}
+.btn-filter:hover { opacity: .95; }
+.btn-reset {
+  background: #fff; color: #003c70; border: 1px solid #cfe0ef;
+  border-radius: 10rem; padding: .5rem .9rem; font-weight: 600;
+}
+.btn-reset:hover { background: #f2f7fb; }
+
+/* pill تگ‌ها */
+.tag-pill{
+  background: #fff; color: #0b3e54; border: 1px solid #dbe7f3;
+  border-radius: 999px; padding: .35rem .9rem; font-weight: 600;
+}
+.tag-pill:hover { background:#f1f6fb; }
+.tag-pill.active{
+  background: #003c70; color:#fff; border-color:#003c70;
+  box-shadow: 0 6px 16px rgba(0, 60, 112, .18);
+}
+
+/* استیکی لطیف با شفافیت */
+.feed-search .search-wrap {
+  backdrop-filter: saturate(140%) blur(2px);
+  border-radius: 20px;
+}
+@media (max-width: 768px){
+  .search-wrap { border-radius: 16px; }
+}
