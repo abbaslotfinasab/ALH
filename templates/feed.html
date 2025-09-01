@@ -143,8 +143,9 @@
           <div class="small text-muted">${date}</div>
         </div>
       </header>
-      <div class="small mb-2">${tags}</div>
-      <p class="mb-3" dir="auto">${p.content.length>550 ? p.content.slice(0,550)+'…' : p.content}</p>
+      <div class="fw-bold mb-2">${p.title}</div>
+      <p class="mb-2" dir="auto">${p.content.length>550 ? p.content.slice(0,550)+'…' : p.content}</p>
+      <div class="small mb-3">${tags}</div>
       ${media}
       <div class="d-flex justify-content-between align-items-center text-muted small mb-2">
         <span>👁 <span class="vcount">${p.views}</span></span>
