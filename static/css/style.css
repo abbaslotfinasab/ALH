@@ -459,3 +459,26 @@
 @media (max-width: 768px){
   .search-wrap { border-radius: 16px; }
 }
+
+  .collab-hero{ background:#f8fafc; }
+  .path-ico{
+    width:44px;height:44px;display:inline-grid;place-items:center;
+    border-radius:12px;background:#f1f6fb;color:#003c70;font-size:18px;
+  }
+  .step-badge{
+    width:36px;height:36px;display:inline-grid;place-items:center;
+    border-radius:50%; background:#003c70;color:#fff;margin:0 auto 8px;
+    font-weight:700;
+  }
+  .section-title{ font-weight:800; }
+  .form-card .form-label{ color:#4d5b69; }
+  .form-card .form-control, .form-card .form-select{
+    background:#f8fafc; border:1px solid #e8eff6;
+  }
+  .form-card .form-control:focus, .form-card .form-select:focus{
+    background:#fff; border-color:#bcd3e8; box-shadow:0 8px 22px rgba(0,60,112,.08);
+  }
+  .btn-primary{ background:#22c7b7; border-color:#22c7b7; }
+  .btn-outline-primary{ color:#003c70; border-color:#bcd3e8; }
+  .btn-outline-primary:hover{ background:#003c70; color:#fff; border-color:#003c70; }
+  .bg-light-subtle{ background:#f6f9fc; }
