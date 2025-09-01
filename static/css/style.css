@@ -368,6 +368,10 @@
   background: #f8fafc!important;
 }
 
+.feed-section {
+  background: #f8fafc!important;
+}
+
 /* pills */
 .tag-pill{ border-radius:50px; border:1px solid #dbe7f3; }
 .tag-pill.active{ background:#003c70; color:#fff; border-color:#003c70; }
