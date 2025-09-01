@@ -1,11 +1,21 @@
 # posts/models.py
 from django.db import models
+from django.utils.text import slugify
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=70, unique=True, blank=True)
 
-    def __str__(self):
-        return self.name
+    class Meta: ordering = ["name"]
+
+    def save(self, *a, **kw):
+        if not self.slug:
+            self.slug = slugify(self.name, allow_unicode=True)[:70]
+        super().save(*a, **kw)
+
+    def __str__(self): return self.name
+
 
 class Post(models.Model):
     title = models.CharField(max_length=255, blank=True)
@@ -15,14 +25,36 @@ class Post(models.Model):
 
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
 
+    is_published = models.BooleanField(default=False)
+
     views = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
     comments_count = models.PositiveIntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    slug = models.SlugField(max_length=280, unique=True, blank=True)
+    # فیلدهای سئو:
+    meta_title = models.CharField(max_length=70, blank=True)
+    meta_description = models.CharField(max_length=160, blank=True)
+    og_image = models.ImageField(upload_to="posts/og/", blank=True, null=True)
+    canonical_url = models.URLField(blank=True)
+
     class Meta:
         ordering = ["-created_at"]
+
+
+    def save(self, *a, **kw):
+        if not self.slug:
+            base = self.title or self.content[:60]
+            self.slug = slugify(base, allow_unicode=True)[:270]
+        # پیش‌فرض‌های سئو
+        if not self.meta_title:
+            self.meta_title = (self.title or self.content[:60])[:70]
+        if not self.meta_description:
+            self.meta_description = (self.content[:155]).replace("\n", " ")[:160]
+        super().save(*a, **kw)
+
 
     def __str__(self):
         return self.title if self.title else self.content[:50]

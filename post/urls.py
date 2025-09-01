@@ -11,7 +11,7 @@ router.register(r"tags", TagViewSet, basename="tag")
 router.register(r"comments", CommentViewSet, basename="comment")
 
 urlpatterns = [
-    path('', posts, name='feed-view'),
     path('api/', include(router.urls)),
-
+    path("", feed, name="feed-view"),  # فید
+    path("<slug:slug>/", detail, name="detail-view"),  # جزئیات پست
 ]
