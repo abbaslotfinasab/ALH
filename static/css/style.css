@@ -638,9 +638,8 @@ body {
 }
 
 .brands-scroll::-webkit-scrollbar {
-  height: 6px; /* ضخامت اسکرول‌بار */
+  height: 0; /* ضخامت اسکرول‌بار */
 }
 .brands-scroll::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 3px;
+  background:transparent ;
 }
