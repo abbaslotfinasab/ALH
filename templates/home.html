@@ -264,8 +264,9 @@
 </section>
 
 
-<section id="brands" class="brands-section">
-  <div class="container">
+<section id="brands" class="brands-section py-5">
+
+    <div class="container">
     <div class="text-center mb-4">
       <h2 class="section-title">همکاری های من</h2>
       <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
@@ -288,6 +289,7 @@
       </div>
     </div>
   </div>
+
 </section>
 
 
@@ -334,14 +336,9 @@
       delay: 2000,
       disableOnInteraction: false,
     },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
+
+      pagination: false,
+
     breakpoints: {
       320: { slidesPerView: 2 },
       768: { slidesPerView: 3 },
