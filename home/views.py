@@ -5,7 +5,7 @@ from experience.models import Company
 
 def home(request):
     companies = (
-        Company.objects.filter(is_active=True)
+        Company.objects.all()
         .prefetch_related("experiences__projects")
         .order_by("name")
     )
