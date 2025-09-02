@@ -88,15 +88,15 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'home:home-view' %}">خانه</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'home-view' %}active{% endif %}" href="{% url 'home:home-view' %}">خانه</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'experience:experience-view' %}">کاردیدها</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'experience-view' %}active{% endif %}" href="{% url 'experience:experience-view' %}">کاردیدها</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'post:feed-view' %}">روز‌نوشت‌ها</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'feed-view' %}active{% endif %}" href="{% url 'post:feed-view' %}">روز‌نوشت‌ها</a>
                         </li>
 
                         <li class="nav-item">
@@ -108,10 +108,10 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'collab:collab-view' %}">همکاری</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'collab-view' %}active{% endif %}" href="{% url 'collab:collab-view' %}">همکاری</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/about">من کیم؟</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == '/about' %}active{% endif %}" href="/about">من کیم؟</a>
                         </li>
                     </ul>
                 </div>
