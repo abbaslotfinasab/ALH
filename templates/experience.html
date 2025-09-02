@@ -51,7 +51,7 @@
               </div>
 
               {% if exp.description %}
-                <p class="text-muted small mb-3 mt-2">{{ exp.description }}</p>
+               <p class="text-muted small mb-3 mt-2">{{ exp.description|linebreaksbr }}</p>
               {% endif %}
 
               {% if exp.projects.all %}
