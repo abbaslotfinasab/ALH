@@ -614,3 +614,21 @@ body {
 .hero-media img {
     border-radius: 0 !important;   /* حذف هرگونه گردی */
 }
+.navbar .nav-link.active {
+  color: #003c70 !important;         /* رنگ برند */
+  font-weight: 700;                  /* بولدتر بشه */
+  position: relative;                /* برای خط زیر */
+  transition: all 0.3s ease;
+}
+
+/* خط زیر آیتم فعال */
+.navbar .nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;                      /* فاصله از متن */
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #003c70, #22c7b7);
+  border-radius: 2px;
+}
