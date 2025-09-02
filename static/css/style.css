@@ -631,3 +631,16 @@ body {
   background: linear-gradient(90deg, #003c70, #22c7b7);
   border-radius: 2px;
 }
+
+.brands-scroll {
+  white-space: nowrap; /* آیتم‌ها نشکنن */
+  scrollbar-width: thin; /* برای فایرفاکس */
+}
+
+.brands-scroll::-webkit-scrollbar {
+  height: 6px; /* ضخامت اسکرول‌بار */
+}
+.brands-scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}

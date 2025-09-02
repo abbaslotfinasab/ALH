@@ -265,31 +265,27 @@
 
 
 <section id="brands" class="brands-section py-5">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="section-title">همکاری های من</h2>
-            <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
-        </div>
-
-        <div class="row g-4 align-items-center justify-content-center">
-
-            {% for company in companies %}
-            <div class="col-6 col-md-3 col-lg-2">
-                <div class="brand-logo-wrap">
-
-                    {% if company.logo %}
-                    <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
-                    {% else %}
-                    <div class="img-fluid company-logo placeholder">ALH</div>
-                    {% endif %}
-
-                </div>
-            </div>
-            {% endfor %}
-
-        </div>
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">همکاری های من</h2>
+      <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
     </div>
+
+    <!-- اسکرول‌بر افقی -->
+    <div class="brands-scroll d-flex gap-4 overflow-auto">
+      {% for company in companies %}
+      <div class="brand-logo-wrap flex-shrink-0">
+        {% if company.logo %}
+        <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
+        {% else %}
+        <div class="img-fluid company-logo placeholder">ALH</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 </section>
+
 
 <section id="cta-final" class="cta-banner py-5">
     <div class="container">
