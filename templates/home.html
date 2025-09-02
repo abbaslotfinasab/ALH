@@ -265,31 +265,38 @@
 
 
 <section id="brands" class="brands-section py-5">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="section-title">همکاری های من</h2>
-            <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
-        </div>
-
-    <div class="brands-scroll g-4 align-items-center justify-content-center d-flex  overflow-auto">
-
-            {% for company in companies %}
-            <div class="col-6 col-md-3 col-lg-2">
-                <div class="brand-logo-wrap">
-
-                    {% if company.logo %}
-                    <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
-                    {% else %}
-                    <div class="img-fluid company-logo placeholder">ALH</div>
-                    {% endif %}
-
-                </div>
-            </div>
-            {% endfor %}
-
-        </div>
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">همکاری های من</h2>
+      <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
     </div>
+
+    <!-- Swiper -->
+    <div class="swiper brand-swiper">
+      <div class="swiper-wrapper">
+        {% for company in companies %}
+        <div class="swiper-slide">
+          <div class="brand-logo-wrap">
+            {% if company.logo %}
+            <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
+            {% else %}
+            <div class="img-fluid company-logo placeholder">ALH</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- فلش‌ها -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+
+      <!-- دات‌ها -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
 </section>
+
 
 <section id="cta-final" class="cta-banner py-5">
     <div class="container">
@@ -317,5 +324,39 @@
         </div>
     </div>
 </section>
+
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  const swiper = new Swiper(".brand-swiper", {
+    slidesPerView: 4,        // چندتا لوگو توی هر اسلاید
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 2000,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+      320: { slidesPerView: 2 },
+      768: { slidesPerView: 3 },
+      992: { slidesPerView: 4 },
+      1200: { slidesPerView: 6 }
+    }
+  });
+</script>
+
 
 {% endblock %}
