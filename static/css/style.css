@@ -356,3 +356,26 @@ body {
   .tl-dot{ right:6px; }
   .tl-content{ margin-right:28px; }
 }
+
+.hire-cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;          /* بزرگ‌تر و قشنگ‌تر شد */
+    height: 48px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid #003c70;
+    color: #003c70;
+    background-color: #fff;   /* بک‌گراند پیش‌فرض سفید */
+    border-radius: 12px;      /* گردی گوشه‌ها */
+    transition: all 0.3s ease;
+}
+
+.hire-cta:hover {
+    background-color: #003c70;  /* هاور: بک‌گراند آبی برند */
+    color: #fff;                /* متن سفید */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 60, 112, 0.25);
+}
