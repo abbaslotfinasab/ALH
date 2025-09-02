@@ -16,6 +16,9 @@
     <meta name="description" content="{{ seo_description }}">
     <meta name="keywords" content="{{ seo_keywords }}">
     <meta name="robots" content="index, follow">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css">
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" href="{% static 'images/simple-logo.png' %}" type="image/x-icon">
     {% if canonical_url %}
@@ -231,11 +234,11 @@
 </body>
 
 {% if messages %}
-  <div class="container mt-3">
+<div class="container mt-3">
     {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} rounded-3 shadow-sm">{{ message }}</div>
+    <div class="alert alert-{{ message.tags }} rounded-3 shadow-sm">{{ message }}</div>
     {% endfor %}
-  </div>
+</div>
 {% endif %}
 
 

@@ -1,3 +1,12 @@
+body {
+  font-family: 'Vazir', 'Inter', sans-serif;
+  line-height: 1.8;
+  font-size: 16px;
+  color: #1e293b; /* رنگ متن */
+  background-color: #f8fafc; /* رنگ پس‌زمینه */
+}
+
+
 .navbar-brand img {
     height: 60px; /* یا هر عددی */
     object-fit: contain;
