@@ -637,14 +637,11 @@ body {
     transform: scale(1.05);
 }
 
-.brand-swiper {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-}
 .swiper-pagination {
   display: none !important;
 }
 .swiper {
-    overflow: hidden;
+    height: auto!important;
+    overflow: hidden!important;
     padding: 20px 10px;
 }
