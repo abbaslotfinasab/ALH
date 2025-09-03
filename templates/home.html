@@ -272,22 +272,20 @@
       <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
     </div>
 
-<!--    &lt;!&ndash; Swiper &ndash;&gt;-->
-        <!--    <div class="swiper brand-swiper">-->
-        <!--      <div class="swiper-wrapper">-->
-        <!--        {% for company in companies %}-->
-        <!--        <div class="swiper-slide">-->
-        <!--          <div class="brand-logo-wrap">-->
-        <!--            {% if company.logo %}-->
-        <!--            <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">-->
-        <!--            {% else %}-->
-        <!--            <div class="img-fluid company-logo placeholder">ALH</div>-->
-        <!--            {% endif %}-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <!--        {% endfor %}-->
-        <!--      </div>-->
-        <!--    </div>-->
+    <!-- Swiper -->
+            <div class="swiper brand-swiper">
+                {% for company in companies %}
+                <div class="swiper-slide">
+                  <div class="brand-logo-wrap">
+                    {% if company.logo %}
+                    <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
+                    {% else %}
+                    <div class="img-fluid company-logo placeholder">ALH</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
 
   </div>
 </section>
