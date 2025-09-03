@@ -268,78 +268,89 @@
     <div class="container">
 
         <div class="text-center mb-4">
-      <h2 class="section-title">همکاری های من</h2>
-      <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
-    </div>
-
-    <!-- Swiper -->
-    <div class="swiper brand-swiper">
-      <div class="swiper-wrapper">
-        {% for company in companies %}
-        <div class="swiper-slide">
-          <div class="brand-logo-wrap">
-            {% if company.logo %}
-            <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
-            {% else %}
-            <div class="img-fluid company-logo placeholder">ALH</div>
-            {% endif %}
-          </div>
+            <h2 class="section-title">همکاری های من</h2>
+            <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
         </div>
-        {% endfor %}
-      </div>
+
+        <!-- Swiper -->
+        <div class="swiper brand-swiper">
+            <div class="swiper-wrapper">
+                {% for company in companies %}
+                <div class="swiper-slide">
+                    <div class="brand-logo-wrap">
+                        {% if company.logo %}
+                        <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
+                        {% else %}
+                        <div class="img-fluid company-logo placeholder">ALH</div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-  </div>
 
 </section>
 
 
-<!--<section id="cta-final" class="cta-banner py-5">-->
-<!--    <div class="container">-->
-<!--        <div class="cta-card rounded-4 shadow-sm p-4 p-lg-5">-->
-<!--            <div class="row g-4 align-items-center">-->
-<!--                &lt;!&ndash; متن &ndash;&gt;-->
-<!--                <div class="col-lg-8">-->
-<!--                    <h2 class="h3 h2-lg fw-bold mb-2 cta-title">همکاری کنیم؟</h2>-->
-<!--                    <p class="lead mb-0 cta-text">-->
-<!--                        اگر به دنبال توسعه‌دهنده‌ای برای تیم‌تان هستید یا پروژه‌ای برای شروع دارید،-->
-<!--                        خوشحال می‌شوم با شما همکاری کنم.-->
-<!--                    </p>-->
-<!--                </div>-->
+<section id="cta-final" class="cta-banner py-5">
+    <div class="container">
+        <div class="cta-card rounded-4 shadow-sm p-4 p-lg-5">
+            <div class="row g-4 align-items-center">
+                <!-- متن -->
+                <div class="col-lg-8">
+                    <h2 class="h3 h2-lg fw-bold mb-2 cta-title">همکاری کنیم؟</h2>
+                    <p class="lead mb-0 cta-text">
+                        اگر به دنبال توسعه‌دهنده‌ای برای تیم‌تان هستید یا پروژه‌ای برای شروع دارید،
+                        خوشحال می‌شوم با شما همکاری کنم.
+                    </p>
+                </div>
 
-<!--                &lt;!&ndash; دکمه‌ها &ndash;&gt;-->
-<!--                <div class="col-lg-4">-->
-<!--                    <div class="d-flex gap-2 gap-lg-3 justify-content-lg-end">-->
-<!--                        <a href="{% url 'collab:collab-view' %}#project-form" class="btn btn-primary btn-lg px-4">شروع-->
-<!--                            همکاری</a>-->
-<!--                        <a href="https://t.me/Abbas_lotfinasab" class="btn btn-outline-secondary btn-lg px-4">گفتگو برای-->
-<!--                            استخدام</a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
+                <!-- دکمه‌ها -->
+                <div class="col-lg-4">
+                    <div class="d-flex gap-2 gap-lg-3 justify-content-lg-end">
+                        <a href="{% url 'collab:collab-view' %}#project-form" class="btn btn-primary btn-lg px-4">شروع
+                            همکاری</a>
+                        <a href="https://t.me/Abbas_lotfinasab" class="btn btn-outline-secondary btn-lg px-4">گفتگو برای
+                            استخدام</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <script>
 
-  const swiper = new Swiper(".brand-swiper", {
-    slidesPerView: 4,        // چندتا لوگو توی هر اسلاید
-    spaceBetween: 20,
-    loop: true,
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: false,
-    },
+    const swiper = new Swiper(".brand-swiper", {
+        loop: false,
+        spaceBetween: 20,
+        resistanceRatio: 0,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                centeredSlides: false,
+            },
+            576: {
+                slidesPerView: 1.5,
+                centeredSlides: false,
+            },
+            768: {
+                slidesPerView: 2,
+                centeredSlides: false,
+            },
+            992: {
+                slidesPerView: 3,
+                centeredSlides: false,
+            }
+        }
+    });
 
-      pagination: false,
 
-    breakpoints: {
-      320: { slidesPerView: 2 },
-      768: { slidesPerView: 3 },
-      992: { slidesPerView: 4 },
-      1200: { slidesPerView: 6 }
-    }
-  });
 </script>
 
 
