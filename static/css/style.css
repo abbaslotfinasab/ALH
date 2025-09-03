@@ -615,30 +615,18 @@ body {
 }
 
 .brand-logo-wrap {
-    justify-content: center;
-    align-items: center;
-    background: #fff;
-    text-align: center;
-    padding: 12px;
+
 }
 
 .brand-logo {
-    max-height: 60px; /* سایز لوگوها */
-    opacity: 0.7;
-    filter: grayscale(100%); /* حرفه‌ای‌تر میشه */
-    transition: filter 0.3s ease;
+
 }
 
 .brand-logo:hover {
-    opacity: 1;
-    filter: grayscale(0%);
-    transform: scale(1.05);
+
 }
 
 .swiper-pagination {
-  display: none !important;
 }
 .swiper {
-    height: 100px!important;
-    overflow: hidden!important;
 }
