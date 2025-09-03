@@ -277,9 +277,8 @@
               <div class="swiper-wrapper">
                 {% for company in companies %}
                 <div class="swiper-slide">
-                  <div class="card">
+                  <div class="brand-logo-wrap">
                     {% if company.logo %}
-                    <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
                     {% else %}
                     <div class="img-fluid company-logo placeholder">ALH</div>
                     {% endif %}
