@@ -274,9 +274,10 @@
 
     <!-- Swiper -->
             <div class="swiper brand-swiper">
+              <div class="swiper-wrapper">
                 {% for company in companies %}
                 <div class="swiper-slide">
-                  <div class="brand-logo-wrap">
+                  <div class="card">
                     {% if company.logo %}
                     <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
                     {% else %}
@@ -285,6 +286,7 @@
                   </div>
                 </div>
                 {% endfor %}
+              </div>
             </div>
 
   </div>
