@@ -639,7 +639,6 @@ body {
   display: none !important;
 }
 .swiper {
-    height: auto!important;
+    height: 100px!important;
     overflow: hidden!important;
-    padding: 20px 10px;
 }
