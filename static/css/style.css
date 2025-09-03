@@ -615,11 +615,9 @@ body {
 }
 
 .brand-logo-wrap {
-    display: flex;
     justify-content: center;
     align-items: center;
     background: #fff;
-    text-align: center;
     padding: 12px;
 }
 
