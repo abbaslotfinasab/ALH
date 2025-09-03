@@ -644,3 +644,7 @@ body {
 .swiper-pagination {
   display: none !important;
 }
+.swiper {
+    overflow: hidden;
+    padding: 20px 10px;
+}
