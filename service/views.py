@@ -12,7 +12,7 @@ def service_view(request,pk):
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.filter(is_active=True).select_related("technologies")
+    queryset = Service.objects.prefetch_related("technologies").all()
     serializer_class = ServiceSerializer
     lookup_field = "slug"
 
