@@ -29,20 +29,9 @@
             </button>
         </div>
 
-        <!-- عنوان و توضیحات -->
-        <div class="row mb-5">
-            <div class="col-lg-8">
-                <div class="service-card p-4 p-md-5 rounded-4 shadow-sm bg-white border">
-                    <h1 class="fw-bold">{{ service.title }}</h1>
-                    <p class="text-muted">{{ service.short_desc }}</p>
-                    <hr>
-                    <p>{{ service.content|linebreaks }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
+        <div class="row align-items-start mb-5">
+            <!-- ستون تکنولوژی‌ها -->
+            <div class="col-lg-4 mb-4 mb-lg-0">
                 <h3 class="fw-semibold mb-4">تکنولوژی‌های این سرویس</h3>
                 <div class="d-flex flex-wrap gap-3">
                     {% for technology in service.technologies.all %}
@@ -61,6 +50,21 @@
                         </div>
                     </div>
                     {% endfor %}
+                </div>
+            </div>
+
+            <!-- ستون توضیحات -->
+            <div class="col-lg-8">
+                <h3 class="fw-semibold mb-4">توضیحات تکنولوژی‌ها</h3>
+                <div class="p-4 rounded-4 shadow-sm bg-white border">
+                    <p>در این سرویس از تکنولوژی‌های روز دنیا برای توسعه سریع، امن و مقیاس‌پذیر استفاده شده است. این
+                        تکنولوژی‌ها به ما امکان می‌دهند اپلیکیشن‌ها و سایت‌های کاملاً اختصاصی و با کیفیت بالا تولید
+                        کنیم.</p>
+                    <ul>
+                        {% for technology in service.technologies.all %}
+                        <li><strong>{{ technology.name }}:</strong> {{ technology.description }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
