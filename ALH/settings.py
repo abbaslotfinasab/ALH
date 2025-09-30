@@ -78,7 +78,7 @@ INSTALLED_APPS = [
     'post',
     'collab',
     'service',
-    'handwrite'
+    'handwrite',
     'blog'
 
 ]
