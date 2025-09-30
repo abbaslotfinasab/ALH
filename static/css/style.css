@@ -356,7 +356,9 @@ body {
 .experience-section, .feed-section {
     background: #f8fafc !important;
 }
-
+.service-section, .feed-section {
+    background: #f8fafc !important;
+}
 .post-card {
     border: 1px solid #e6eef6;
     transition: box-shadow .2s ease, transform .2s ease;
