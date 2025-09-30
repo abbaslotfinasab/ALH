@@ -11,13 +11,13 @@ class TechnologySerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    technology = TechnologySerializer(read_only=True)
+    technologies = TechnologySerializer(read_only=True)
 
     class Meta:
         model = Service
         fields = [
             "id", "title", "slug", "short_desc", "content",
-            "icon", "image", "is_active", "technology"
+            "icon", "image", "is_active", "technologies"
         ]
         read_only_fields = ["slug"]   # 👈 فقط خوندنی باشه
 
