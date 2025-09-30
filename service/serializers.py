@@ -11,7 +11,6 @@ class TechnologySerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    technologies = TechnologySerializer()
 
     class Meta:
         model = Service
