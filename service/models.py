@@ -5,12 +5,7 @@ from django.utils.text import slugify
 class Technology(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="نام تکنولوژی")
     slug = models.SlugField(max_length=120, unique=True, blank=True)
-    icon = models.ImageField(
-        upload_to='technologies/icons/',
-        blank=True,
-        null=True,
-        verbose_name="آیکون"
-    )
+    icon = models.CharField(max_length=100, blank=True, null=True, help_text="مثال: fa-solid fa-laptop-code")
     description = models.TextField(blank=True, null=True, verbose_name="توضیحات")
     website = models.URLField(blank=True, null=True, verbose_name="وب‌سایت رسمی")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -34,14 +29,10 @@ class Service(models.Model):
     slug = models.SlugField(max_length=220, unique=True, blank=True)
     short_desc = models.TextField(verbose_name="توضیح کوتاه")
     content = models.TextField(verbose_name="محتوای کامل")  # متن کامل صفحه
-    icon = models.ImageField(upload_to='services/icons/', blank=True, null=True)
+    icon = models.CharField(max_length=100, blank=True, null=True, help_text="مثال: fa-solid fa-laptop-code")
     image = models.ImageField(upload_to='services/images/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    technologies = models.ManyToManyField(
-        'Technology',  # یا فقط Technology در صورتی که مدل در همین اپ است
-        blank=True,
-        related_name='services'
-    )
+    technologies = models.ManyToManyField( 'Technology', blank=True, related_name='services')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
