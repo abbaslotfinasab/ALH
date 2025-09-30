@@ -77,6 +77,9 @@ INSTALLED_APPS = [
     'experience',
     'post',
     'collab',
+    'service',
+    'handwrite'
+    'blog'
 
 ]
 

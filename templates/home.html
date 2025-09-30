@@ -55,93 +55,57 @@
         </div>
     </div>
 </section>
-
-
 <section id="services" class="services-section py-5">
     <div class="container">
         <!-- تیتر و زیرتیتر -->
         <div class="text-center mb-5">
             <h2 class="section-title">چی کار می‌کنم؟</h2>
-            <p class="section-subtitle">به تیم‌ها و کسب‌وکارها کمک می‌کنم ایده‌ها را به محصول دیجیتال واقعی تبدیل
-                کنند.</p>
+            <p class="section-subtitle">
+                به تیم‌ها و کسب‌وکارها کمک می‌کنم ایده‌ها را به محصول دیجیتال واقعی تبدیل کنند.
+            </p>
         </div>
 
         <!-- کارت‌ها -->
         <div class="row g-4">
-            <!-- 1. اندروید -->
+            {% for service in services %}
             <div class="col-12 col-md-6 col-xl-4">
-                <div class="service-card h-100 p-4 rounded-4 shadow-sm">
+                <div class="service-card h-100 p-4 rounded-4 shadow-sm d-flex flex-column">
                     <div class="service-icon-wrap mb-3">
-                        <i class="fa-brands fa-android service-icon" aria-hidden="true"></i>
+                        {% if service.icon %}
+                        <i class="{{ service.icon }} service-icon" aria-hidden="true"></i>
+                        {% else %}
+                        <i class="fa-solid fa-gear service-icon" aria-hidden="true"></i>
+                        {% endif %}
                     </div>
-                    <h3 class="h5 fw-bold mb-2">توسعه اپلیکیشن</h3>
-                    <p class="text-muted mb-3">
-                        ساخت اپلیکیشن‌های مولتی پلتفرم با Kotlin، رابط کاربری زیبا و تجربه کاربری روان.
-                    </p>
-                    <ul class="list-unstyled small mb-4">
-                        <li class="mb-1">Jetpack + Compose</li>
-                        <li class="mb-1">Clean Architecture</li>
-                        <li class="mb-1">Unit Test</li>
-                    </ul>
-                    <div class="mt-auto d-flex align-items-center justify-content-between">
-                        <span class="badge rounded-pill badge-soft-teal">۷+ سال تجربه</span>
-                        <a href="#" class="more-link my-2">
-                            <span>بیشتر</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- 2. وب و وب‌اپ -->
-            <div class="col-12 col-md-6 col-xl-4">
-                <div class="service-card h-100 p-4 rounded-4 shadow-sm">
-                    <div class="service-icon-wrap mb-3">
-                        <i class="fa-solid fa-code service-icon" aria-hidden="true"></i>
-                    </div>
-                    <h3 class="h5 fw-bold mb-2">طراحی سایت</h3>
-                    <p class="text-muted mb-3">
-                        طراحی و توسعه ‌سایت‌های مدرن و پویا با پایتون؛ سریع، امن و مقیاس‌پذیر
-                    </p>
-                    <ul class="list-unstyled small mb-4">
-                        <li class="mb-1">Django</li>
-                        <li class="mb-1">React</li>
-                        <li class="mb-1">DRF + ORM</li>
-                    </ul>
-                    <div class="mt-auto d-flex align-items-center justify-content-between">
-                        <span class="badge rounded-pill badge-soft-teal">5+ سال تجربه</span>
-                        <a href="#" class="more-link my-2">
-                            <span>بیشتر</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+                    <h3 class="h5 fw-bold mb-2">{{ service.title }}</h3>
 
-            <!-- 3. بهبود و پشتیبانی -->
-            <div class="col-12 col-md-6 col-xl-4">
-                <div class="service-card h-100 p-4 rounded-4 shadow-sm">
-                    <div class="service-icon-wrap mb-3">
-                        <i class="fa-solid fa-gauge-high service-icon" aria-hidden="true"></i>
-                    </div>
-                    <h3 class="h5 fw-bold mb-2">پشتیبانی فنی</h3>
                     <p class="text-muted mb-3">
-                        بهینه‌سازی عملکرد، رفع باگ و بروزرسانی پروژه‌های موجود؛ گزارش شفاف و منظم.
+                        {{ service.description|truncatewords:25 }}
                     </p>
+
                     <ul class="list-unstyled small mb-4">
-                        <li class="mb-1">Refactor & Clean Code</li>
-                        <li class="mb-1">Monitoring & Logging</li>
-                        <li class="mb-1">Security & Hardening</li>
+                        {% for tech in service.technologies.all|slice:":3" %}
+                        <li class="mb-1">{{ tech.name }}</li>
+                        {% endfor %}
                     </ul>
+
+
                     <div class="mt-auto d-flex align-items-center justify-content-between">
-                        <span class="badge rounded-pill badge-soft-teal">پشتیبانی ماهانه</span>
-                        <a href="#" class="more-link my-2">
+                        {% if service.experience_text %}
+                        <span class="badge rounded-pill badge-soft-teal">{{ service.experience_text }}</span>
+                        {% endif %}
+                        <a href="{% url 'service:service-view' service.id %}" class="more-link my-2">
                             <span>بیشتر</span>
                         </a>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </section>
+
 
 <section id="why-me" class="why-section py-5">
     <div class="container">
@@ -268,28 +232,28 @@
     <div class="container-fluid">
 
         <div class="text-center mb-4">
-      <h2 class="section-title">همکاری های من</h2>
-      <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
-    </div>
+            <h2 class="section-title">همکاری های من</h2>
+            <p class="section-subtitle">اعتماد این برندها افتخار من است.</p>
+        </div>
 
-    <!-- Swiper -->
-            <div class="swiper brand-swiper">
-              <div class="swiper-wrapper">
+        <!-- Swiper -->
+        <div class="swiper brand-swiper">
+            <div class="swiper-wrapper">
                 {% for company in companies %}
                 <div class="swiper-slide">
-                  <div class="brand-logo-wrap">
-                    {% if company.logo %}
-                    <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
-                    {% else %}
-                    <div class="img-fluid company-logo placeholder">ALH</div>
-                    {% endif %}
-                  </div>
+                    <div class="brand-logo-wrap">
+                        {% if company.logo %}
+                        <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="img-fluid brand-logo">
+                        {% else %}
+                        <div class="img-fluid company-logo placeholder">ALH</div>
+                        {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
-              </div>
             </div>
+        </div>
 
-  </div>
+    </div>
 </section>
 
 
@@ -322,24 +286,24 @@
 
 <script>
 
-  const swiper = new Swiper(".brand-swiper", {
-    slidesPerView: 4,        // چندتا لوگو توی هر اسلاید
-    spaceBetween: 20,
-    loop: true,
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: false,
-    },
+    const swiper = new Swiper(".brand-swiper", {
+        slidesPerView: 4,        // چندتا لوگو توی هر اسلاید
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 2000,
+            disableOnInteraction: false,
+        },
 
-      pagination: false,
+        pagination: false,
 
-    breakpoints: {
-      320: { slidesPerView: 2 },
-      768: { slidesPerView: 3 },
-      992: { slidesPerView: 4 },
-      1200: { slidesPerView: 6 }
-    }
-  });
+        breakpoints: {
+            320: {slidesPerView: 2},
+            768: {slidesPerView: 3},
+            992: {slidesPerView: 4},
+            1200: {slidesPerView: 6}
+        }
+    });
 
 </script>
 

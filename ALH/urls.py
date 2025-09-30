@@ -22,6 +22,7 @@ urlpatterns = [
     path('experience/', include('experience.urls')),  # صفحه اصلی به اپ home وصل میشه
     path('post/', include('post.urls')),  # صفحه اصلی به اپ home وصل میشه
     path("collab/", include("collab.urls", namespace="collab")),
+    path("service/", include("service.urls", namespace="service")),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
 
 ]

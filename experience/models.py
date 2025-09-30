@@ -38,7 +38,7 @@ class Project(models.Model):
     name = models.CharField(max_length=150)
     role = models.CharField(max_length=120, blank=True, null=True)  # مثل: Lead, Solo Dev
     description = models.TextField(blank=True, null=True)
-    technologies = models.CharField(max_length=200, blank=True, null=True)  # "Django, React, PostgreSQL"
+    technology = models.CharField(max_length=200, blank=True, null=True)  # "Django, React, PostgreSQL"
     link_demo = models.URLField(blank=True, null=True)
     screenshot = models.ImageField(upload_to='project_shots/', blank=True, null=True)
 
