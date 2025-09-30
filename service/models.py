@@ -38,7 +38,7 @@ class Service(models.Model):
     image = models.ImageField(upload_to='services/images/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     technologies = models.ManyToManyField(
-        'service.Technology',  # یا فقط Technology در صورتی که مدل در همین اپ است
+        'Technology',  # یا فقط Technology در صورتی که مدل در همین اپ است
         blank=True,
         related_name='services'
     )
