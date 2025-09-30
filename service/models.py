@@ -37,7 +37,11 @@ class Service(models.Model):
     icon = models.ImageField(upload_to='services/icons/', blank=True, null=True)
     image = models.ImageField(upload_to='services/images/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    technologies = models.ForeignKey(Technology,on_delete=models.SET_NULL, blank=True, null=True, related_name='services')
+    technologies = models.ManyToManyField(
+        'service.Technology',  # یا فقط Technology در صورتی که مدل در همین اپ است
+        blank=True,
+        related_name='services'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
