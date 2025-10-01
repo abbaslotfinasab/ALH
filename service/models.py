@@ -28,6 +28,7 @@ class Service(models.Model):
     title = models.CharField(max_length=200, verbose_name="عنوان سرویس")
     slug = models.SlugField(max_length=220, unique=True, blank=True)
     short_desc = models.TextField(verbose_name="توضیح کوتاه")
+    experience = models.IntegerField(blank=True,null=True, verbose_name="سابقه")
     content = models.TextField(verbose_name="محتوای کامل")  # متن کامل صفحه
     icon = models.CharField(max_length=100, blank=True, null=True, help_text="مثال: fa-solid fa-laptop-code")
     image = models.ImageField(upload_to='services/images/', blank=True, null=True)
