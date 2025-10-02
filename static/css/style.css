@@ -725,36 +725,30 @@ body {
     transform: scale(1.2) rotate(5deg);
 }
 
-[data-lucide] {
-  width: 18px;
-  height: 18px;
-  stroke-width: 1.8; /* ضخامت خط آیکون */
-}
-
-.vcount, .lcount {
-  font-weight: 500;
-  font-size: 0.9rem;
-}
 .post-metrics {
-  font-size: 0.9rem;
-  color: #555; /* رنگ متن خنثی و مدرن */
+  font-size: 0.85rem;
+  color: #333;
 }
 
 .metric-pill {
-  background: #f8f9fa; /* پس‌زمینه روشن */
-  border-radius: 50px;
-  padding: 4px 10px;
+  background: #222;       /* پس‌زمینه تیره */
+  color: #fff;            /* متن سفید */
+  border-radius: 6px;     /* گردی گوشه‌ها */
+  padding: 3px 10px;      /* فضای داخلی */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
   transition: background 0.2s ease;
-  cursor: default;
 }
 
 .metric-pill:hover {
-  background: #e9ecef; /* هاور ملایم */
+  background: #000;       /* هاور تیره‌تر */
 }
 
-.metric-pill i {
+.metric-pill [data-lucide] {
   width: 18px;
   height: 18px;
-  stroke-width: 1.7; /* خط مدرن‌تر */
+  stroke-width: 2;
+  stroke: #fff;           /* آیکون سفید */
 }
-
