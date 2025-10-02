@@ -663,26 +663,6 @@ body {
     100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
 }
 
-/* حالت‌ها */
-.status-available {
-    background: linear-gradient(135deg, #16a34a, #22c55e);
-}
-
-.status-busy {
-    background: linear-gradient(135deg, #f59e0b, #fbbf24);
-}
-
-.status-sleep {
-    background: linear-gradient(135deg, #64748b, #94a3b8);
-}
-
-.status-travel {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-}
-
-.status-off {
-    background: linear-gradient(135deg, #dc2626, #ef4444);
-}
 
 .availability-icon {
     font-size: 1.2rem; /* اندازه مناسب */
