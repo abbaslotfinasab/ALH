@@ -248,40 +248,6 @@ body {
     transform: scale(1.1);
 }
 
-/* ✅ بخش در دسترس بودن */
-.availability-card {
-    background: #f6f9fc;
-    border-color: #e6eef6 !important;
-}
-
-.availability-badge {
-    display: inline-block;
-    padding: 6px 14px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border-radius: 50px;
-    text-transform: none;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease-in-out;
-    position: relative;
-    overflow: hidden;
-}
-
-
-.availability-badge.busy {
-    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
-    box-shadow: 0 6px 16px rgba(249, 115, 22, .18);
-}
-
-.availability-icon {
-    color: #22c7b7;
-    font-size: 1rem;
-}
-
-.availability-icon.busy {
-    color: #f59e0b;
-}
-
 /* 🏢 کارت شرکت */
 .company-card {
     border-color: #e6eef6 !important;
@@ -652,28 +618,68 @@ body {
     background: #fff;
 }
 
+.availability-card {
+    background: #fff;
+    border: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease-in-out;
+}
+
+.availability-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.availability-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 40px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+/* افکت پالس */
+.availability-badge::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 100%; height: 100%;
+    border-radius: inherit;
+    transform: translate(-50%, -50%);
+    background: inherit;
+    opacity: 0.6;
+    z-index: -1;
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+}
+
+/* حالت‌ها */
 .status-available {
-    color: #16a34a;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
 }
 
-/* سبز */
 .status-busy {
-    color: #f59e0b;
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
 }
 
-/* زرد */
 .status-sleep {
-    color: #64748b;
+    background: linear-gradient(135deg, #64748b, #94a3b8);
 }
 
-/* خاکستری */
 .status-travel {
-    color: #0ea5e9;
+    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
 }
 
-/* آبی */
 .status-off {
-    color: #dc2626;
+    background: linear-gradient(135deg, #dc2626, #ef4444);
 }
-
-/* قرمز */
