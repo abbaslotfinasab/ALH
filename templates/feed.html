@@ -32,21 +32,8 @@
             </div>
           </div>
 
-<!--          &lt;!&ndash; اکشن‌ها &ndash;&gt;-->
-<!--          <div class="col-6 col-md-auto">-->
-<!--            <div class="d-flex flex-wrap align-items-center gap-2">-->
-<!--              <button id="clearAll" class="btn btn-reset" type="button">حذف فیلترها</button>-->
-<!--            </div>-->
-<!--          </div>-->
         </form>
 
-        <!-- نوار تگ‌ها (pillها) -->
-<!--        <div class="tagbar d-flex flex-wrap gap-2 mt-3">-->
-<!--          <button class="btn tag-pill active" data-tag=""># همه</button>-->
-<!--          {% for t in tags %}-->
-<!--            <button class="btn tag-pill" data-tag="{{ t.slug }}"># {{ t.name }}</button>-->
-<!--          {% endfor %}-->
-<!--        </div>-->
       </div>
     </div>
 
@@ -138,6 +125,7 @@
             });
         }
 
+ة
 
         // رندر کارت
         function renderPostCard(p) {
@@ -161,11 +149,21 @@
       <p class="mb-4" dir="auto">${p.content.length > 550 ? p.content.slice(0, 550) + '…' : p.content}</p>
       <div class="small mb-3">${tags}</div>
       ${media}
-      <div class="d-flex justify-content-between align-items-center text-muted small mb-2">
-        <span>👁 <span class="vcount">${p.views}</span></span>
-        <span>👍 <span class="lcount">${p.likes}</span></span>
-        <span>💬 ${p.comments_count}</span>
-      </div>
+     <div class="d-flex gap-3 align-items-center text-muted small mb-2">
+  <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill bg-light">
+    <i data-lucide="eye"></i>
+    <span class="vcount">${p.views}</span>
+  </div>
+  <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill bg-light">
+    <i data-lucide="heart"></i>
+    <span class="lcount">120</span>
+  </div>
+  <div class="d-flex align-items-center gap-1 px-2 py-1 rounded-pill bg-light">
+    <i data-lucide="message-circle"></i>
+    <span>15</span>
+  </div>
+</div>
+
       <div class="d-flex justify-content-around border-top pt-2">
         <button class="btn btn-sm btn-light like-btn" data-id="${p.id}">👍 پسندیدم</button>
         <a class="btn btn-sm btn-light" href="/notes/${p.slug}/">خواندن کامل</a>
