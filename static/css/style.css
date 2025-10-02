@@ -731,7 +731,7 @@ body {
 }
 
 .metric-pill {
-  background: #222;       /* پس‌زمینه تیره */
+  background: #003c70;       /* پس‌زمینه تیره */
   color: #fff;            /* متن سفید */
   border-radius: 6px;     /* گردی گوشه‌ها */
   padding: 3px 10px;      /* فضای داخلی */
@@ -743,7 +743,7 @@ body {
 }
 
 .metric-pill:hover {
-  background: #003c70;       /* هاور تیره‌تر */
+  background: #0d6efd;       /* هاور تیره‌تر */
 }
 
 .metric-pill [data-lucide] {
