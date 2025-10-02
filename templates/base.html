@@ -208,19 +208,19 @@
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         {% if availability and availability.status == "available" %}
                         <span class="availability-badge status-available">آماده همکاری</span>
-                        <i class="fa-solid fa-circle-check availability-icon status-available"></i>
+                        <i class="fa-solid fa-circle-check availability-icon"></i>
                         {% elif availability and availability.status == "busy" %}
                         <span class="availability-badge status-busy">مشغول</span>
-                        <i class="fa-solid fa-hourglass-half availability-icon status-busy"></i>
+                        <i class="fa-solid fa-hourglass-half availability-icon"></i>
                         {% elif availability and availability.status == "sleep" %}
                         <span class="availability-badge status-sleep">استراحت</span>
-                        <i class="fa-solid fa-moon availability-icon status-sleep"></i>
+                        <i class="fa-solid fa-moon availability-icon"></i>
                         {% elif availability and availability.status == "travel" %}
                         <span class="availability-badge status-travel">سفر</span>
-                        <i class="fa-solid fa-plane-departure availability-icon status-travel"></i>
+                        <i class="fa-solid fa-plane-departure availability-icon"></i>
                         {% elif availability and availability.status == "off" %}
                         <span class="availability-badge status-off">عدم دسترسی</span>
-                        <i class="fa-solid fa-circle-xmark availability-icon status-off"></i>
+                        <i class="fa-solid fa-circle-xmark availability-icon"></i>
                         {% endif %}
                     </div>
 
