@@ -743,7 +743,7 @@ body {
 }
 
 .metric-pill:hover {
-  background: #000;       /* هاور تیره‌تر */
+  background: #003c70;       /* هاور تیره‌تر */
 }
 
 .metric-pill [data-lucide] {
