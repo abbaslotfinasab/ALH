@@ -146,32 +146,26 @@
       <p class="mb-4" dir="auto">${p.content.length > 550 ? p.content.slice(0, 550) + '…' : p.content}</p>
       <div class="small mb-3">${tags}</div>
       ${media}
-    <!-- Post Metrics -->
-<div class="post-metrics d-flex gap-2 mt-3">
-  <!-- Views -->
-  <div class="metric-pill d-flex align-items-center gap-1">
-    <i data-lucide="eye"></i>
-    <span>300</span>
-  </div>
-
-  <!-- Likes -->
-  <div class="metric-pill d-flex align-items-center gap-1">
-    <i data-lucide="heart"></i>
-    <span>120</span>
-  </div>
-
-  <!-- Comments -->
-  <div class="metric-pill d-flex align-items-center gap-1">
-    <i data-lucide="message-circle"></i>
-    <span>15</span>
-  </div>
-</div>
-
-
       <div class="d-flex justify-content-around border-top pt-2">
-        <button class="btn btn-sm btn-light like-btn" data-id="${p.id}">👍 پسندیدم</button>
-        <a class="btn btn-sm btn-light" href="/notes/${p.slug}/">خواندن کامل</a>
-        <button class="btn btn-sm btn-light share-btn" data-url="${location.origin}/notes/${p.slug}/">↗️ اشتراک‌گذاری</button>
+        <div class="post-metrics d-flex gap-2 mt-3">
+        <!-- Views -->
+        <div class="metric-pill d-flex align-items-center gap-1">
+          <i data-lucide="eye"></i>
+          <span>300</span>
+        </div>
+
+        <!-- Likes -->
+        <div class="metric-pill d-flex align-items-center gap-1">
+          <i data-lucide="heart"></i>
+          <span>120</span>
+        </div>
+
+        <!-- Comments -->
+        <div class="metric-pill d-flex align-items-center gap-1">
+          <i data-lucide="message-circle"></i>
+          <span>15</span>
+        </div>
+      </div>
       </div>
     </article>`;
         }
