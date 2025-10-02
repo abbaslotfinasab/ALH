@@ -33,7 +33,7 @@
 
 
     <script src="https://kit.fontawesome.com/1228ed801f.js" crossorigin="anonymous"></script>
-     <script src="https://kit.fontawesome.com/1228ed801f.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/1228ed801f.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.css">
     <script type="text/javascript"
             src="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.js"></script>
@@ -93,15 +93,18 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'home-view' %}active{% endif %}" href="{% url 'home:home-view' %}">خانه</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'home-view' %}active{% endif %}"
+                               href="{% url 'home:home-view' %}">خانه</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'experience-view' %}active{% endif %}" href="{% url 'experience:experience-view' %}">کاردیدها</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'experience-view' %}active{% endif %}"
+                               href="{% url 'experience:experience-view' %}">کاردیدها</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'feed-view' %}active{% endif %}" href="{% url 'post:feed-view' %}">روز‌نوشت‌ها</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'feed-view' %}active{% endif %}"
+                               href="{% url 'post:feed-view' %}">روز‌نوشت‌ها</a>
                         </li>
 
                         <li class="nav-item">
@@ -113,10 +116,12 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'collab-view' %}active{% endif %}" href="{% url 'collab:collab-view' %}">همکاری</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'collab-view' %}active{% endif %}"
+                               href="{% url 'collab:collab-view' %}">همکاری</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == '/about' %}active{% endif %}" href="/about">من کیم؟</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == '/about' %}active{% endif %}"
+                               href="/about">من کیم؟</a>
                         </li>
                     </ul>
                 </div>
@@ -195,44 +200,42 @@
 
             </div>
 
-            <!-- Availability / وضعیت همکاری -->
-            <div class="col-md-3 mb-4">
-                <h6 class="fw-bold mb-3">وضعیت همکاری</h6>
-
-                <div class="availability-card p-3 rounded-4 border">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="availability-badge">آماده همکاری</span>
-                        <i class="fa-solid fa-circle-check availability-icon" aria-hidden="true"></i>
-                    </div>
-
-                    <p class="small text-muted mb-3">
-                        در حال حاضر ظرفیت پذیرش پروژه جدید و همکاری تیمی وجود دارد.
-                    </p>
-
+            <div class="availability-card p-3 rounded-4 border">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    {% if availability and availability.status == "available" %}
+                    <span class="availability-badge status-available">آماده همکاری</span>
+                    <i class="fa-solid fa-circle-check availability-icon status-available"></i>
+                    {% elif availability and availability.status == "busy" %}
+                    <span class="availability-badge status-busy">مشغول</span>
+                    <i class="fa-solid fa-hourglass-half availability-icon status-busy"></i>
+                    {% elif availability and availability.status == "sleep" %}
+                    <span class="availability-badge status-sleep">استراحت</span>
+                    <i class="fa-solid fa-moon availability-icon status-sleep"></i>
+                    {% elif availability and availability.status == "travel" %}
+                    <span class="availability-badge status-travel">سفر</span>
+                    <i class="fa-solid fa-plane-departure availability-icon status-travel"></i>
+                    {% elif availability and availability.status == "off" %}
+                    <span class="availability-badge status-off">عدم دسترسی</span>
+                    <i class="fa-solid fa-circle-xmark availability-icon status-off"></i>
+                    {% endif %}
                 </div>
 
-                <!-- حالت جایگزین (وقتی مشغولی) — اگر لازم شد اینو فعال کن و بلوک بالا رو غیرفعال -->
-                <!--
-                <div class="availability-card p-3 rounded-4 border mt-3">
-                  <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="availability-badge busy">در حال حاضر مشغول</span>
-                    <i class="fa-solid fa-hourglass-half availability-icon busy" aria-hidden="true"></i>
-                  </div>
-                  <p class="small text-muted mb-3">
-                    امکان شروع همکاری از ماه آینده. اگر عجله دارید پیام بگذارید تا هماهنگ کنیم.
-                  </p>
-                </div>
-                -->
+                <p class="small text-muted mb-3">
+                    {{ availability.message|default:"در حال حاضر توضیحی ثبت نشده است." }}
+                </p>
             </div>
 
 
         </div>
 
-        <!-- Copyright -->
-        <div class="text-center pt-4 border-top mt-4"
-             style="border-color: rgba(255,255,255,0.1) !important; direction: ltr">
-            <p class="small mb-0">&copy; 2025 Abbas Lotfinasab. All Rights Reserved.</p>
-        </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center pt-4 border-top mt-4"
+         style="border-color: rgba(255,255,255,0.1) !important; direction: ltr">
+        <p class="small mb-0">&copy; 2025 Abbas Lotfinasab. All Rights Reserved.</p>
+    </div>
     </div>
 </footer>
 
