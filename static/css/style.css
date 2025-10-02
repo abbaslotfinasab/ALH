@@ -644,3 +644,9 @@ body {
     border-color: #e6eef6 !important;
     background: #fff;
 }
+
+.status-available { color: #16a34a; }   /* سبز */
+.status-busy { color: #f59e0b; }        /* زرد */
+.status-sleep { color: #64748b; }       /* خاکستری */
+.status-travel { color: #0ea5e9; }      /* آبی */
+.status-off { color: #dc2626; }         /* قرمز */
