@@ -735,4 +735,26 @@ body {
   font-weight: 500;
   font-size: 0.9rem;
 }
+.post-metrics {
+  font-size: 0.9rem;
+  color: #555; /* رنگ متن خنثی و مدرن */
+}
+
+.metric-pill {
+  background: #f8f9fa; /* پس‌زمینه روشن */
+  border-radius: 50px;
+  padding: 4px 10px;
+  transition: background 0.2s ease;
+  cursor: default;
+}
+
+.metric-pill:hover {
+  background: #e9ecef; /* هاور ملایم */
+}
+
+.metric-pill i {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.7; /* خط مدرن‌تر */
+}
 
