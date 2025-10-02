@@ -683,3 +683,44 @@ body {
 .status-off {
     background: linear-gradient(135deg, #dc2626, #ef4444);
 }
+
+.availability-icon {
+    font-size: 1.2rem; /* اندازه مناسب */
+    margin-left: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* آماده همکاری */
+.status-available.availability-icon {
+    color: #16a34a;
+    text-shadow: 0 0 8px rgba(22,163,74,0.6);
+}
+
+/* مشغول */
+.status-busy.availability-icon {
+    color: #f59e0b;
+    text-shadow: 0 0 8px rgba(245,158,11,0.6);
+}
+
+/* استراحت */
+.status-sleep.availability-icon {
+    color: #64748b;
+    text-shadow: 0 0 8px rgba(100,116,139,0.5);
+}
+
+/* سفر */
+.status-travel.availability-icon {
+    color: #0ea5e9;
+    text-shadow: 0 0 8px rgba(14,165,233,0.5);
+}
+
+/* عدم دسترسی */
+.status-off.availability-icon {
+    color: #dc2626;
+    text-shadow: 0 0 8px rgba(220,38,38,0.6);
+}
+
+/* افکت هاور */
+.availability-icon:hover {
+    transform: scale(1.2) rotate(5deg);
+}
