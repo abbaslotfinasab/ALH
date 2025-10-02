@@ -724,3 +724,15 @@ body {
 .availability-icon:hover {
     transform: scale(1.2) rotate(5deg);
 }
+
+[data-lucide] {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.8; /* ضخامت خط آیکون */
+}
+
+.vcount, .lcount {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
