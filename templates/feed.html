@@ -77,7 +77,6 @@
         const sentinel = document.getElementById("sentinel");
         const qInput = document.getElementById("qInput");
         const dateInput = document.getElementById("dateInput");
-        const clearBtn = document.getElementById("clearFilters");
 
         // مقداردهی اولیه UI
         if (qInput) qInput.value = activeQuery;
@@ -139,18 +138,6 @@
             });
         }
 
-        // پاک کردن فیلترها
-        if (clearBtn) {
-            clearBtn.addEventListener("click", () => {
-                activeQuery = "";
-                if (qInput) qInput.value = "";
-                activeDate = "";
-                if (dateInput) dateInput.value = "";
-                activeTag = "";
-                setActivePillByTag(activeTag);
-                resetAndFetch();
-            });
-        }
 
         // رندر کارت
         function renderPostCard(p) {
@@ -314,25 +301,6 @@
             if (dateInput) {
                 dateInput.value = "";
                 dateInput.dispatchEvent(new Event("change"));
-            }
-        });
-
-        // ریست همه
-        clearAll && clearAll.addEventListener("click", () => {
-            if (qInput) {
-                qInput.value = "";
-                qInput.dispatchEvent(new Event("input"));
-            }
-            if (dateInput) {
-                dateInput.value = "";
-                dateInput.dispatchEvent(new Event("change"));
-            }
-            // ریست تگ‌ها به «همه»
-            document.querySelectorAll(".tag-pill").forEach(b => b.classList.remove("active"));
-            const allBtn = document.querySelector('.tag-pill[data-tag=""]');
-            if (allBtn) {
-                allBtn.classList.add("active");
-                allBtn.click();
             }
         });
 
