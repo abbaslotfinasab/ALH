@@ -41,8 +41,6 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
 
-
-
     {% block extra_head %}{% endblock %}
 
 
@@ -122,9 +120,10 @@
                                href="{% url 'collab:collab-view' %}">همکاری</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == '/about' %}active{% endif %}"
-                               href="/about">من کیم؟</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}"
+                               href="{% url 'about' %}">من کیم؟</a>
                         </li>
+
                     </ul>
                 </div>
 
