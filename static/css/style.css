@@ -198,13 +198,6 @@ body {
 }
 
 
-/* 🎨 رنگ‌ها و تایپوگرافی کلی */
-.section-title {
-    color: #003c70;
-    font-weight: 800;
-    letter-spacing: -.2px;
-}
-
 .section-subtitle {
     color: #5f6b7a;
     max-width: 720px;
