@@ -2,28 +2,28 @@
 {% load static %}
 
 {% block content %}
-<section class="about-hero py-5" style="background:#f8fafc">
+<section class="collab-hero py-5">
   <div class="container">
     <div class="row align-items-center g-4">
       <div class="col-lg-8">
-        <h1 class="fw-bold mb-2" style="color:#003c70">من کیم؟</h1>
-        <p class="lead text-muted m-0">
+        <h1 class="section-title  fw-bold mb-2" >من کیم؟</h1>
+        <p class="section-subtitle  m-0">
           توسعه‌دهندهٔ محصولات دیجیتال (وب و موبایل). عاشقِ ساختن چیزهایی که ساده، سریع و قابل‌اتکا باشند.
         </p>
       </div>
       <div class="col-lg-4 text-lg-end">
-        <img src="{% static 'images/avatar.jpg' %}" class="rounded-circle shadow-sm" alt="Abbas Lotfinasab" width="96" height="96">
+        <img src="{% static 'images/hero.jpg' %}" class="rounded-circle shadow-sm" alt="Abbas Lotfinasab" width="96" height="96">
       </div>
     </div>
   </div>
 </section>
 
-<section class="py-5">
+<section class="collab-hero py-5">
   <div class="container">
     <!-- خلاصه -->
     <div class="row g-4">
       <div class="col-lg-8">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <div class="hero-card  border-0 shadow-sm rounded-4 p-4 h-100">
           <h2 class="h5 fw-bold mb-3" style="color:#003c70">خلاصهٔ حرفه‌ای</h2>
           <p class="mb-2">
             از سال ۱۳۹۷ برنامه‌نویسی را با اندروید شروع کردم، بعد وارد دنیای وب شدم و امروز روی توسعهٔ محصولاتی تمرکز دارم
@@ -42,7 +42,7 @@
 
       <!-- مشخصات سریع -->
       <div class="col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <div class="hero-card  border-0 shadow-sm rounded-4 p-4 h-100">
           <h2 class="h6 fw-bold mb-3" style="color:#003c70">مشخصات سریع</h2>
           <ul class="list-unstyled small m-0">
             <li class="mb-2"><i class="fa-regular fa-id-badge ms-2 text-primary"></i> نام: عباس لطفی نسب</li>
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Timeline -->
-    <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+    <div class="hero-card  border-0 shadow-sm rounded-4 p-4 mt-4">
       <h2 class="h5 fw-bold mb-3" style="color:#003c70">مسیر شغلی</h2>
       <div class="timeline">
         <div class="tl-item">
@@ -108,7 +108,7 @@
     <!-- مهارت‌ها -->
     <div class="row g-4 mt-1">
       <div class="col-md-6">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <div class="hero-card border-0 shadow-sm rounded-4 p-4 h-100">
           <h3 class="h6 fw-bold mb-3" style="color:#003c70">فنی — وب</h3>
           <div class="d-flex flex-wrap gap-2 small">
             <span class="badge bg-light text-dark border">Django</span>
@@ -132,7 +132,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+        <div class="hero-card  border-0 shadow-sm rounded-4 p-4 h-100">
           <h3 class="h6 fw-bold mb-3" style="color:#003c70">Workflow و ابزارها</h3>
           <div class="d-flex flex-wrap gap-2 small">
             <span class="badge bg-light text-dark border">Git/GitLab</span>
@@ -154,7 +154,7 @@
     </div>
 
     <!-- نقل‌قول/گواهی (اختیاری) -->
-    <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+    <div class="hero-card  border-0 shadow-sm rounded-4 p-4 mt-4">
       <div class="d-flex align-items-start gap-3">
         <i class="fa-solid fa-quote-right fs-3 text-primary ms-1"></i>
         <p class="m-0 text-muted">
