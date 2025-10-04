@@ -4,7 +4,7 @@ SCOPE_CHOICES = [
     ("UI/UX", "UI/UX"),
     ("Front-end", "Front-end"),
     ("Back-end", "Back-end"),
-    ("API", "API"),
+    ("CI/CD", "CI/CD"),
     ("SEO", "SEO"),
 ]
 
