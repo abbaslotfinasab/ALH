@@ -38,6 +38,7 @@ class ProjectRequest(models.Model):
 class HireRequest(models.Model):
     name       = models.CharField(max_length=120)
     email      = models.EmailField()
+    phone      = models.CharField(max_length=32, blank=True)
     role       = models.CharField(max_length=120, blank=True)
     mode       = models.CharField(max_length=20, choices=MODE_CHOICES, blank=True)
     skills     = models.CharField(max_length=255, blank=True)

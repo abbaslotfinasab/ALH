@@ -24,6 +24,7 @@ class ProjectForm(forms.Form):
 class HireForm(forms.Form):
     name = forms.CharField(max_length=120)
     email = forms.EmailField()
+    phone = forms.CharField(max_length=32, required=False)
     role = forms.CharField(max_length=120, required=False)
     mode = forms.ChoiceField(choices=MODE_CHOICES, required=False)
     skills = forms.CharField(max_length=255, required=False)

@@ -1,9 +1,5 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.contrib import messages
-from django.core.mail import send_mail, EmailMessage
+from django.shortcuts import render
 from django.views.decorators.http import require_POST
-from django.utils.html import strip_tags
 
 from .forms import ProjectForm, HireForm
 from .models import ProjectRequest, HireRequest
@@ -70,10 +66,11 @@ def submit_hire(request):
                 ip=request.META.get("REMOTE_ADDR"),
                 user_agent=request.META.get("HTTP_USER_AGENT"),
             )
-            return redirect("collab:thanks")
-    else:
-        form = HireForm()
-    return render(request, "collab.html", {"form": form})
+            return JsonResponse({"success": True, "message": "درخواست با موفقیت ثبت شد."})
+        else:
+            errors = {field: error_list[0] for field, error_list in form.errors.items()}
+            return JsonResponse({"success": False, "errors": errors}, status=400)
+    return JsonResponse({"error": "Invalid method"}, status=405)
 
 
 def thanks(request):
