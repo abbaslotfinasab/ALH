@@ -43,7 +43,7 @@ def submit_project(request):
             return redirect("collab:thanks")
     else:
         form = ProjectForm()
-    return render(request, "collab/project.html", {"form": form})
+    return render(request, "collab.html", {"form": form})
 
 @require_POST
 def submit_hire(request):
@@ -64,7 +64,7 @@ def submit_hire(request):
             return redirect("collab:thanks")
     else:
         form = HireForm()
-    return render(request, "collab/hire.html", {"form": form})
+    return render(request, "collab.html", {"form": form})
 
 
 def thanks(request):
