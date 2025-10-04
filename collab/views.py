@@ -22,84 +22,59 @@ def _client_meta(request):
     ua = request.META.get("HTTP_USER_AGENT","")[:500]
     return ip, ua
 
-@require_POST
 def submit_project(request):
-    form = ProjectForm(request.POST, request.FILES)
-    if not form.is_valid():
-        messages.error(request, "خطا در ارسال فرم پروژه. لطفاً موارد را بررسی کنید.")
-        return redirect(reverse("collab:page") + "#project-form")
-
-    ip, ua = _client_meta(request)
-    scopes_csv = ",".join(form.cleaned_data.get("scope", []))
-    obj = ProjectRequest.objects.create(
-        name=form.cleaned_data["name"],
-        email=form.cleaned_data["email"],
-        phone=form.cleaned_data.get("phone",""),
-        project_type={"web":"web","موبایل":"mobile","هر دو":"both"}.get(form.cleaned_data["type"], form.cleaned_data["type"]),
-        scopes=scopes_csv,
-        deadline=form.cleaned_data.get("deadline"),
-        budget=form.cleaned_data.get("budget",""),
-        message=form.cleaned_data["message"],
-        nda=form.cleaned_data.get("nda", False),
-        ip=ip, user_agent=ua,
-    )
-
-    # ایمیل اطلاع‌رسانی
-    subject = "درخواست پروژه جدید"
-    body = (
-        f"نام: {obj.name}\n"
-        f"ایمیل: {obj.email}\n"
-        f"تلفن: {obj.phone}\n"
-        f"نوع پروژه: {obj.project_type}\n"
-        f"دامنه کار: {obj.scopes}\n"
-        f"موعد: {obj.deadline}\n"
-        f"بودجه: {obj.budget}\n\n"
-        f"پیام:\n{strip_tags(obj.message)}\n\n"
-        f"IP: {obj.ip}\nUA: {obj.user_agent}\n"
-    )
-    try:
-        send_mail(subject, body, None, ["info@abbaslotfinasab.ir"], fail_silently=True)
-    except Exception:
-        pass
-
-    messages.success(request, "درخواست پروژه با موفقیت ثبت شد. حداکثر تا ۲۴ ساعت کاری پاسخ می‌دهم.")
-    return redirect("collab:thanks")
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            ProjectRequest.objects.create(
+                name=data["name"],
+                email=data["email"],
+                phone=data["phone"],
+                project_type=data["type"],
+                scopes=",".join(data.get("scope", [])),
+                deadline=data["deadline"],
+                budget=data["budget"],
+                message=data["message"],
+                nda=data["nda"],
+                ip=request.META.get("REMOTE_ADDR"),
+                user_agent=request.META.get("HTTP_USER_AGENT"),
+            )
+            return redirect("collab:thanks")
+    else:
+        form = ProjectForm()
+    return render(request, "collab/project.html", {"form": form})
 
 @require_POST
 def submit_hire(request):
-    form = HireForm(request.POST)
-    if not form.is_valid():
-        messages.error(request, "خطا در ارسال درخواست مصاحبه. لطفاً موارد را بررسی کنید.")
-        return redirect(reverse("collab:page") + "#hire-form")
+    if request.method == "POST":
+        form = HireForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            HireRequest.objects.create(
+                name=data["name"],
+                email=data["email"],
+                role=data["role"],
+                mode=data["mode"],
+                skills=data["skills"],
+                message=data["message"],
+                ip=request.META.get("REMOTE_ADDR"),
+                user_agent=request.META.get("HTTP_USER_AGENT"),
+            )
+            return redirect("collab:thanks")
+    else:
+        form = HireForm()
+    return render(request, "collab/hire.html", {"form": form})
 
-    ip, ua = _client_meta(request)
-    obj = HireRequest.objects.create(
-        name=form.cleaned_data["name"],
-        email=form.cleaned_data["email"],
-        role=form.cleaned_data.get("role",""),
-        mode=form.cleaned_data.get("mode",""),
-        skills=form.cleaned_data.get("skills",""),
-        message=form.cleaned_data.get("message",""),
-        ip=ip, user_agent=ua,
-    )
-
-    subject = "درخواست مصاحبه جدید"
-    body = (
-        f"نام: {obj.name}\n"
-        f"ایمیل: {obj.email}\n"
-        f"نقش: {obj.role}\n"
-        f"نوع همکاری: {obj.mode}\n"
-        f"مهارت‌ها: {obj.skills}\n\n"
-        f"پیام:\n{strip_tags(obj.message)}\n\n"
-        f"IP: {obj.ip}\nUA: {obj.user_agent}\n"
-    )
-    try:
-        send_mail(subject, body, None, ["info@abbaslotfinasab.ir"], fail_silently=True)
-    except Exception:
-        pass
-
-    messages.success(request, "درخواست مصاحبه ثبت شد. هماهنگی زمان جلسه از طریق ایمیل انجام می‌شود.")
-    return redirect("collab:thanks")
 
 def thanks(request):
     return render(request, "collab_thanks.html")
+
+
+def request_list(request):
+    project_requests = ProjectRequest.objects.order_by('-created_at')[:50]
+    hire_requests = HireRequest.objects.order_by('-created_at')[:50]
+    return render(request, "request_list.html", {
+        "project_requests": project_requests,
+        "hire_requests": hire_requests
+    })
