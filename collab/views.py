@@ -8,6 +8,7 @@ from django.utils.html import strip_tags
 from .forms import ProjectForm, HireForm
 from .models import ProjectRequest, HireRequest
 
+
 def collab_page(request):
     # صفحه همکاری + فرم‌ها در یک صفحه
     return render(request, "collab.html", {
@@ -15,13 +16,18 @@ def collab_page(request):
         "hire_form": HireForm(),
     })
 
+
 def _client_meta(request):
     # گرفتن IP و UA
     xff = request.META.get("HTTP_X_FORWARDED_FOR")
     ip = (xff.split(",")[0].strip() if xff else request.META.get("REMOTE_ADDR"))
-    ua = request.META.get("HTTP_USER_AGENT","")[:500]
+    ua = request.META.get("HTTP_USER_AGENT", "")[:500]
     return ip, ua
 
+
+from django.http import JsonResponse
+
+@require_POST
 def submit_project(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
@@ -30,20 +36,21 @@ def submit_project(request):
             ProjectRequest.objects.create(
                 name=data["name"],
                 email=data["email"],
-                phone=data["phone"],
+                phone=data.get("phone", ""),
                 project_type=data["type"],
                 scopes=",".join(data.get("scope", [])),
-                deadline=data["deadline"],
-                budget=data["budget"],
+                deadline=data.get("deadline"),
+                budget=data.get("budget", ""),
                 message=data["message"],
-                nda=data["nda"],
+                nda=data.get("nda", False),
                 ip=request.META.get("REMOTE_ADDR"),
                 user_agent=request.META.get("HTTP_USER_AGENT"),
             )
-            return redirect("collab:thanks")
-    else:
-        form = ProjectForm()
-    return render(request, "collab.html", {"form": form})
+            return JsonResponse({"success": True, "message": "درخواست با موفقیت ثبت شد."})
+        else:
+            return JsonResponse({"success": False, "errors": form.errors}, status=400)
+    return JsonResponse({"error": "Invalid method"}, status=405)
+
 
 @require_POST
 def submit_hire(request):
