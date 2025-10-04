@@ -357,7 +357,14 @@
                         form.reset();
                         showAlert(formCard, "✅ فرم با موفقیت ارسال شد!", "success");
                     } else {
-                        showAlert(formCard, "❌ خطا در ارسال داده‌ها", "danger");
+                        if (result.errors) {
+                            const messages = Object.entries(result.errors)
+                                .map(([field, msg]) => `🔸 ${field}: ${msg}`)
+                                .join("\n");
+                            showAlert(formCard, messages, "danger");
+                        } else {
+                            showAlert(formCard, "❌ خطا در ارسال داده‌ها", "danger");
+                        }
                     }
 
                 } catch (error) {
