@@ -9,7 +9,7 @@ class ProjectForm(forms.Form):
     scope = forms.MultipleChoiceField(choices=SCOPE_CHOICES, required=False, widget=forms.CheckboxSelectMultiple)
     deadline = forms.DateField(required=False, widget=forms.DateInput(attrs={"type":"date"}))
     budget = forms.CharField(max_length=60, required=False)
-    message = forms.CharField(widget=forms.Textarea, min_length=10)
+    message = forms.CharField(widget=forms.Textarea, required=False)
     nda = forms.BooleanField(required=False)
 
     # honeypot
