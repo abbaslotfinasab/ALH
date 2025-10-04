@@ -745,3 +745,17 @@ body {
   stroke-width: 2;
   stroke: #fff;           /* آیکون سفید */
 }
+
+.vision-card {
+    scroll-snap-align: center; /* مرکز چین شدن کارت‌ها */
+    transition: transform 0.3s ease-in-out; /* انیمیشن برای حس بهتر */
+    flex: 0 0 80%; /* هر کارت دقیقاً اندازه کل عرض صفحه */
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.vision-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid #003c70 !important
+}
