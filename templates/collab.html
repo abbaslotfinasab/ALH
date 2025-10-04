@@ -349,18 +349,15 @@
                         body: formData,
                     });
 
-                    if (!response.ok) throw new Error("خطا در ارسال فرم");
+                    const result = await response.json();
 
-                    // فرض بر اینه که ویو با redirect برمی‌گرده → پس JSON نمی‌فرسته
-                    // برای همین چک می‌کنیم اگر redirect شد:
-                    if (response.redirected) {
-                        window.location.href = response.url;
-                        return;
+                    if (result.success) {
+                        form.reset();
+                        showAlert(formCard, "✅ فرم با موفقیت ارسال شد!", "success");
+                    } else {
+                        showAlert(formCard, "❌ خطا در ارسال داده‌ها", "danger");
                     }
 
-                    // در غیر این صورت نمایش پیام موفقیت
-                    form.reset();
-                    showAlert(formCard, "✅ فرم با موفقیت ارسال شد!", "success");
                 } catch (error) {
                     showAlert(formCard, "❌ خطایی رخ داد. لطفاً دوباره تلاش کنید.", "danger");
                 } finally {
