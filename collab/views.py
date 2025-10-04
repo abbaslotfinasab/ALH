@@ -48,7 +48,9 @@ def submit_project(request):
             )
             return JsonResponse({"success": True, "message": "درخواست با موفقیت ثبت شد."})
         else:
-            return JsonResponse({"success": False, "errors": form.errors}, status=400)
+            # تبدیل خطاها به دیکشنری خوانا
+            errors = {field: error_list[0] for field, error_list in form.errors.items()}
+            return JsonResponse({"success": False, "errors": errors}, status=400)
     return JsonResponse({"error": "Invalid method"}, status=405)
 
 
