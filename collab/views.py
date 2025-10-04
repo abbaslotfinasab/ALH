@@ -23,6 +23,7 @@ def _client_meta(request):
 
 from django.http import JsonResponse
 
+
 @require_POST
 def submit_project(request):
     if request.method == "POST":
@@ -59,6 +60,7 @@ def submit_hire(request):
             HireRequest.objects.create(
                 name=data["name"],
                 email=data["email"],
+                phone=data.get("phone", ""),
                 role=data["role"],
                 mode=data["mode"],
                 skills=data["skills"],
