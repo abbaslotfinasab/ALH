@@ -13,7 +13,7 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size_query_param = "page_size"
     max_page_size = 50
 
-class BlogPostViewSet(viewsets.ReadOnlyModelViewSet):
+class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.filter(is_published=True).prefetch_related("tags", "gallery")
     serializer_class = BlogPostSerializer
     pagination_class = StandardResultsSetPagination
@@ -37,7 +37,7 @@ class BlogPostViewSet(viewsets.ReadOnlyModelViewSet):
         post.refresh_from_db()
         return Response({"views": post.views})
 
-class TagViewSet(viewsets.ReadOnlyModelViewSet):
+class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
