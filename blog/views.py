@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.db.models import F
 from .models import BlogPost, Tag
 from .serializers import BlogPostSerializer, TagSerializer
+from django.views.generic import ListView, DetailView
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -40,13 +41,10 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
-# views.py (Template-based)
-from django.views.generic import ListView, DetailView
-from .models import BlogPost
 
 class BlogListView(ListView):
     model = BlogPost
-    template_name = "blogs/post_list.html"
+    template_name = "blogs.html"
     context_object_name = "posts"
     paginate_by = 10
 
@@ -62,7 +60,7 @@ class BlogListView(ListView):
 
 class BlogDetailView(DetailView):
     model = BlogPost
-    template_name = "blogs/post_detail.html"
+    template_name = "blogpost.html"
     context_object_name = "post"
     slug_field = "slug"
     slug_url_kwarg = "slug"
