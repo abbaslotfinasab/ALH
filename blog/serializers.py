@@ -13,7 +13,6 @@ class BlogImageSerializer(serializers.ModelSerializer):
         fields = ["id", "image", "caption"]
 
 class BlogPostSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True, read_only=True)
     gallery = BlogImageSerializer(many=True, read_only=True)
     slug = serializers.CharField(read_only=True)
 
