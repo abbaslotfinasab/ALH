@@ -111,8 +111,9 @@
                             <a class="nav-link" href="">دست خط</a>
                         </li>
 
-                        <li class="nav-item {% if request.resolver_match.url_name == 'blogs_view' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'blogs:blogs_view' %}">پژوهش‌ها</a>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'blogs_view' %}active{% endif %}"
+                               href="{% url 'blogs:blogs_view' %}">پژوهش‌ها</a>
                         </li>
 
                         <li class="nav-item">
