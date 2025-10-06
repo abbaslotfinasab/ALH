@@ -1,10 +1,11 @@
+from django.db.models import Prefetch
 from django.shortcuts import render
 from rest_framework import viewsets
 
 from experience.models import Company
 from home.models import Availability
 from home.serializers import AvailabilitySerializer
-from service.models import Service
+from service.models import Service, Technology
 
 
 def home_view(request):
@@ -16,8 +17,8 @@ def home_view(request):
 
     services = (
         Service.objects.all()
-        .prefetch_related("technologies")
-        .order_by("id")
+        .prefetch_related(Prefetch('highlight_techs', queryset=Technology.objects.order_by('id')))
+        .all()
     )
     return render(request, "home.html", {"companies": companies, "services": services})
 
