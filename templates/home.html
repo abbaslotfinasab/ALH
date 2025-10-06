@@ -93,8 +93,8 @@
 
 
                     <div class="mt-auto d-flex align-items-center justify-content-between">
-                        {% if service.experience_text %}
-                        <span class="badge rounded-pill badge-soft-teal">{{ service.experience_text }}</span>
+                        {% if service.experience %}
+                        <span class="badge rounded-pill badge-soft-teal">+{{ service.experience }} سال تجربه</span>
                         {% endif %}
                         <a href="{% url 'service:service-view' service.id %}" class="more-link my-2">
                             <span>بیشتر</span>
