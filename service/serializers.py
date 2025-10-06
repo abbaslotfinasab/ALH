@@ -16,7 +16,7 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = [
             "id", "title","experience","slug", "short_desc", "content",
-            "icon", "image", "is_active", "technologies"
+            "icon", "image", "is_active", "technologies", "highlight_techs"
         ]
         read_only_fields = ["slug"]   # 👈 فقط خوندنی باشه
 
