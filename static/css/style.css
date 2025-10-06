@@ -187,7 +187,6 @@ body {
 /* Buttons */
 .btn-primary {
     background: #22c7b7;
-    border-color: #22c7b7;
     transition: all .2s ease;
 }
 
