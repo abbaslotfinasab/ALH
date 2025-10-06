@@ -108,7 +108,8 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="">دست خط</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'blogs_view' %}active{% endif %}"
+                               href="{% url 'handwrite:handwrite-view' %}">دست خط</a>
                         </li>
 
                         <li class="nav-item">
@@ -176,7 +177,7 @@
                     </li>
 
                     <li>
-                        <a class="footer-link" href="">دست خط</a>
+                        <a class="footer-link" href="{% url 'handwrite:handwrite-view' %}">دست خط</a>
                     </li>
 
                     <li>
