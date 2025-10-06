@@ -85,10 +85,35 @@ body {
 }
 
 .section-title {
-    color: #003c70;
-    font-weight: 800;
-    letter-spacing: -0.2px;
+  position: relative;
+  display: inline-block;
+  padding: 0 1rem;
+  color: #003c70;
+  font-weight: 700;
+  font-size: 1.75rem;
 }
+
+.section-title::before,
+.section-title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 100px;
+  height: 2px;
+  background: #22c7b7;
+  opacity: 0.6;
+}
+
+.section-title::before {
+  right: 100%;
+  margin-right: 1rem;
+}
+
+.section-title::after {
+  left: 100%;
+  margin-left: 1rem;
+}
+
 
 .section-subtitle {
     color: #5f6b7a;
