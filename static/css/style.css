@@ -207,6 +207,28 @@ body {
   box-shadow: 0 3px 8px rgba(28, 168, 156, 0.25);
 }
 
+.btn-outline-primary {
+  background: #ffffff;
+  color: #003c70;
+  border: 2px solid #22c7b7;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.6rem 1.4rem;
+  transition: all 0.25s ease;
+}
+
+.btn-outline-primary:hover {
+  background: #e6fffc; /* خیلی لطیف و روشن */
+  border-color: #22c7b7;
+  color: #003c70;
+  box-shadow: 0 6px 18px rgba(34, 199, 183, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-outline-primary:active {
+  background: #d0f8f5;
+  transform: scale(0.97);
+}
 
 .section-subtitle {
     color: #5f6b7a;
@@ -556,20 +578,6 @@ body {
     .tl-content {
         margin-right: 28px;
     }
-}
-
-.hire-cta {
-    border: 2px solid #003c70;
-    color: #003c70;
-    background-color: #fff; /* بک‌گراند پیش‌فرض سفید */
-    transition: all 0.3s ease;
-}
-
-.hire-cta:hover {
-    background-color: #003c70; /* هاور: بک‌گراند آبی برند */
-    color: #fff; /* متن سفید */
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 60, 112, 0.25);
 }
 
 .hero-media img {
