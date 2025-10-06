@@ -192,9 +192,9 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #022c50;
-    border-color: #022c50;
-    box-shadow: 0 6px 16px rgba(0, 60, 112, 0.35);
+    background-color: #2ed5c6; /* روشن‌تر از رنگ اصلی */
+    border-color: #2ed5c6;
+    box-shadow: 0 6px 16px rgba(34, 199, 183, 0.45);
 }
 
 
@@ -614,13 +614,13 @@ body {
 .availability-card {
     background: #fff;
     border: none;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
 }
 
 .availability-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
 .availability-badge {
@@ -634,15 +634,17 @@ body {
     color: #fff;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
 /* افکت پالس */
 .availability-badge::after {
     content: "";
     position: absolute;
-    top: 50%; left: 50%;
-    width: 100%; height: 100%;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
     border-radius: inherit;
     transform: translate(-50%, -50%);
     background: inherit;
@@ -652,8 +654,14 @@ body {
 }
 
 @keyframes pulse {
-    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-    100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.4);
+        opacity: 0;
+    }
 }
 
 /* حالت‌ها */
@@ -686,31 +694,31 @@ body {
 /* آماده همکاری */
 .status-available.availability-icon {
     color: #16a34a;
-    text-shadow: 0 0 8px rgba(22,163,74,0.6);
+    text-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
 }
 
 /* مشغول */
 .status-busy.availability-icon {
     color: #f59e0b;
-    text-shadow: 0 0 8px rgba(245,158,11,0.6);
+    text-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
 }
 
 /* استراحت */
 .status-sleep.availability-icon {
     color: #64748b;
-    text-shadow: 0 0 8px rgba(100,116,139,0.5);
+    text-shadow: 0 0 8px rgba(100, 116, 139, 0.5);
 }
 
 /* سفر */
 .status-travel.availability-icon {
     color: #0ea5e9;
-    text-shadow: 0 0 8px rgba(14,165,233,0.5);
+    text-shadow: 0 0 8px rgba(14, 165, 233, 0.5);
 }
 
 /* عدم دسترسی */
 .status-off.availability-icon {
     color: #dc2626;
-    text-shadow: 0 0 8px rgba(220,38,38,0.6);
+    text-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
 }
 
 /* افکت هاور */
@@ -719,31 +727,31 @@ body {
 }
 
 .post-metrics {
-  font-size: 0.85rem;
-  color: #333;
+    font-size: 0.85rem;
+    color: #333;
 }
 
 .metric-pill {
-  background: #003c70;       /* پس‌زمینه تیره */
-  color: #fff;            /* متن سفید */
-  border-radius: 6px;     /* گردی گوشه‌ها */
-  padding: 3px 10px;      /* فضای داخلی */
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 500;
-  transition: background 0.2s ease;
+    background: #003c70; /* پس‌زمینه تیره */
+    color: #fff; /* متن سفید */
+    border-radius: 6px; /* گردی گوشه‌ها */
+    padding: 3px 10px; /* فضای داخلی */
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    transition: background 0.2s ease;
 }
 
 .metric-pill:hover {
-  background: #0d6efd;       /* هاور تیره‌تر */
+    background: #0d6efd; /* هاور تیره‌تر */
 }
 
 .metric-pill [data-lucide] {
-  width: 18px;
-  height: 18px;
-  stroke-width: 2;
-  stroke: #fff;           /* آیکون سفید */
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    stroke: #fff; /* آیکون سفید */
 }
 
 .vision-card {
@@ -761,16 +769,18 @@ body {
 }
 
 .code-card {
-  transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
+
 .code-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
+
 pre {
-  background: rgba(255,255,255,0.05);
-  padding: 10px;
-  border-radius: 10px;
-  overflow-x: auto;
-  font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-size: 0.9rem;
 }
