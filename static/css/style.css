@@ -123,7 +123,9 @@ body {
     place-items: center;
     background: linear-gradient(135deg, #003c70 0%, #22c7b7 100%);
     box-shadow: 0 6px 16px rgba(34, 199, 183, 0.25);
+    margin: 0 auto; /* این خط خیلی مهمه برای وسط‌چین افقی کل باکس */
 }
+
 
 .service-icon {
     font-size: 26px;
