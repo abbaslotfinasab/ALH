@@ -192,9 +192,9 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #2ed5c6; /* روشن‌تر از رنگ اصلی */
-    border-color: #2ed5c6;
-    box-shadow: 0 6px 16px rgba(34, 199, 183, 0.45);
+    background: linear-gradient(90deg, #20bfae, #1aa394);
+    border: none;
+    box-shadow: 0 6px 16px rgba(34, 199, 183, 0.4);
 }
 
 
