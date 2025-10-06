@@ -85,6 +85,7 @@ body {
 }
 
 .section-heading {
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
@@ -99,6 +100,7 @@ body {
   background: #22c7b7;
   opacity: 0.6;
 }
+
 
 .section-title {
   color: #003c70;
