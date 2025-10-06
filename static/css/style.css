@@ -218,8 +218,8 @@ body {
 }
 
 .btn-outline-primary:hover {
-  background: #e6fffc; /* خیلی لطیف و روشن */
-  border-color: #22c7b7;
+  background: #ffffff; /* خیلی لطیف و روشن */
+  border-color: #003c70;
   color: #003c70;
   box-shadow: 0 6px 18px rgba(34, 199, 183, 0.25);
   transform: translateY(-2px);
