@@ -85,7 +85,6 @@ body {
 }
 
 .section-heading {
-  display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
@@ -99,13 +98,6 @@ body {
   height: 2px;
   background: #22c7b7;
   opacity: 0.6;
-}
-
-.section-title {
-  color: #003c70;
-  font-weight: 700;
-  font-size: 1.75rem;
-  white-space: nowrap;
 }
 
 .section-title {
