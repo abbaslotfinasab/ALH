@@ -34,6 +34,7 @@ class Service(models.Model):
     image = models.ImageField(upload_to='services/images/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     technologies = models.ManyToManyField( 'Technology', blank=True, related_name='services')
+    highlight_techs = models.ManyToManyField('Technology', blank=True, related_name='highlighted_in')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

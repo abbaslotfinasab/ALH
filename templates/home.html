@@ -86,7 +86,7 @@
                     </p>
 
                     <ul class="list-unstyled small mb-4">
-                        {% for tech in service.technologies.all|slice:":3" %}
+                        {% for tech in service.highlight_techs.all %}
                         <li class="mb-1">{{ tech.name }}</li>
                         {% endfor %}
                     </ul>
