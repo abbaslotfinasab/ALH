@@ -821,3 +821,14 @@ pre {
     overflow-x: auto;
     font-size: 0.9rem;
 }
+
+.skeleton .placeholder {
+    background-color: #e6e6e6;
+    height: 1rem;
+    border-radius: 4px;
+}
+
+.like-btn i.text-danger {
+    color: #e63946 !important;
+    transition: 0.2s;
+}

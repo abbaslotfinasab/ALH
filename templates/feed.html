@@ -1,14 +1,12 @@
 {% extends "base.html" %}
-
 {% block content %}
-
 <section class="feed-section py-5">
   <div class="container">
+
     <!-- Search Header -->
     <div class="feed-search bg-transparent">
       <div class="search-wrap shadow-sm rounded-4 p-2 p-md-3">
         <form class="row g-2 align-items-center" role="search" onsubmit="return false;">
-          <!-- سرچ -->
           <div class="col-12 col-md">
             <div class="search-input d-flex align-items-center gap-2 px-3 py-2 rounded-3">
               <i class="fa-solid fa-magnifying-glass search-ico"></i>
@@ -20,8 +18,6 @@
               </button>
             </div>
           </div>
-
-          <!-- تاریخ -->
           <div class="col-6 col-md-auto">
             <div class="date-chip d-flex align-items-center gap-2 px-3 py-2 rounded-3">
               <i class="fa-regular fa-calendar"></i>
@@ -31,9 +27,7 @@
               </button>
             </div>
           </div>
-
         </form>
-
       </div>
     </div>
 
@@ -41,267 +35,187 @@
     <div class="row justify-content-center mt-4">
       <div class="col-lg-8">
         <div id="feed"></div>
+
+        <!-- Spinner مرکزی -->
+        <div id="spinner" class="text-center py-4 d-none">
+          <div class="spinner-border text-success" role="status"></div>
+        </div>
+
         <!-- sentinel برای اینفینیت اسکرول -->
         <div id="sentinel" class="py-4 text-center text-muted small">در حال بارگذاری…</div>
       </div>
+    </div>
+
+    <!-- Toast برای share -->
+    <div id="toast" class="position-fixed bottom-0 end-0 m-4 bg-dark text-white px-3 py-2 rounded-3 d-none shadow">
+      کپی شد ✅
     </div>
   </div>
 </section>
 
 <script>
-    (function () {
-        const API_BASE = "/post/api/posts/";
-        let nextUrl = null;
-        let loading = false;
+(function() {
+  const API_BASE = "/post/api/posts/";
+  let nextUrl = null;
+  let loading = false;
+  let abortCtrl = null;
 
-        // حالت‌ها
-        let activeTag = new URLSearchParams(location.search).get("tag") || "";
-        let activeQuery = new URLSearchParams(location.search).get("q") || "";
-        let activeDate = new URLSearchParams(location.search).get("date") || "";
+  const feedEl = document.getElementById("feed");
+  const sentinel = document.getElementById("sentinel");
+  const spinner = document.getElementById("spinner");
+  const toast = document.getElementById("toast");
+  const qInput = document.getElementById("qInput");
+  const dateInput = document.getElementById("dateInput");
 
-        const feedEl = document.getElementById("feed");
-        const sentinel = document.getElementById("sentinel");
-        const qInput = document.getElementById("qInput");
-        const dateInput = document.getElementById("dateInput");
+  let activeTag = new URLSearchParams(location.search).get("tag") || "";
+  let activeQuery = new URLSearchParams(location.search).get("q") || "";
+  let activeDate = new URLSearchParams(location.search).get("date") || "";
 
-        // مقداردهی اولیه UI
-        if (qInput) qInput.value = activeQuery;
-        if (dateInput && activeDate) dateInput.value = activeDate;
+  function showSpinner(state = true) {
+    spinner.classList.toggle("d-none", !state);
+  }
 
-        // ساخت URL با توجه به فیلترها
-        function buildApiUrl(pageUrl = null) {
-            if (pageUrl) return pageUrl; // برای next
-            const params = new URLSearchParams();
-            if (activeTag) params.set("tags__slug", activeTag);
-            if (activeQuery) params.set("search", activeQuery);
-            if (activeDate) params.set("created_at__date", activeDate);
-            const qs = params.toString();
-            return qs ? `${API_BASE}?${qs}` : API_BASE;
-        }
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.remove("d-none");
+    setTimeout(() => toast.classList.add("d-none"), 1500);
+  }
 
-        function pushUrl() {
-            const params = new URLSearchParams();
-            if (activeTag) params.set("tag", activeTag);
-            if (activeQuery) params.set("q", activeQuery);
-            if (activeDate) params.set("date", activeDate);
-            const qs = params.toString();
-            history.replaceState({}, "", qs ? `?${qs}` : location.pathname);
-        }
+  // فرمت خوانا برای اعداد (views, likes)
+  function prettyNum(num) {
+    if (num > 999999) return (num/1e6).toFixed(1) + 'M';
+    if (num > 999) return (num/1e3).toFixed(1) + 'K';
+    return num;
+  }
 
-        // فعال‌سازی pill تگ‌ها
-        function setActivePillByTag(slug) {
-            document.querySelectorAll(".tag-pill").forEach(b => {
-                b.classList.toggle("active", (b.dataset.tag || "") === (slug || ""));
-            });
-        }
+  function buildApiUrl(pageUrl = null) {
+    if (pageUrl) return pageUrl;
+    const params = new URLSearchParams();
+    if (activeTag) params.set("tags__slug", activeTag);
+    if (activeQuery) params.set("search", activeQuery);
+    if (activeDate) params.set("created_at__date", activeDate);
+    const qs = params.toString();
+    return qs ? `${API_BASE}?${qs}` : API_BASE;
+  }
 
-        // کلیک روی pills تگ
-        document.querySelectorAll(".tag-pill").forEach(btn => {
-            btn.addEventListener("click", () => {
-                activeTag = btn.dataset.tag || "";
-                setActivePillByTag(activeTag);
-                resetAndFetch();
-            });
-        });
-
-        // debounce جستجو
-        let qTimer;
-        if (qInput) {
-            qInput.addEventListener("input", () => {
-                clearTimeout(qTimer);
-                qTimer = setTimeout(() => {
-                    activeQuery = qInput.value.trim();
-                    resetAndFetch();
-                }, 400);
-            });
-        }
-
-        // فیلتر تاریخ روز
-        if (dateInput) {
-            dateInput.addEventListener("change", () => {
-                activeDate = dateInput.value || "";
-                resetAndFetch();
-            });
-        }
-
-        // رندر کارت
-        function renderPostCard(p) {
-            const media = p.image ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="" loading="lazy">`
-                : (p.video ? `<video class="w-100 rounded mb-3" controls preload="metadata" src="${p.video}"></video>` : "");
-            const date = new Date(p.created_at).toLocaleString("fa-IR");
-            const tags = (p.tags || [])
-                .map(t => `<a href="#" class="tag-link badge bg-light text-dark border me-1" data-tag="${t.slug || t.name}"># ${t.name}</a>`)
-                .join("");
-
-            return `
-    <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4" data-id="${p.id}">
-      <header class="d-flex align-items-center mb-3">
-        <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="ALH">
-        <div>
-          <div class="fw-bold">عباس لطفی نسب</div>
-          <div class="small text-muted">${date}</div>
+  function renderSkeleton() {
+    return `
+      <div class="skeleton rounded-4 mb-4 p-4 bg-white shadow-sm">
+        <div class="placeholder-glow mb-3">
+          <div class="placeholder col-7"></div>
+          <div class="placeholder col-4"></div>
         </div>
-      </header>
-      <div class="fw-bold mb-2">${p.title}</div>
-      <p class="mb-4" dir="auto">${p.content.length > 550 ? p.content.slice(0, 550) + '…' : p.content}</p>
-      <div class="small mb-3">${tags}</div>
-      ${media}
-      <div class="d-flex justify-content-around border-top pt-2">
-        <!-- Views -->
-        <div class="metric-pill d-flex align-items-center gap-2">
-            <i class="fa-solid fa-eye"></i>
-          <span class="vcount">${p.views}</span>
+        <div class="placeholder-glow">
+          <div class="placeholder col-12 mb-2"></div>
+          <div class="placeholder col-10"></div>
         </div>
-
-        <!-- Likes -->
-        <div class="metric-pill d-flex align-items-center gap-2">
-          <i class="fa-solid fa-heart"></i>
-          <span class="lcount">${p.likes}</span>
-        </div>
-
-        <!-- Comments -->
-        <div class="metric-pill d-flex align-items-center gap-2">
-          <i class="fa-solid fa-comment"></i>
-          <span>${p.comments_count}</span>
-        </div>
-
       </div>
-    </article>`;
-        }
+    `;
+  }
 
-        // fetch بعدی
-        async function fetchMore() {
-            if (loading || !nextUrl) return;
-            loading = true;
-            sentinel.style.opacity = 1;
-            try {
-                const res = await fetch(nextUrl);
-                const data = await res.json();
-                const {results, next} = Array.isArray(data) ? {results: data, next: null} : data;
-                nextUrl = next;
-                const html = (results || []).map(renderPostCard).join("");
-                feedEl.insertAdjacentHTML("beforeend", html);
-                bindActions();
-                observeCardsForView();
-            } finally {
-                sentinel.style.opacity = nextUrl ? 1 : 0;
-                loading = false;
-            }
-        }
+  function renderPostCard(p) {
+    const media = p.image
+      ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy">`
+      : (p.video ? `<video class="w-100 rounded mb-3" controls preload="metadata" src="${p.video}"></video>` : "");
+    const date = new Date(p.created_at).toLocaleString("fa-IR");
+    const tags = (p.tags || [])
+      .map(t => `<a href="#" class="tag-link badge bg-light text-dark border me-1" data-tag="${t.slug || t.name}"># ${t.name}</a>`)
+      .join("");
+    const short = p.content.length > 550
+      ? `${p.content.slice(0,550)}… <a href="/post/${p.slug}/" class="text-decoration-none fw-semibold">ادامه مطلب</a>`
+      : p.content;
 
-        // اکشن‌ها
-        function bindActions() {
-            document.querySelectorAll(".like-btn").forEach(btn => {
-                if (btn.dataset.bound) return;
-                btn.dataset.bound = "1";
-                btn.addEventListener("click", async () => {
-                    const id = btn.dataset.id;
-                    const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
-                    const data = await res.json();
-                    const card = btn.closest(".post-card");
-                    if (card && data.likes !== undefined) {
-                        card.querySelector(".lcount").textContent = data.likes;
-                        btn.classList.add("btn-primary");
-                        btn.classList.remove("btn-light");
-                    }
-                });
-            });
-            document.querySelectorAll(".share-btn").forEach(b => {
-                if (b.dataset.bound) return;
-                b.dataset.bound = "1";
-                b.addEventListener("click", async () => {
-                    try {
-                        await navigator.clipboard.writeText(b.dataset.url);
-                        b.textContent = "کپی شد";
-                        setTimeout(() => b.textContent = "↗️ اشتراک‌گذاری", 1000);
-                    } catch (e) {
-                    }
-                });
-            });
-            document.querySelectorAll(".tag-link").forEach(a => {
-                if (a.dataset.bound) return;
-                a.dataset.bound = "1";
-                a.addEventListener("click", (ev) => {
-                    ev.preventDefault();
-                    activeTag = a.dataset.tag || "";
-                    setActivePillByTag(activeTag);
-                    resetAndFetch();
-                });
-            });
-        }
+    return `
+      <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4" data-id="${p.id}">
+        <header class="d-flex align-items-center mb-3">
+          <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="ALH">
+          <div>
+            <div class="fw-bold">عباس لطفی نسب</div>
+            <div class="small text-muted">${date}</div>
+          </div>
+        </header>
+        <div class="fw-bold mb-2">${p.title}</div>
+        <p class="mb-4" dir="auto">${short}</p>
+        <div class="small mb-3">${tags}</div>
+        ${media}
+        <div class="d-flex justify-content-around border-top pt-2">
+          <div class="metric-pill d-flex align-items-center gap-2">
+            <i class="fa-solid fa-eye"></i> <span>${prettyNum(p.views)}</span>
+          </div>
+          <div class="metric-pill d-flex align-items-center gap-2 like-btn" data-id="${p.id}">
+            <i class="fa-solid fa-heart"></i>
+            <span class="lcount">${prettyNum(p.likes)}</span>
+          </div>
+          <div class="metric-pill d-flex align-items-center gap-2 share-btn" data-url="${location.origin}/post/${p.slug}/">
+            <i class="fa-solid fa-share"></i> اشتراک‌گذاری
+          </div>
+        </div>
+      </article>`;
+  }
 
-        // ثبت بازدید وقتی کارت دیده شد
-        let cardObserver;
+  async function fetchMore() {
+    if (loading || !nextUrl) return;
+    loading = true;
+    showSpinner(true);
+    abortCtrl?.abort();
+    abortCtrl = new AbortController();
 
-        function observeCardsForView() {
-            if (!cardObserver) {
-                cardObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(e => {
-                        if (e.isIntersecting && !e.target.dataset.viewed) {
-                            e.target.dataset.viewed = "1";
-                            const id = e.target.dataset.id;
-                            fetch(`${API_BASE}${id}/viewed/`, {method: "POST"});
-                        }
-                    });
-                }, {threshold: 0.5});
-            }
-            document.querySelectorAll(".post-card").forEach(card => cardObserver.observe(card));
-        }
+    try {
+      const res = await fetch(nextUrl, { signal: abortCtrl.signal });
+      const data = await res.json();
+      const { results, next } = Array.isArray(data) ? { results: data, next: null } : data;
+      nextUrl = next;
+      const html = (results || []).map(renderPostCard).join("");
+      feedEl.insertAdjacentHTML("beforeend", html);
+      bindActions();
+    } catch(e) {
+      console.warn("Request cancelled or failed:", e);
+    } finally {
+      loading = false;
+      showSpinner(false);
+      sentinel.style.opacity = nextUrl ? 1 : 0;
+    }
+  }
 
-        // اینفینیت اسکرول
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) fetchMore();
-            });
-        }, {rootMargin: "600px"});
-        io.observe(sentinel);
+  function bindActions() {
+    document.querySelectorAll(".like-btn").forEach(btn => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", async () => {
+        btn.querySelector("i").classList.toggle("text-danger");
+        const id = btn.dataset.id;
+        const res = await fetch(`${API_BASE}${id}/like/`, { method: "POST" });
+        const data = await res.json();
+        if (data.likes !== undefined) btn.querySelector(".lcount").textContent = prettyNum(data.likes);
+      });
+    });
 
-        // ریست و fetch
-        function resetAndFetch() {
-            pushUrl();
-            feedEl.innerHTML = "";
-            nextUrl = buildApiUrl();
-            fetchMore();
-        }
+    document.querySelectorAll(".share-btn").forEach(b => {
+      if (b.dataset.bound) return;
+      b.dataset.bound = "1";
+      b.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(b.dataset.url);
+          showToast("لینک کپی شد ✅");
+        } catch {}
+      });
+    });
+  }
 
-        // Init
-        setActivePillByTag(activeTag);
-        nextUrl = buildApiUrl();
-        fetchMore();
-    })();
-</script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) fetchMore(); });
+  }, { rootMargin: "600px" });
+  io.observe(sentinel);
 
-<script>
-    (function () {
-        const qInput = document.getElementById("qInput");
-        const clearSearch = document.getElementById("clearSearch");
-        const dateInput = document.getElementById("dateInput");
-        const clearDate = document.getElementById("clearDate");
-        const clearAll = document.getElementById("clearAll");
+  function resetAndFetch() {
+    feedEl.innerHTML = renderSkeleton() + renderSkeleton() + renderSkeleton();
+    nextUrl = buildApiUrl();
+    fetchMore();
+  }
 
-        // نمایش/پنهان کردن دکمه پاک‌کردن سرچ
-        function syncClearBtn() {
-            if (!qInput) return;
-            clearSearch.classList.toggle("d-none", qInput.value.trim() === "");
-        }
-
-        qInput && qInput.addEventListener("input", syncClearBtn);
-        clearSearch && clearSearch.addEventListener("click", () => {
-            qInput.value = "";
-            qInput.dispatchEvent(new Event("input")); // تا debounce شما تریگر شود
-        });
-
-        // پاک‌کردن تاریخ
-        clearDate && clearDate.addEventListener("click", () => {
-            if (dateInput) {
-                dateInput.value = "";
-                dateInput.dispatchEvent(new Event("change"));
-            }
-        });
-
-        // اجرا اول
-        syncClearBtn();
-    })();
+  nextUrl = buildApiUrl();
+  resetAndFetch();
+})();
 </script>
 
 {% endblock %}
