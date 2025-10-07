@@ -15,6 +15,7 @@ def feed(request):
     tags = Tag.objects.all().order_by("name")
     return render(request, "feed.html", {"tags": tags})
 
+
 def detail(request, slug):
     post = get_object_or_404(Post.objects.prefetch_related("tags"), slug=slug, is_published=True)
 
@@ -35,10 +36,12 @@ def detail(request, slug):
         "related": related,
     })
 
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(is_published=True).prefetch_related("tags")
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = {"tags__id": ["exact"], "tags__name": ["exact"], "is_published": ["exact"], "created_at": ["date", "date__gte", "date__lte"]}
+    filterset_fields = {"tags__id": ["exact"], "tags__name": ["exact"], "is_published": ["exact"],
+                        "created_at": ["date", "date__gte", "date__lte"]}
     search_fields = ["title", "content"]
     ordering_fields = ["created_at", "views", "likes"]
     ordering = ["-created_at"]
@@ -51,11 +54,13 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def like(self, request, pk=None):
         post = self.get_object()
-        liked = request.session.get("liked_posts", {})
+        # اطمینان از اینکه liked_posts یه dict هست
+        liked = request.session.get("liked_posts")
+        if not isinstance(liked, dict):
+            liked = {}
 
-        # اگر قبلاً لایک کرده بود
         if str(post.id) in liked:
-            # آن‌لایک
+            # آنلایک
             post.likes = max(post.likes - 1, 0)
             del liked[str(post.id)]
             liked_state = False
