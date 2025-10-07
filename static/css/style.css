@@ -793,6 +793,10 @@ body {
   color: #dc3545;
 }
 
+.post-actions .action-btn.views {
+  cursor: none;
+}
+
 
 .vision-card {
     scroll-snap-align: center; /* مرکز چین شدن کارت‌ها */
