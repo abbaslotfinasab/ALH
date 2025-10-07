@@ -783,12 +783,12 @@ body {
 }
 
 .action-btn.like-btn i {
-    color: #adb5bd!important;
+    color: #adb5bd;
 }
 
 .action-btn.like-btn:hover {
-    color: #dc3545!important;
-    border-color: transparent !important;
+    color: #dc3545;
+    border-color: transparent ;
 }
 
 
