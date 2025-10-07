@@ -782,6 +782,11 @@ body {
 
 }
 
+.action-btn.like-btn:hover {
+    color: #dc3545!important;
+    border-color: transparent !important;
+}
+
 
 .vision-card {
     scroll-snap-align: center; /* مرکز چین شدن کارت‌ها */
