@@ -212,10 +212,10 @@
 
                     if (data.likes !== undefined) {
                         btn.querySelector(".lcount").textContent = prettyNum(data.likes);
-                        icon.classList.toggle("text-danger"); // تغییر رنگ
-                        btn.classList.toggle("liked");
+                        icon.classList.toggle("text-danger", data.liked); // رنگ متناسب با وضعیت
                     }
                 });
+
             });
 
             // Share
