@@ -786,7 +786,7 @@ body {
     color: #adb5bd;
 }
 
-.action-btn.like-btn:hover {
+.action-btn.like-btn i :hover {
     color: #dc3545;
     border-color: transparent ;
 }
