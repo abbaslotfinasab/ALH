@@ -768,28 +768,36 @@ body {
     color: #333;
 }
 
-.metric-pill {
-    background: #003c70; /* پس‌زمینه تیره */
-    color: #fff; /* متن سفید */
-    border-radius: 6px; /* گردی گوشه‌ها */
-    padding: 3px 10px; /* فضای داخلی */
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
-    transition: background 0.2s ease;
+.post-actions .action-btn {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.metric-pill:hover {
-    background: #0d6efd; /* هاور تیره‌تر */
+.post-actions .action-btn i {
+  font-size: 1rem;
 }
 
-.metric-pill [data-lucide] {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2;
-    stroke: #fff; /* آیکون سفید */
+.post-actions .action-btn:hover {
+  background: #e9ecef;
 }
+
+.post-actions .action-btn.liked i {
+  color: #dc3545;
+}
+
+.post-actions .action-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 
 .vision-card {
     scroll-snap-align: center; /* مرکز چین شدن کارت‌ها */
