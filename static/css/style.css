@@ -786,6 +786,14 @@ body {
     color: #adb5bd;
 }
 
+.action-btn.view-btn i {
+    color: #adb5bd;
+}
+
+.action-btn.comment-btn i {
+    color: #adb5bd;
+}
+
 .action-btn.like-btn:hover i{
     color: #dc3545 !important;
 }
