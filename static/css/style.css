@@ -782,6 +782,10 @@ body {
 
 }
 
+.action-btn.like-btn {
+    color: #adb5bd!important;
+}
+
 .action-btn.like-btn:hover {
     color: #dc3545!important;
     border-color: transparent !important;
