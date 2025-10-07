@@ -35,10 +35,12 @@ class PostReadSerializer(serializers.ModelSerializer):
 
     def get_liked(self, obj):
         request = self.context.get("request")
-        if not request:
-            return False
-        liked = request.session.get("liked_posts", [])
-        return obj.id in liked
+        if request:
+            liked_posts = request.session.get("liked_posts")
+            if not isinstance(liked_posts, dict):
+                liked_posts = {}
+            return str(obj.id) in liked_posts
+        return False
 
 class PostWriteSerializer(serializers.ModelSerializer):
     class Meta:
