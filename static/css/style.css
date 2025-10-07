@@ -767,10 +767,7 @@ body {
     font-size: 0.85rem;
     color: #333;
 }
-
-.post-actions .action-btn {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
+.post-actions {
   border-radius: 6px;
   padding: 6px 12px;
   display: flex;
@@ -780,23 +777,6 @@ body {
   cursor: pointer;
   transition: all 0.2s;
 }
-
-.post-actions .action-btn i {
-  font-size: 1rem;
-}
-
-.post-actions .action-btn:hover {
-  background: #e9ecef;
-}
-
-.post-actions .action-btn.liked i {
-  color: #dc3545;
-}
-
-.post-actions .action-btn.views {
-    cursor: default;
-}
-
 
 .vision-card {
     scroll-snap-align: center; /* مرکز چین شدن کارت‌ها */
