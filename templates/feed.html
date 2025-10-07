@@ -148,17 +148,17 @@
 
    <div class="post-actions d-flex gap-3 border-top pt-2 mt-3">
       <!-- Views -->
-      <button class="more-link btn">
+      <button class="action-btn btn">
         <i class="fa-solid fa-eye"></i> <span>123</span>
       </button>
 
       <!-- Likes -->
-      <button class="more-link btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
+      <button class="action-btn btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
         <i class="fa-solid fa-heart"></i> <span>${prettyNum(p.likes)}</span>
       </button>
 
       <!-- Comments -->
-      <button class="more-link btn " data-id="${p.id}">
+      <button class="action-btn btn " data-id="${p.id}">
         <i class="fa-solid fa-comment"></i> <span>${p.comments_count}</span>
       </button>
 
