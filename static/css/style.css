@@ -782,6 +782,10 @@ body {
 
 }
 
+.action-btn.view-btn{
+    cursor: default!important;
+}
+
 .action-btn.like-btn i {
     color: #adb5bd;
 }
