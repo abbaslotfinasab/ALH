@@ -51,13 +51,23 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def like(self, request, pk=None):
         post = self.get_object()
-        liked = request.session.get("liked_posts", [])
-        if post.id not in liked:
+        liked = request.session.get("liked_posts", {})
+
+        # اگر قبلاً لایک کرده بود
+        if str(post.id) in liked:
+            # آن‌لایک
+            post.likes = max(post.likes - 1, 0)
+            del liked[str(post.id)]
+            liked_state = False
+        else:
+            # لایک جدید
             post.likes = (post.likes or 0) + 1
-            post.save(update_fields=["likes"])
-            liked.append(post.id)
-            request.session["liked_posts"] = liked
-        return Response({"likes": post.likes})
+            liked[str(post.id)] = True
+            liked_state = True
+
+        post.save(update_fields=["likes"])
+        request.session["liked_posts"] = liked
+        return Response({"likes": post.likes, "liked": liked_state})
 
     @action(detail=True, methods=["post"])
     def viewed(self, request, pk=None):
