@@ -793,6 +793,9 @@ body {
 .action-btn.like-btn:hover{
     border-color: transparent ;
 }
+.action-btn.like-btn.liked i {
+  color: #dc3545; /* قرمز دائمی */
+}
 
 
 .vision-card {
