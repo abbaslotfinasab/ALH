@@ -794,7 +794,7 @@ body {
 }
 
 .post-actions .action-btn.views {
-  cursor: none;
+    cursor: default;
 }
 
 
