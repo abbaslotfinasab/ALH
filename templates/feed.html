@@ -54,454 +54,251 @@
         </div>
 
         <!-- Post Popup -->
-        <div id="postPopup" class="post-popup d-none">
-            <div class="popup-overlay"></div>
-            <div class="popup-content rounded-4 shadow-lg bg-white d-flex flex-column flex-md-row">
-                <div class="popup-media flex-grow-1 bg-dark">
-                    <img id="popupImage" class="img-fluid w-100 h-100 object-fit-cover d-none"/>
-                    <video id="popupVideo" class="w-100 h-100 d-none" controls></video>
-                </div>
-                <div class="popup-details p-3 p-md-4" style="width:400px; max-width:100%;">
-                    <button id="closePopup" class="btn-close float-end"></button>
-                    <div id="popupContent"></div>
-                </div>
-            </div>
-        </div>
+        <!-- Post Popup (جزئیات + کامنت‌ها) -->
+<div id="postPopup" class="post-popup d-none">
+  <div class="popup-overlay"></div>
+  <div class="popup-content rounded-4 shadow-lg bg-white d-flex flex-column flex-md-row">
+    <div class="popup-media flex-grow-1 bg-dark">
+      <img id="popupImage" class="img-fluid w-100 h-100 object-fit-cover d-none"/>
+      <video id="popupVideo" class="w-100 h-100 d-none" controls></video>
+    </div>
+    <div class="popup-details p-3 p-md-4" style="width:400px; max-width:100%;">
+      <button id="closePopup" class="btn-close float-end"></button>
+      <div id="popupContent"></div>
 
-        <div id="commentPopup" class="popup d-none">
-            <div class="popup-overlay"></div>
+      <!-- 👇 بخش کامنت‌ها -->
+      <div id="commentsSection" class="mt-4">
+        <h6 class="fw-bold mb-3">نظرات کاربران</h6>
+        <div id="commentsList" class="comments-list mb-3 small text-muted">در حال بارگذاری...</div>
+        <button id="loadMoreComments" class="btn btn-outline-teal w-100 mb-3 d-none">مشاهده بیشتر</button>
 
-            <div class="popup-box rounded-4 shadow-lg bg-white p-4">
-                <header class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0">نظرات</h5>
-                    <button id="closeCommentPopup" class="btn btn-sm btn-outline-secondary">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </header>
+        <form id="commentForm" class="d-flex gap-2">
+          <input type="text" id="commentInput" class="form-control rounded-pill" placeholder="نظر شما..." required>
+          <button class="btn btn-primary rounded-pill px-3">ارسال</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-                <div id="commentsList" class="comments-list mb-3">
-                    <div class="text-center text-muted small">در حال بارگذاری...</div>
-                </div>
-
-                <form id="commentForm" class="d-flex gap-2">
-                    <input type="text" id="commentInput" class="form-control rounded-pill" placeholder="بنویس..."
-                           required>
-                    <button class="btn btn-primary rounded-pill px-3">ارسال</button>
-                </form>
-            </div>
-        </div>
 
 
     </div>
 </section>
 
-
 <script>
-    (function () {
-        const API_BASE = "/post/api/posts/";
-        const feedEl = document.getElementById("feed");
-        const sentinel = document.getElementById("sentinel");
-        const spinner = document.getElementById("spinner");
-        const toast = document.getElementById("toast");
-        const popup = document.getElementById("postPopup");
-        const popupImg = document.getElementById("popupImage");
-        const popupVid = document.getElementById("popupVideo");
-        const popupContent = document.getElementById("popupContent");
-        const overlay = popup.querySelector(".popup-overlay");
-        const closeBtn = document.getElementById("closePopup");
+(function () {
+  const API_BASE = "/post/api/posts/";
+  const API_COMMENTS = "/post/api/comments/";
 
-        // ---- State ----
-        let nextUrl = null;
-        let loading = false;
-        let abortCtrl = null;
-        let openSlug = new URLSearchParams(location.search).get("post") || "";
-        let activeTag = new URLSearchParams(location.search).get("tag") || "";
-        let activeQuery = new URLSearchParams(location.search).get("q") || "";
-        let activeDate = new URLSearchParams(location.search).get("date") || "";
+  const feedEl = document.getElementById("feed");
+  const sentinel = document.getElementById("sentinel");
+  const spinner = document.getElementById("spinner");
+  const toast = document.getElementById("toast");
 
-        // ---- Helpers ----
-        window.showToast = function (msg) {
-            const toast = document.getElementById("toast");
-            toast.textContent = msg;
-            toast.classList.remove("d-none");
-            toast.classList.add("show");
-            setTimeout(() => {
-                toast.classList.remove("show");
-                setTimeout(() => toast.classList.add("d-none"), 300);
-            }, 1500);
-        };
+  const popupEl = document.getElementById("postPopup");
+  const bsPopup = new bootstrap.Modal(popupEl);
+  const img = document.getElementById("popupImage");
+  const vid = document.getElementById("popupVideo");
+  const content = document.getElementById("popupContent");
 
+  const commentsList = document.getElementById("commentsList");
+  const loadMoreBtn = document.getElementById("loadMoreComments");
+  const commentForm = document.getElementById("commentForm");
+  const commentInput = document.getElementById("commentInput");
 
-        const showSpinner = (state) => spinner.classList.toggle("d-none", !state);
+  let nextUrl = null;
+  let loading = false;
+  let currentPostId = null;
+  let nextCommentsUrl = null;
 
-        const prettyNum = (num) =>
-            num > 999999 ? (num / 1e6).toFixed(1) + "M"
-                : num > 999 ? (num / 1e3).toFixed(1) + "K"
-                    : num;
+  // 🧩 Helpers
+  function showSpinner(state = true) {
+    spinner.classList.toggle("d-none", !state);
+  }
 
-        const buildApiUrl = (pageUrl = null) => {
-            if (pageUrl) return pageUrl;
-            const params = new URLSearchParams();
-            if (activeTag) params.set("tags__slug", activeTag);
-            if (activeQuery) params.set("search", activeQuery);
-            if (activeDate) params.set("created_at__date", activeDate);
-            return params.toString() ? `${API_BASE}?${params}` : API_BASE;
-        };
+  function showToast(msg) {
+    toast.querySelector(".toast-body").textContent = msg;
+    toast.classList.remove("d-none");
+    setTimeout(() => toast.classList.add("d-none"), 1500);
+  }
 
-        // ---- Templates ----
-        const renderSkeleton = () =>
-            `<div class="skeleton rounded-4 mb-4 p-4 bg-white shadow-sm">
-      <div class="placeholder-glow mb-3">
-        <div class="placeholder col-7"></div>
-        <div class="placeholder col-4"></div>
-      </div>
-      <div class="placeholder-glow">
-        <div class="placeholder col-12 mb-2"></div>
-        <div class="placeholder col-10"></div>
-      </div>
-    </div>`;
+  function prettyNum(num) {
+    if (num > 999999) return (num / 1e6).toFixed(1) + "M";
+    if (num > 999) return (num / 1e3).toFixed(1) + "K";
+    return num;
+  }
 
-        const renderPostCard = (p) => {
-            const date = new Date(p.created_at).toLocaleString("fa-IR");
-            const media = p.image
-                ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy" decoding="async">`
-                : p.video
-                    ? `<video class="w-100 rounded mb-3" preload="none" controls poster="${p.thumbnail || ''}">
-            <source src="${p.video}" type="video/mp4">
-        </video>`
-                    : "";
+  // 📰 رندر کارت پست
+  function renderPostCard(p) {
+    const media = p.image
+      ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy">`
+      : p.video
+      ? `<video class="w-100 rounded mb-3" controls preload="metadata" src="${p.video}"></video>`
+      : "";
+    const date = new Date(p.created_at).toLocaleString("fa-IR");
 
-            const tags = (p.tags || [])
-                .map(
-                    (t) =>
-                        `<a href="#" class="tag-link badge bg-light border me-1" data-tag="${t.slug || t.name}">
-            # ${t.name}
-          </a>`
-                )
-                .join("");
-
-            const short =
-                p.content.length > 550
-                    ? `${p.content.slice(0, 550)}… <a href="/post/${p.slug}/" class="fw-semibold">ادامه مطلب</a>`
-                    : p.content;
-
-            return `
-      <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4 fade-in" data-id="${p.id}">
+    return `
+      <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4" data-id="${p.id}">
         <header class="d-flex align-items-center mb-3 justify-content-between">
-          <div class="d-flex align-items-center">
-            <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="ALH">
-            <div>
-              <div class="fw-bold">عباس لطفی نسب</div>
-              <div class="small text-muted">${date}</div>
-            </div>
-          </div>
-          <button class="share-btn more-link btn" data-url="${location.origin}/post/${p.slug}/">
+          <div class="fw-bold">${p.title}</div>
+          <div class="btn btn-light btn-sm share-btn" data-url="${location.origin}/post/${p.slug}/">
             <i class="fa-solid fa-share"></i>
-          </button>
+          </div>
         </header>
-
-        <div class="fw-bold mb-2">${p.title}</div>
-        <p class="mb-4" dir="auto">${short}</p>
-        <div class="small mb-3">${tags}</div>
         ${media}
-
-        <div class="post-actions d-flex gap-3 border-top pt-2 mt-3">
-          <button class="action-btn btn view-btn">
-            <i class="fa-solid fa-eye"></i> <span>${p.views}</span>
+        <p class="small mb-3">${p.content.slice(0, 200)}...</p>
+        <div class="d-flex gap-3 border-top pt-2">
+          <button class="btn btn-sm btn-outline-danger like-btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
+            ❤️ <span class="lcount">${prettyNum(p.likes)}</span>
           </button>
-          <button class="action-btn btn like-btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
-            <i class="fa-solid fa-heart"></i> <span class="lcount">${prettyNum(p.likes)}</span>
-          </button>
-          <button class="action-btn btn comment-btn" data-id="${p.id}">
-            <i class="fa-solid fa-comment"></i> <span>${p.comments_count}</span>
-          </button>
+          <button class="btn btn-sm btn-outline-primary comment-btn" data-id="${p.id}">💬 ${p.comments_count}</button>
         </div>
       </article>`;
-        };
+  }
 
-        // ---- Fetch Posts ----
-        async function fetchMore() {
-            if (loading || !nextUrl) return;
-            loading = true;
-            showSpinner(true);
-            abortCtrl?.abort();
-            abortCtrl = new AbortController();
+  // 🚀 لود پست‌ها
+  async function fetchMore() {
+    if (loading || !nextUrl) return;
+    loading = true;
+    showSpinner(true);
+    try {
+      const res = await fetch(nextUrl);
+      const data = await res.json();
+      nextUrl = data.next || null;
+      const html = (data.results || []).map(renderPostCard).join("");
+      feedEl.insertAdjacentHTML("beforeend", html);
+      bindActions();
+    } finally {
+      loading = false;
+      showSpinner(false);
+      sentinel.style.opacity = nextUrl ? 1 : 0;
+    }
+  }
 
-            try {
-                const res = await fetch(nextUrl, {signal: abortCtrl.signal});
-                const data = await res.json();
-                nextUrl = data.next || null;
-
-                document.querySelectorAll(".skeleton").forEach((el) => el.remove());
-                const html = (data.results || []).map(renderPostCard).join("");
-                feedEl.insertAdjacentHTML("beforeend", html);
-                bindActions();
-
-                // اگر slug خاصی داریم
-                if (openSlug) {
-                    const post = data.results.find((p) => p.slug === openSlug);
-                    if (post) openPopup(post);
-                    openSlug = "";
-                }
-            } catch (e) {
-                console.warn("Fetch error:", e);
-                showToast("خطا در دریافت پست‌ها ❌");
-            } finally {
-                loading = false;
-                showSpinner(false);
-                sentinel.style.opacity = nextUrl ? 1 : 0;
-            }
+  // ❤️💬 اکشن‌ها
+  function bindActions() {
+    document.querySelectorAll(".like-btn").forEach(btn => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", async e => {
+        const id = btn.dataset.id;
+        const res = await fetch(`${API_BASE}${id}/like/`, { method: "POST" });
+        const data = await res.json();
+        if (data.likes !== undefined) {
+          btn.querySelector(".lcount").textContent = prettyNum(data.likes);
+          btn.classList.toggle("liked", data.liked);
         }
+      });
+    });
 
-        // ---- Bind Actions ----
-        function bindActions() {
-            document.querySelectorAll(".like-btn:not([data-bound])").forEach((btn) => {
-                btn.dataset.bound = "1";
-                btn.addEventListener("click", async () => {
-                    const id = btn.dataset.id;
-                    const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
-                    const data = await res.json();
-                    if (data.likes !== undefined) {
-                        btn.querySelector(".lcount").textContent = prettyNum(data.likes);
-                        btn.classList.toggle("liked", data.liked);
-                    }
-                });
-            });
+    document.querySelectorAll(".share-btn").forEach(btn => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", async e => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.url);
+          showToast("لینک کپی شد ✅");
+        } catch {}
+      });
+    });
 
-            document.querySelectorAll(".share-btn").forEach(btn => {
-                if (btn.dataset.bound) return;
-                btn.dataset.bound = "1";
+    document.querySelectorAll(".comment-btn").forEach(btn => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", async e => {
+        const id = btn.dataset.id;
+        const res = await fetch(`${API_BASE}${id}/`);
+        const post = await res.json();
+        openPopup(post);
+      });
+    });
+  }
 
-                btn.addEventListener("click", async e => {
-                    e.preventDefault();
-                    try {
-                        await navigator.clipboard.writeText(btn.dataset.url);
-                        showToast("لینک کپی شد ✅");
-                    } catch {
-                    }
-                });
-            });
+  // 🪟 باز کردن پاپ‌آپ
+  function openPopup(post) {
+    currentPostId = post.id;
+    img.classList.add("d-none");
+    vid.classList.add("d-none");
 
+    if (post.image) (img.src = post.image), img.classList.remove("d-none");
+    else if (post.video) (vid.src = post.video), vid.classList.remove("d-none");
 
-            document.querySelectorAll(".tag-link:not([data-bound])").forEach((a) => {
-                a.dataset.bound = "1";
-                a.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    activeTag = a.dataset.tag;
-                    updateUrl();
-                    resetAndFetch();
-                });
-            });
-
-            document.querySelectorAll(".comment-btn:not([data-bound])").forEach((btn) => {
-                btn.dataset.bound = "1";
-                btn.addEventListener("click", async () => {
-                    const id = btn.dataset.id;
-                    const res = await fetch(`${API_BASE}${id}/`);
-                    const post = await res.json();
-                    openPopup(post);
-                    history.pushState({}, "", `/post/${post.slug}/`);
-                });
-            });
-        }
-
-        // ---- Popup ----
-        function openPopup(post) {
-            popupImg.classList.add("d-none");
-            popupVid.classList.add("d-none");
-
-            if (post.image) {
-                popupImg.src = post.image;
-                popupImg.classList.remove("d-none");
-            } else if (post.video) {
-                popupVid.src = post.video;
-                popupVid.classList.remove("d-none");
-            }
-
-            const date = new Date(post.created_at).toLocaleString("fa-IR");
-            popupContent.innerHTML = `
+    const date = new Date(post.created_at).toLocaleString("fa-IR");
+    content.innerHTML = `
       <h5>${post.title}</h5>
       <p>${post.content}</p>
       <div class="small text-muted">${date}</div>
-      <button class="btn btn-outline-danger mt-3 like-btn" data-id="${post.id}">
+      <button class="btn btn-outline-danger mt-3 like-btn ${post.liked ? "liked" : ""}" data-id="${post.id}">
         ❤️ ${prettyNum(post.likes)}
       </button>
     `;
 
-            popup.classList.remove("d-none");
-            requestAnimationFrame(() => popup.classList.add("show"));
-            document.body.style.overflow = "hidden";
+    bsPopup.show();
+    bindActions();
+    loadComments(post.id);
+  }
 
-            popupContent.querySelector(".like-btn").addEventListener("click", async (e) => {
-                const id = e.currentTarget.dataset.id;
-                const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
-                const data = await res.json();
-                e.currentTarget.textContent = `❤️ ${prettyNum(data.likes)}`;
-            });
-        }
+  // 🗨️ کامنت‌ها
+  async function loadComments(postId, append = false) {
+    try {
+      const url = append && nextCommentsUrl ? nextCommentsUrl : `${API_COMMENTS}?post=${postId}`;
+      const res = await fetch(url);
+      const data = await res.json();
 
-        function closePopup() {
-            popup.classList.remove("show");
-            setTimeout(() => popup.classList.add("d-none"), 300);
-            document.body.style.overflow = "";
-        }
+      nextCommentsUrl = data.next;
+      const html = (data.results || []).map(renderComment).join("");
+      if (append) commentsList.insertAdjacentHTML("beforeend", html);
+      else commentsList.innerHTML = html || `<div class="text-center small text-muted">هنوز نظری ثبت نشده 😌</div>`;
 
-        closeBtn.addEventListener("click", closePopup);
-        overlay.addEventListener("click", closePopup);
+      loadMoreBtn.classList.toggle("d-none", !nextCommentsUrl);
+    } catch {
+      commentsList.innerHTML = `<div class="text-danger small text-center">خطا در دریافت نظرات ❌</div>`;
+    }
+  }
 
-        // ---- URL & Scroll ----
-        function updateUrl() {
-            const params = new URLSearchParams();
-            if (activeTag) params.set("tag", activeTag);
-            if (activeQuery) params.set("q", activeQuery);
-            if (activeDate) params.set("date", activeDate);
-            history.replaceState({}, "", params.toString() ? `/post/?${params}` : "/post/");
-        }
-
-        function resetAndFetch() {
-            feedEl.innerHTML = renderSkeleton();
-            nextUrl = buildApiUrl();
-            fetchMore();
-        }
-
-        // ---- Infinite Scroll ----
-        const io = new IntersectionObserver(
-            (entries) => entries.forEach((e) => e.isIntersecting && fetchMore()),
-            {rootMargin: "600px"}
-        );
-        io.observe(sentinel);
-
-        // ---- Init ----
-        resetAndFetch();
-    })();
-</script>
-
-
-<script>
-    (function () {
-        const popup = document.getElementById("commentPopup");
-        const overlay = popup.querySelector(".popup-overlay");
-        const closeBtn = document.getElementById("closeCommentPopup");
-        const listEl = document.getElementById("commentsList");
-        const form = document.getElementById("commentForm");
-        const input = document.getElementById("commentInput");
-        const API_COMMENTS = "/post/api/comments/";
-        let currentPostId = null;
-
-        // --- باز کردن پاپ‌آپ ---
-        window.openComments = function (postId) {
-            currentPostId = postId;
-            listEl.innerHTML = `<div class="text-center text-muted small">در حال بارگذاری...</div>`;
-            popup.classList.remove("d-none");
-            requestAnimationFrame(() => popup.classList.add("show"));
-            document.body.style.overflow = "hidden";
-            loadComments();
-        };
-
-        // --- بستن پاپ‌آپ ---
-        function closePopup() {
-            popup.classList.remove("show");
-            setTimeout(() => popup.classList.add("d-none"), 300);
-            document.body.style.overflow = "";
-        }
-
-        overlay.addEventListener("click", closePopup);
-        closeBtn.addEventListener("click", closePopup);
-
-        // --- دریافت کامنت‌ها ---
-        async function loadComments() {
-            try {
-                const res = await fetch(`${API_COMMENTS}?post=${currentPostId}`);
-                const data = await res.json();
-                renderComments(data.results || []);
-            } catch {
-                listEl.innerHTML = `<div class="text-danger text-center small">خطا در بارگذاری کامنت‌ها ❌</div>`;
-            }
-        }
-
-        // --- رندر لیست کامنت‌ها ---
-        function renderComments(comments) {
-            if (!comments.length) {
-                listEl.innerHTML = `<div class="text-muted text-center small">هنوز نظری ثبت نشده 😌</div>`;
-                return;
-            }
-            listEl.innerHTML = comments.map(c => renderComment(c)).join("");
-            bindReplyButtons();
-        }
-
-        // --- قالب هر کامنت ---
-        function renderComment(c) {
-            const date = new Date(c.created_at).toLocaleString("fa-IR");
-            const replies = c.replies?.length ? `
-      <div class="ms-4 mt-2 border-start ps-3">
-        ${c.replies.map(r => renderComment(r)).join("")}
-      </div>` : "";
-
-            return `
-      <div class="comment-item mb-3 p-2 border rounded-3" data-id="${c.id}">
+  function renderComment(c) {
+    const date = new Date(c.created_at).toLocaleString("fa-IR");
+    return `
+      <div class="comment-item mb-3 border rounded-3 p-2">
         <div class="fw-bold small">${c.user_name || "کاربر مهمان"}</div>
         <div class="small text-muted">${date}</div>
-        <p class="mb-1" dir="auto">${c.text}</p>
-        <div class="d-flex gap-2 small text-muted">
-          <button class="btn btn-sm btn-link text-teal reply-btn" data-id="${c.id}">پاسخ</button>
-        </div>
-        ${replies}
+        <div dir="auto">${c.text}</div>
       </div>`;
-        }
+  }
 
-        // --- فرم ارسال کامنت ---
-        form.addEventListener("submit", async e => {
-            e.preventDefault();
-            const text = input.value.trim();
-            if (!text) return;
-            input.disabled = true;
-            try {
-                const res = await fetch(API_COMMENTS, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({post: currentPostId, text})
-                });
-                if (!res.ok) throw new Error();
-                input.value = "";
-                await loadComments();
-            } catch {
-                alert("ارسال ناموفق بود ❌");
-            } finally {
-                input.disabled = false;
-            }
-        });
+  // 🔁 لود بیشتر
+  loadMoreBtn.addEventListener("click", () => loadComments(currentPostId, true));
 
-        // --- پاسخ دادن به کامنت ---
-        function bindReplyButtons() {
-            document.querySelectorAll(".reply-btn:not([data-bound])").forEach(btn => {
-                btn.dataset.bound = "1";
-                btn.addEventListener("click", e => {
-                    const cid = e.target.dataset.id;
-                    const target = e.target.closest(".comment-item");
-                    const replyBox = document.createElement("form");
-                    replyBox.className = "reply-form mt-2 d-flex gap-2";
-                    replyBox.innerHTML = `
-          <input type="text" class="form-control form-control-sm" placeholder="پاسخ بنویس..." required>
-          <button class="btn btn-sm btn-primary">ارسال</button>
-        `;
-                    target.appendChild(replyBox);
+  // ✍️ ارسال کامنت
+  commentForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const text = commentInput.value.trim();
+    if (!text) return;
+    commentInput.disabled = true;
+    try {
+      await fetch(API_COMMENTS, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ post: currentPostId, text }),
+      });
+      commentInput.value = "";
+      await loadComments(currentPostId);
+    } finally {
+      commentInput.disabled = false;
+    }
+  });
 
-                    replyBox.addEventListener("submit", async ev => {
-                        ev.preventDefault();
-                        const text = replyBox.querySelector("input").value.trim();
-                        if (!text) return;
-                        const res = await fetch(API_COMMENTS, {
-                            method: "POST",
-                            headers: {"Content-Type": "application/json"},
-                            body: JSON.stringify({post: currentPostId, text, parent: cid})
-                        });
-                        if (res.ok) loadComments();
-                    });
-                });
-            });
-        }
+  // 🌀 Infinite Scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) fetchMore(); });
+  }, { rootMargin: "600px" });
+  io.observe(sentinel);
 
-    })();
+  // 🔰 Init
+  nextUrl = API_BASE;
+  fetchMore();
+})();
 </script>
 
 
