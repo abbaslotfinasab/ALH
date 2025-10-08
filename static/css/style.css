@@ -859,3 +859,33 @@ pre {
 .tag-link {
     color: #003c70!important;
 }
+
+.post-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.post-popup .popup-content {
+  background: #fff;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.post-popup .popup-media {
+  flex: 1;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.post-popup .popup-details {
+  flex-shrink: 0;
+  overflow-y: auto;
+}
