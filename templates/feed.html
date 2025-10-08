@@ -71,318 +71,274 @@
 
     </div>
 </section>
-
 <script>
-    (function () {
-        const API_BASE = "/post/api/posts/";
-        let nextUrl = null;
-        let loading = false;
-        let abortCtrl = null;
+(function () {
+    const API_BASE = "/post/api/posts/";
+    const feedEl = document.getElementById("feed");
+    const sentinel = document.getElementById("sentinel");
+    const spinner = document.getElementById("spinner");
+    const toast = document.getElementById("toast");
 
-        const feedEl = document.getElementById("feed");
-        const sentinel = document.getElementById("sentinel");
-        const spinner = document.getElementById("spinner");
-        const toast = document.getElementById("toast");
-        const qInput = document.getElementById("qInput");
-        const dateInput = document.getElementById("dateInput");
+    const popup = document.getElementById("postPopup");
+    const img = document.getElementById("popupImage");
+    const vid = document.getElementById("popupVideo");
+    const content = document.getElementById("popupContent");
+    const overlay = popup.querySelector(".popup-overlay");
+    const closeBtn = document.getElementById("closePopup");
 
-        let activeTag = new URLSearchParams(location.search).get("tag") || "";
-        let activeQuery = new URLSearchParams(location.search).get("q") || "";
-        let activeDate = new URLSearchParams(location.search).get("date") || "";
+    const qInput = document.getElementById("qInput");
+    const dateInput = document.getElementById("dateInput");
 
-        const popup = document.getElementById("postPopup");
-        const img = document.getElementById("popupImage");
-        const vid = document.getElementById("popupVideo");
-        const content = document.getElementById("popupContent");
-        const overlay = popup.querySelector(".popup-overlay");
-        const closeBtn = document.getElementById("closePopup");
+    let nextUrl = null;
+    let loading = false;
+    let abortCtrl = null;
 
-        function showSpinner(state = true) {
-            spinner.classList.toggle("d-none", !state);
-        }
+    let activeTag = new URLSearchParams(location.search).get("tag") || "";
+    let activeQuery = new URLSearchParams(location.search).get("q") || "";
+    let activeDate = new URLSearchParams(location.search).get("date") || "";
+    let openSlug = new URLSearchParams(location.search).get("post") || "";
 
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.remove("d-none");
-            setTimeout(() => toast.classList.add("d-none"), 1500);
-        }
+    // ---------- توابع کمکی ----------
+    function showSpinner(state = true) {
+        spinner.classList.toggle("d-none", !state);
+    }
 
-        function prettyNum(num) {
-            if (num > 999999) return (num / 1e6).toFixed(1) + 'M';
-            if (num > 999) return (num / 1e3).toFixed(1) + 'K';
-            return num;
-        }
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.remove("d-none");
+        setTimeout(() => toast.classList.add("d-none"), 1500);
+    }
 
-        function buildApiUrl(pageUrl = null) {
-            if (pageUrl) return pageUrl;
-            const params = new URLSearchParams();
-            if (activeTag) params.set("tags__slug", activeTag);
-            if (activeQuery) params.set("search", activeQuery);
-            if (activeDate) params.set("created_at__date", activeDate);
-            const qs = params.toString();
-            return qs ? `${API_BASE}?${qs}` : API_BASE;
-        }
+    function prettyNum(num) {
+        if (num > 999999) return (num / 1e6).toFixed(1) + 'M';
+        if (num > 999) return (num / 1e3).toFixed(1) + 'K';
+        return num;
+    }
 
-        function renderSkeleton() {
-            return `
-      <div class="skeleton rounded-4 mb-4 p-4 bg-white shadow-sm">
-        <div class="placeholder-glow mb-3">
-          <div class="placeholder col-7"></div>
-          <div class="placeholder col-4"></div>
-        </div>
-        <div class="placeholder-glow">
-          <div class="placeholder col-12 mb-2"></div>
-          <div class="placeholder col-10"></div>
-        </div>
-      </div>
-    `;
-        }
+    function buildApiUrl(pageUrl = null) {
+        if (pageUrl) return pageUrl;
+        const params = new URLSearchParams();
+        if (activeTag) params.set("tags__slug", activeTag);
+        if (activeQuery) params.set("search", activeQuery);
+        if (activeDate) params.set("created_at__date", activeDate);
+        const qs = params.toString();
+        return qs ? `${API_BASE}?${qs}` : API_BASE;
+    }
 
-        function renderPostCard(p) {
-            const media = p.image
-                ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy">`
-                : (p.video ? `<video class="w-100 rounded mb-3" controls preload="metadata" src="${p.video}"></video>` : "");
-            const date = new Date(p.created_at).toLocaleString("fa-IR");
-            const tags = (p.tags || [])
-                .map(t => `<a href="#" class="tag-link text-decoration-none badge bg-light border me-1" data-tag="${t.slug || t.name}"># ${t.name}</a>`)
-                .join("");
-            const short = p.content.length > 550
-                ? `${p.content.slice(0, 550)}… <a href="/post/${p.slug}/" class="text-decoration-none fw-semibold">ادامه مطلب</a>`
-                : p.content;
+    function renderSkeleton() {
+        return `<div class="skeleton rounded-4 mb-4 p-4 bg-white shadow-sm">
+                  <div class="placeholder-glow mb-3">
+                    <div class="placeholder col-7"></div>
+                    <div class="placeholder col-4"></div>
+                  </div>
+                  <div class="placeholder-glow">
+                    <div class="placeholder col-12 mb-2"></div>
+                    <div class="placeholder col-10"></div>
+                  </div>
+                </div>`;
+    }
 
-            return `
-  <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4" data-id="${p.id}">
-       <header class="d-flex align-items-center mb-3 justify-content-between">
-        <div class="d-flex align-items-center">
-          <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="ALH">
-          <div>
-            <div class="fw-bold">عباس لطفی نسب</div>
-            <div class="small text-muted">${date}</div>
-          </div>
-        </div>
-        <div class="share-btn more-link btn" data-url="${location.origin}/post/${p.slug}/">
-        <i class="fa-solid fa-share"></i>
-        </div>
-      </header>
+    function renderPostCard(p) {
+        const media = p.image ?
+            `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy">` :
+            (p.video ? `<video class="w-100 rounded mb-3" controls preload="metadata" src="${p.video}"></video>` : "");
+        const date = new Date(p.created_at).toLocaleString("fa-IR");
+        const tags = (p.tags || []).map(t => `<a href="#" class="tag-link badge bg-light border me-1" data-tag="${t.slug || t.name}"># ${t.name}</a>`).join("");
+        const short = p.content.length > 550 ? `${p.content.slice(0, 550)}… <a href="/post/${p.slug}/" class="fw-semibold">ادامه مطلب</a>` : p.content;
 
-    <div class="fw-bold mb-2">${p.title}</div>
-    <p class="mb-4" dir="auto">${short}</p>
-    <div class="small mb-3">${tags}</div>
-    ${media}
+        return `<article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4" data-id="${p.id}">
+           <header class="d-flex align-items-center mb-3 justify-content-between">
+            <div class="d-flex align-items-center">
+              <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="ALH">
+              <div>
+                <div class="fw-bold">عباس لطفی نسب</div>
+                <div class="small text-muted">${date}</div>
+              </div>
+            </div>
+            <div class="share-btn more-link btn" data-url="${location.origin}/post/${p.slug}/">
+            <i class="fa-solid fa-share"></i>
+            </div>
+          </header>
 
-   <div class="post-actions d-flex gap-3 border-top pt-2 mt-3">
-      <!-- Views -->
-      <button class="action-btn btn view-btn">
-        <i class="fa-solid fa-eye"></i> <span>${p.views}</span>
-      </button>
+        <div class="fw-bold mb-2">${p.title}</div>
+        <p class="mb-4" dir="auto">${short}</p>
+        <div class="small mb-3">${tags}</div>
+        ${media}
 
-      <!-- Likes -->
-     <button class="action-btn btn like-btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
-  <i class="fa-solid fa-heart"></i>
-  <span class="lcount">${prettyNum(p.likes)}</span>
-</button>
+       <div class="post-actions d-flex gap-3 border-top pt-2 mt-3">
+          <button class="action-btn btn view-btn">
+            <i class="fa-solid fa-eye"></i> <span>${p.views}</span>
+          </button>
+          <button class="action-btn btn like-btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
+            <i class="fa-solid fa-heart"></i> <span class="lcount">${prettyNum(p.likes)}</span>
+          </button>
+          <button class="action-btn btn comment-btn" data-id="${p.id}">
+            <i class="fa-solid fa-comment"></i> <span>${p.comments_count}</span>
+          </button>
+       </div>
+      </article>`;
+    }
 
+    // ---------- Fetch پست‌ها ----------
+    async function fetchMore() {
+        if (loading || !nextUrl) return;
+        loading = true;
+        showSpinner(true);
+        abortCtrl?.abort();
+        abortCtrl = new AbortController();
 
-      <!-- Comments -->
-      <button class="action-btn btn comment-btn " data-id="${p.id}">
-        <i class="fa-solid fa-comment"></i> <span>${p.comments_count}</span>
-      </button>
+        try {
+            const res = await fetch(nextUrl, {signal: abortCtrl.signal});
+            const data = await res.json();
+            nextUrl = data.next || null;
+            document.querySelectorAll(".skeleton").forEach(el => el.remove());
+            const html = (data.results || []).map(renderPostCard).join("");
+            feedEl.insertAdjacentHTML("beforeend", html);
+            bindActions();
 
-   </div>
-  </article>`;
-        }
-
-
-        async function fetchMore() {
-            if (loading || !nextUrl) return;
-            loading = true;
-            showSpinner(true);
-            abortCtrl?.abort();
-            abortCtrl = new AbortController();
-
-            try {
-                const res = await fetch(nextUrl, {signal: abortCtrl.signal});
-                const data = await res.json();
-                const {results, next} = Array.isArray(data) ? {results: data, next: null} : data;
-                nextUrl = next;
-
-                // remove skeletons after first load
-                document.querySelectorAll(".skeleton").forEach(el => el.remove());
-
-                const html = (results || []).map(renderPostCard).join("");
-                feedEl.insertAdjacentHTML("beforeend", html);
-                bindActions();
-            } catch (e) {
-                console.warn("Request cancelled or failed:", e);
-            } finally {
-                loading = false;
-                showSpinner(false);
-                sentinel.style.opacity = nextUrl ? 1 : 0;
-            }
-        }
-
-        function bindActions() {
-            // Like
-            document.querySelectorAll(".like-btn").forEach(btn => {
-                if (btn.dataset.bound) return;
-                btn.dataset.bound = "1";
-
-                btn.addEventListener("click", async () => {
-                    const id = btn.dataset.id;
-
-                    const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
-                    const data = await res.json();
-
-                    if (data.likes !== undefined) {
-                        btn.querySelector(".lcount").textContent = prettyNum(data.likes);
-                        if (data.liked) {
-                            btn.classList.add("liked");
-                        } else {
-                            btn.classList.remove("liked");
-                        }
-
-                    }
-                });
-
-            });
-
-            // Share
-            document.querySelectorAll(".share-btn").forEach(b => {
-                if (b.dataset.bound) return;
-                b.dataset.bound = "1";
-
-                b.addEventListener("click", async () => {
-                    try {
-                        await navigator.clipboard.writeText(b.dataset.url);
-                        showToast("لینک پست کپی شد ✅");
-                    } catch {
-                    }
-                });
-            });
-
-            // Tags
-            document.querySelectorAll(".tag-link").forEach(a => {
-                if (a.dataset.bound) return;
-                a.dataset.bound = "1";
-
-                a.addEventListener("click", ev => {
-                    ev.preventDefault();
-                    activeTag = a.dataset.tag || "";
-                    resetAndFetch();
-                });
-            });
-
-            document.querySelectorAll(".comment-btn").forEach(card => {
-                if (card.dataset.boundPopup) return;
-                card.dataset.boundPopup = "1";
-
-                card.addEventListener("click", async () => {
-                    const id = card.dataset.id;
-                    const res = await fetch(`/post/api/posts/${id}/`);
-                    const post = await res.json();
+            // اگر openSlug ست شده، popup باز کن
+            if (openSlug) {
+                const post = data.results.find(p => p.slug === openSlug);
+                if (post) {
                     openPopup(post);
-                    history.pushState({}, "", `/post/${post.slug}/`);
-                });
-            });
-
-        }
-
-
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) fetchMore();
-            });
-        }, {rootMargin: "600px"});
-        io.observe(sentinel);
-
-        function resetAndFetch() {
-            // فقط یک skeleton برای loading اولیه
-            feedEl.innerHTML = renderSkeleton();
-            nextUrl = buildApiUrl();
-            fetchMore();
-        }
-
-        nextUrl = buildApiUrl();
-        resetAndFetch();
-
-        function openPopup(post) {
-            img.classList.add("d-none");
-            vid.classList.add("d-none");
-
-            if (post.image) {
-                img.src = post.image;
-                img.classList.remove("d-none");
-            } else if (post.video) {
-                vid.src = post.video;
-                vid.classList.remove("d-none");
+                    openSlug = null;  // یکبار اجرا میشه
+                }
             }
 
-            const date = new Date(post.created_at).toLocaleString("fa-IR");
-            content.innerHTML = `
-      <h5>${post.title}</h5>
-      <p>${post.content}</p>
-      <div class="small text-muted">${date}</div>
-      <div class="mt-3">
-        <button class="btn btn-outline-danger like-btn ${post.liked ? 'liked' : ''}" data-id="${post.id}">
-          <i class="fa-solid fa-heart"></i> ${post.likes}
-        </button>
-      </div>
-    `;
-
-            popup.classList.remove("d-none");
-            document.body.style.overflow = "hidden";
+        } catch (e) {
+            console.warn("Request failed:", e);
+        } finally {
+            loading = false;
+            showSpinner(false);
+            sentinel.style.opacity = nextUrl ? 1 : 0;
         }
+    }
 
-        function closePopup() {
-            popup.classList.add("d-none");
-            document.body.style.overflow = "";
-        }
+    // ---------- Bind اکشن‌ها ----------
+    function bindActions() {
+        // Like
+        document.querySelectorAll(".like-btn").forEach(btn => {
+            if (btn.dataset.bound) return;
+            btn.dataset.bound = "1";
 
-        closeBtn.addEventListener("click", closePopup);
-        overlay.addEventListener("click", closePopup);
-
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            // ۱. چک کنیم سرور گفت پاپ‌آپ باید باز بشه یا نه
-            const openSlug = "{{ open_slug|default:'' }}".trim();
-
-            if (!openSlug) return; // اگه اسلاگی از ویو نیومده، هیچی نکن
-
-            try {
-                // ۲. از API پست‌ها بگیر
-                const res = await fetch(`/post/api/posts/?search=${encodeURIComponent(openSlug)}`);
-
-                if (!res.ok) {
-                    console.error("خطا در گرفتن داده از API:", res.status);
-                    return;
-                }
-
+            btn.addEventListener("click", async e => {
+                e.preventDefault();
+                const id = btn.dataset.id;
+                const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
                 const data = await res.json();
-
-                // ۳. چون ممکنه API پست‌ها pagination داشته باشه، هر دو حالت رو پشتیبانی کن
-                let post = null;
-                if (Array.isArray(data.results)) {
-                    post = data.results.find(p => p.slug === openSlug);
-                } else if (Array.isArray(data)) {
-                    post = data.find(p => p.slug === openSlug);
+                if (data.likes !== undefined) {
+                    btn.querySelector(".lcount").textContent = prettyNum(data.likes);
+                    btn.classList.toggle("liked", data.liked);
                 }
-
-                if (!post) {
-                    console.warn("پست با این اسلاگ پیدا نشد:", openSlug);
-                    return;
-                }
-
-                // ۴. حالا پاپ‌آپ رو باز کن با دادهٔ پست
-                openPopup(post);
-
-            } catch (err) {
-                console.error("خطا در باز کردن پاپ‌آپ:", err);
-            }
+            });
         });
 
+        // Share
+        document.querySelectorAll(".share-btn").forEach(btn => {
+            if (btn.dataset.bound) return;
+            btn.dataset.bound = "1";
 
-    })();
+            btn.addEventListener("click", async e => {
+                e.preventDefault();
+                try { await navigator.clipboard.writeText(btn.dataset.url); showToast("لینک کپی شد ✅"); } catch {}
+            });
+        });
 
+        // Tag filter
+        document.querySelectorAll(".tag-link").forEach(a => {
+            if (a.dataset.bound) return;
+            a.dataset.bound = "1";
+
+            a.addEventListener("click", e => {
+                e.preventDefault();
+                activeTag = a.dataset.tag;
+                updateUrl();
+                resetAndFetch();
+            });
+        });
+
+        // Comment / popup
+        document.querySelectorAll(".comment-btn").forEach(btn => {
+            if (btn.dataset.boundPopup) return;
+            btn.dataset.boundPopup = "1";
+
+            btn.addEventListener("click", async e => {
+                e.preventDefault();
+                const id = btn.dataset.id;
+                const res = await fetch(`/post/api/posts/${id}/`);
+                const post = await res.json();
+                openPopup(post);
+                history.pushState({}, "", `/post/${post.slug}/`);
+            });
+        });
+    }
+
+    // ---------- Infinite Scroll ----------
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) fetchMore(); });
+    }, {rootMargin: "600px"});
+    io.observe(sentinel);
+
+    function resetAndFetch() {
+        feedEl.innerHTML = renderSkeleton();
+        nextUrl = buildApiUrl();
+        fetchMore();
+    }
+
+    function openPopup(post) {
+        img.classList.add("d-none");
+        vid.classList.add("d-none");
+
+        if (post.image) img.src = post.image, img.classList.remove("d-none");
+        else if (post.video) vid.src = post.video, vid.classList.remove("d-none");
+
+        const date = new Date(post.created_at).toLocaleString("fa-IR");
+        content.innerHTML = `
+            <h5>${post.title}</h5>
+            <p>${post.content}</p>
+            <div class="small text-muted">${date}</div>
+            <div class="mt-2">
+                <button class="btn btn-outline-danger like-btn ${post.liked ? 'liked' : ''}" data-id="${post.id}">
+                    ❤️ ${prettyNum(post.likes)}
+                </button>
+            </div>
+        `;
+        popup.classList.remove("d-none");
+        document.body.style.overflow = "hidden";
+
+        // Bind like داخل popup
+        content.querySelectorAll(".like-btn").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const id = btn.dataset.id;
+                const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
+                const data = await res.json();
+                if (data.likes !== undefined) btn.textContent = `❤️ ${prettyNum(data.likes)}`;
+            });
+        });
+    }
+
+    function closePopup() {
+        popup.classList.add("d-none");
+        document.body.style.overflow = "";
+    }
+
+    closeBtn.addEventListener("click", closePopup);
+    overlay.addEventListener("click", closePopup);
+
+    // ---------- URL Update ----------
+    function updateUrl() {
+        const params = new URLSearchParams();
+        if (activeTag) params.set("tag", activeTag);
+        if (activeQuery) params.set("q", activeQuery);
+        if (activeDate) params.set("date", activeDate);
+        history.replaceState({}, "", params.toString() ? `/post/?${params.toString()}` : "/post/");
+    }
+
+    // ---------- Init ----------
+    resetAndFetch();
+
+})();
 </script>
+
 
 {% endblock %}
