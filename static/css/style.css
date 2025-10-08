@@ -857,6 +857,5 @@ pre {
 }
 
 .tag-link {
-  text-decoration: none; /* حذف خط زیر */
-    color: #003c70;
+    color: #003c70!important;
 }
