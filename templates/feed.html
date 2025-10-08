@@ -342,16 +342,6 @@
         closeBtn.addEventListener("click", closePopup);
         overlay.addEventListener("click", closePopup);
 
-        // Example binding for demo
-        feedEl.addEventListener("click", async (e) => {
-            const card = e.target.closest(".post-card");
-            if (!card) return;
-            const id = card.dataset.id;
-            const res = await fetch(`/post/api/posts/${id}/`);
-            const post = await res.json();
-            openPopup(post);
-            history.pushState({}, "", `/post/${post.slug}/`);
-        });
 
     })();
 
