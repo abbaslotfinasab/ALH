@@ -14,13 +14,11 @@ from .permissions import IsStaffOrReadOnly
 def feed(request, slug=None):
     tags = Tag.objects.all().order_by("name")
     context = {"tags": tags}
+
     if slug:
-        # اگر اسلاگ داده شده، پست مورد نظر رو هم بفرست
-        try:
-            post = Post.objects.get(slug=slug, is_published=True)
-            context["open_slug"] = slug
-        except Post.DoesNotExist:
-            pass
+        post = get_object_or_404(Post, slug=slug, is_published=True)
+        context["open_slug"] = slug
+
     return render(request, "feed.html", context)
 
 
