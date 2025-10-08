@@ -120,11 +120,13 @@
         let activeDate = new URLSearchParams(location.search).get("date") || "";
 
         // ---- Helpers ----
-        const showToast = (msg) => {
-            toast.textContent = msg;
-            toast.classList.add("show");
-            setTimeout(() => toast.classList.remove("show"), 2000);
-        };
+        window.showToast = function(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.classList.remove("d-none");
+    setTimeout(() => toast.classList.add("d-none"), 1500);
+};
+
 
         const showSpinner = (state) => spinner.classList.toggle("d-none", !state);
 
