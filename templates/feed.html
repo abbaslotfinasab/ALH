@@ -69,26 +69,27 @@
         </div>
 
         <div id="commentPopup" class="popup d-none">
-  <div class="popup-overlay"></div>
+            <div class="popup-overlay"></div>
 
-  <div class="popup-box rounded-4 shadow-lg bg-white p-4">
-    <header class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="fw-bold mb-0">نظرات</h5>
-      <button id="closeCommentPopup" class="btn btn-sm btn-outline-secondary">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </header>
+            <div class="popup-box rounded-4 shadow-lg bg-white p-4">
+                <header class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">نظرات</h5>
+                    <button id="closeCommentPopup" class="btn btn-sm btn-outline-secondary">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </header>
 
-    <div id="commentsList" class="comments-list mb-3">
-      <div class="text-center text-muted small">در حال بارگذاری...</div>
-    </div>
+                <div id="commentsList" class="comments-list mb-3">
+                    <div class="text-center text-muted small">در حال بارگذاری...</div>
+                </div>
 
-    <form id="commentForm" class="d-flex gap-2">
-      <input type="text" id="commentInput" class="form-control rounded-pill" placeholder="بنویس..." required>
-      <button class="btn btn-primary rounded-pill px-3">ارسال</button>
-    </form>
-  </div>
-</div>
+                <form id="commentForm" class="d-flex gap-2">
+                    <input type="text" id="commentInput" class="form-control rounded-pill" placeholder="بنویس..."
+                           required>
+                    <button class="btn btn-primary rounded-pill px-3">ارسال</button>
+                </form>
+            </div>
+        </div>
 
 
     </div>
@@ -96,54 +97,54 @@
 
 
 <script>
-(function () {
-  const API_BASE = "/post/api/posts/";
-  const feedEl = document.getElementById("feed");
-  const sentinel = document.getElementById("sentinel");
-  const spinner = document.getElementById("spinner");
-  const toast = document.getElementById("toast");
-  const popup = document.getElementById("postPopup");
-  const popupImg = document.getElementById("popupImage");
-  const popupVid = document.getElementById("popupVideo");
-  const popupContent = document.getElementById("popupContent");
-  const overlay = popup.querySelector(".popup-overlay");
-  const closeBtn = document.getElementById("closePopup");
+    (function () {
+        const API_BASE = "/post/api/posts/";
+        const feedEl = document.getElementById("feed");
+        const sentinel = document.getElementById("sentinel");
+        const spinner = document.getElementById("spinner");
+        const toast = document.getElementById("toast");
+        const popup = document.getElementById("postPopup");
+        const popupImg = document.getElementById("popupImage");
+        const popupVid = document.getElementById("popupVideo");
+        const popupContent = document.getElementById("popupContent");
+        const overlay = popup.querySelector(".popup-overlay");
+        const closeBtn = document.getElementById("closePopup");
 
-  // ---- State ----
-  let nextUrl = null;
-  let loading = false;
-  let abortCtrl = null;
-  let openSlug = new URLSearchParams(location.search).get("post") || "";
-  let activeTag = new URLSearchParams(location.search).get("tag") || "";
-  let activeQuery = new URLSearchParams(location.search).get("q") || "";
-  let activeDate = new URLSearchParams(location.search).get("date") || "";
+        // ---- State ----
+        let nextUrl = null;
+        let loading = false;
+        let abortCtrl = null;
+        let openSlug = new URLSearchParams(location.search).get("post") || "";
+        let activeTag = new URLSearchParams(location.search).get("tag") || "";
+        let activeQuery = new URLSearchParams(location.search).get("q") || "";
+        let activeDate = new URLSearchParams(location.search).get("date") || "";
 
-  // ---- Helpers ----
-  const showToast = (msg) => {
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2000);
-  };
+        // ---- Helpers ----
+        const showToast = (msg) => {
+            toast.textContent = msg;
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 2000);
+        };
 
-  const showSpinner = (state) => spinner.classList.toggle("d-none", !state);
+        const showSpinner = (state) => spinner.classList.toggle("d-none", !state);
 
-  const prettyNum = (num) =>
-    num > 999999 ? (num / 1e6).toFixed(1) + "M"
-    : num > 999 ? (num / 1e3).toFixed(1) + "K"
-    : num;
+        const prettyNum = (num) =>
+            num > 999999 ? (num / 1e6).toFixed(1) + "M"
+                : num > 999 ? (num / 1e3).toFixed(1) + "K"
+                    : num;
 
-  const buildApiUrl = (pageUrl = null) => {
-    if (pageUrl) return pageUrl;
-    const params = new URLSearchParams();
-    if (activeTag) params.set("tags__slug", activeTag);
-    if (activeQuery) params.set("search", activeQuery);
-    if (activeDate) params.set("created_at__date", activeDate);
-    return params.toString() ? `${API_BASE}?${params}` : API_BASE;
-  };
+        const buildApiUrl = (pageUrl = null) => {
+            if (pageUrl) return pageUrl;
+            const params = new URLSearchParams();
+            if (activeTag) params.set("tags__slug", activeTag);
+            if (activeQuery) params.set("search", activeQuery);
+            if (activeDate) params.set("created_at__date", activeDate);
+            return params.toString() ? `${API_BASE}?${params}` : API_BASE;
+        };
 
-  // ---- Templates ----
-  const renderSkeleton = () =>
-    `<div class="skeleton rounded-4 mb-4 p-4 bg-white shadow-sm">
+        // ---- Templates ----
+        const renderSkeleton = () =>
+            `<div class="skeleton rounded-4 mb-4 p-4 bg-white shadow-sm">
       <div class="placeholder-glow mb-3">
         <div class="placeholder col-7"></div>
         <div class="placeholder col-4"></div>
@@ -154,31 +155,31 @@
       </div>
     </div>`;
 
-  const renderPostCard = (p) => {
-    const date = new Date(p.created_at).toLocaleString("fa-IR");
-    const media = p.image
-      ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy" decoding="async">`
-      : p.video
-      ? `<video class="w-100 rounded mb-3" preload="none" controls poster="${p.thumbnail || ''}">
+        const renderPostCard = (p) => {
+            const date = new Date(p.created_at).toLocaleString("fa-IR");
+            const media = p.image
+                ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy" decoding="async">`
+                : p.video
+                    ? `<video class="w-100 rounded mb-3" preload="none" controls poster="${p.thumbnail || ''}">
             <source src="${p.video}" type="video/mp4">
         </video>`
-      : "";
+                    : "";
 
-    const tags = (p.tags || [])
-      .map(
-        (t) =>
-          `<a href="#" class="tag-link badge bg-light border me-1" data-tag="${t.slug || t.name}">
+            const tags = (p.tags || [])
+                .map(
+                    (t) =>
+                        `<a href="#" class="tag-link badge bg-light border me-1" data-tag="${t.slug || t.name}">
             # ${t.name}
           </a>`
-      )
-      .join("");
+                )
+                .join("");
 
-    const short =
-      p.content.length > 550
-        ? `${p.content.slice(0, 550)}… <a href="/post/${p.slug}/" class="fw-semibold">ادامه مطلب</a>`
-        : p.content;
+            const short =
+                p.content.length > 550
+                    ? `${p.content.slice(0, 550)}… <a href="/post/${p.slug}/" class="fw-semibold">ادامه مطلب</a>`
+                    : p.content;
 
-    return `
+            return `
       <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4 fade-in" data-id="${p.id}">
         <header class="d-flex align-items-center mb-3 justify-content-between">
           <div class="d-flex align-items-center">
@@ -210,106 +211,109 @@
           </button>
         </div>
       </article>`;
-  };
+        };
 
-  // ---- Fetch Posts ----
-  async function fetchMore() {
-    if (loading || !nextUrl) return;
-    loading = true;
-    showSpinner(true);
-    abortCtrl?.abort();
-    abortCtrl = new AbortController();
+        // ---- Fetch Posts ----
+        async function fetchMore() {
+            if (loading || !nextUrl) return;
+            loading = true;
+            showSpinner(true);
+            abortCtrl?.abort();
+            abortCtrl = new AbortController();
 
-    try {
-      const res = await fetch(nextUrl, { signal: abortCtrl.signal });
-      const data = await res.json();
-      nextUrl = data.next || null;
+            try {
+                const res = await fetch(nextUrl, {signal: abortCtrl.signal});
+                const data = await res.json();
+                nextUrl = data.next || null;
 
-      document.querySelectorAll(".skeleton").forEach((el) => el.remove());
-      const html = (data.results || []).map(renderPostCard).join("");
-      feedEl.insertAdjacentHTML("beforeend", html);
-      bindActions();
+                document.querySelectorAll(".skeleton").forEach((el) => el.remove());
+                const html = (data.results || []).map(renderPostCard).join("");
+                feedEl.insertAdjacentHTML("beforeend", html);
+                bindActions();
 
-      // اگر slug خاصی داریم
-      if (openSlug) {
-        const post = data.results.find((p) => p.slug === openSlug);
-        if (post) openPopup(post);
-        openSlug = "";
-      }
-    } catch (e) {
-      console.warn("Fetch error:", e);
-      showToast("خطا در دریافت پست‌ها ❌");
-    } finally {
-      loading = false;
-      showSpinner(false);
-      sentinel.style.opacity = nextUrl ? 1 : 0;
-    }
-  }
-
-  // ---- Bind Actions ----
-  function bindActions() {
-    document.querySelectorAll(".like-btn:not([data-bound])").forEach((btn) => {
-      btn.dataset.bound = "1";
-      btn.addEventListener("click", async () => {
-        const id = btn.dataset.id;
-        const res = await fetch(`${API_BASE}${id}/like/`, { method: "POST" });
-        const data = await res.json();
-        if (data.likes !== undefined) {
-          btn.querySelector(".lcount").textContent = prettyNum(data.likes);
-          btn.classList.toggle("liked", data.liked);
+                // اگر slug خاصی داریم
+                if (openSlug) {
+                    const post = data.results.find((p) => p.slug === openSlug);
+                    if (post) openPopup(post);
+                    openSlug = "";
+                }
+            } catch (e) {
+                console.warn("Fetch error:", e);
+                showToast("خطا در دریافت پست‌ها ❌");
+            } finally {
+                loading = false;
+                showSpinner(false);
+                sentinel.style.opacity = nextUrl ? 1 : 0;
+            }
         }
-      });
-    });
 
-    document.querySelectorAll(".share-btn:not([data-bound])").forEach((btn) => {
-      btn.dataset.bound = "1";
-      btn.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(btn.dataset.url);
-          showToast("لینک کپی شد ✅");
-        } catch {
-          showToast("کپی لینک ممکن نیست ❌");
+        // ---- Bind Actions ----
+        function bindActions() {
+            document.querySelectorAll(".like-btn:not([data-bound])").forEach((btn) => {
+                btn.dataset.bound = "1";
+                btn.addEventListener("click", async () => {
+                    const id = btn.dataset.id;
+                    const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
+                    const data = await res.json();
+                    if (data.likes !== undefined) {
+                        btn.querySelector(".lcount").textContent = prettyNum(data.likes);
+                        btn.classList.toggle("liked", data.liked);
+                    }
+                });
+            });
+
+            document.querySelectorAll(".share-btn").forEach(btn => {
+                if (btn.dataset.bound) return;
+                btn.dataset.bound = "1";
+
+                btn.addEventListener("click", async e => {
+                    e.preventDefault();
+                    try {
+                        await navigator.clipboard.writeText(btn.dataset.url);
+                        showToast("لینک کپی شد ✅");
+                    } catch {
+                    }
+                });
+            });
+
+
+            document.querySelectorAll(".tag-link:not([data-bound])").forEach((a) => {
+                a.dataset.bound = "1";
+                a.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    activeTag = a.dataset.tag;
+                    updateUrl();
+                    resetAndFetch();
+                });
+            });
+
+            document.querySelectorAll(".comment-btn:not([data-bound])").forEach((btn) => {
+                btn.dataset.bound = "1";
+                btn.addEventListener("click", async () => {
+                    const id = btn.dataset.id;
+                    const res = await fetch(`${API_BASE}${id}/`);
+                    const post = await res.json();
+                    openPopup(post);
+                    history.pushState({}, "", `/post/${post.slug}/`);
+                });
+            });
         }
-      });
-    });
 
-    document.querySelectorAll(".tag-link:not([data-bound])").forEach((a) => {
-      a.dataset.bound = "1";
-      a.addEventListener("click", (e) => {
-        e.preventDefault();
-        activeTag = a.dataset.tag;
-        updateUrl();
-        resetAndFetch();
-      });
-    });
+        // ---- Popup ----
+        function openPopup(post) {
+            popupImg.classList.add("d-none");
+            popupVid.classList.add("d-none");
 
-    document.querySelectorAll(".comment-btn:not([data-bound])").forEach((btn) => {
-      btn.dataset.bound = "1";
-      btn.addEventListener("click", async () => {
-        const id = btn.dataset.id;
-        const res = await fetch(`${API_BASE}${id}/`);
-        const post = await res.json();
-        openPopup(post);
-        history.pushState({}, "", `/post/${post.slug}/`);
-      });
-    });
-  }
+            if (post.image) {
+                popupImg.src = post.image;
+                popupImg.classList.remove("d-none");
+            } else if (post.video) {
+                popupVid.src = post.video;
+                popupVid.classList.remove("d-none");
+            }
 
-  // ---- Popup ----
-  function openPopup(post) {
-    popupImg.classList.add("d-none");
-    popupVid.classList.add("d-none");
-
-    if (post.image) {
-      popupImg.src = post.image;
-      popupImg.classList.remove("d-none");
-    } else if (post.video) {
-      popupVid.src = post.video;
-      popupVid.classList.remove("d-none");
-    }
-
-    const date = new Date(post.created_at).toLocaleString("fa-IR");
-    popupContent.innerHTML = `
+            const date = new Date(post.created_at).toLocaleString("fa-IR");
+            popupContent.innerHTML = `
       <h5>${post.title}</h5>
       <p>${post.content}</p>
       <div class="small text-muted">${date}</div>
@@ -318,115 +322,116 @@
       </button>
     `;
 
-    popup.classList.remove("d-none");
-    requestAnimationFrame(() => popup.classList.add("show"));
-    document.body.style.overflow = "hidden";
+            popup.classList.remove("d-none");
+            requestAnimationFrame(() => popup.classList.add("show"));
+            document.body.style.overflow = "hidden";
 
-    popupContent.querySelector(".like-btn").addEventListener("click", async (e) => {
-      const id = e.currentTarget.dataset.id;
-      const res = await fetch(`${API_BASE}${id}/like/`, { method: "POST" });
-      const data = await res.json();
-      e.currentTarget.textContent = `❤️ ${prettyNum(data.likes)}`;
-    });
-  }
+            popupContent.querySelector(".like-btn").addEventListener("click", async (e) => {
+                const id = e.currentTarget.dataset.id;
+                const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
+                const data = await res.json();
+                e.currentTarget.textContent = `❤️ ${prettyNum(data.likes)}`;
+            });
+        }
 
-  function closePopup() {
-    popup.classList.remove("show");
-    setTimeout(() => popup.classList.add("d-none"), 300);
-    document.body.style.overflow = "";
-  }
+        function closePopup() {
+            popup.classList.remove("show");
+            setTimeout(() => popup.classList.add("d-none"), 300);
+            document.body.style.overflow = "";
+        }
 
-  closeBtn.addEventListener("click", closePopup);
-  overlay.addEventListener("click", closePopup);
+        closeBtn.addEventListener("click", closePopup);
+        overlay.addEventListener("click", closePopup);
 
-  // ---- URL & Scroll ----
-  function updateUrl() {
-    const params = new URLSearchParams();
-    if (activeTag) params.set("tag", activeTag);
-    if (activeQuery) params.set("q", activeQuery);
-    if (activeDate) params.set("date", activeDate);
-    history.replaceState({}, "", params.toString() ? `/post/?${params}` : "/post/");
-  }
+        // ---- URL & Scroll ----
+        function updateUrl() {
+            const params = new URLSearchParams();
+            if (activeTag) params.set("tag", activeTag);
+            if (activeQuery) params.set("q", activeQuery);
+            if (activeDate) params.set("date", activeDate);
+            history.replaceState({}, "", params.toString() ? `/post/?${params}` : "/post/");
+        }
 
-  function resetAndFetch() {
-    feedEl.innerHTML = renderSkeleton();
-    nextUrl = buildApiUrl();
-    fetchMore();
-  }
+        function resetAndFetch() {
+            feedEl.innerHTML = renderSkeleton();
+            nextUrl = buildApiUrl();
+            fetchMore();
+        }
 
-  // ---- Infinite Scroll ----
-  const io = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && fetchMore()),
-    { rootMargin: "600px" }
-  );
-  io.observe(sentinel);
+        // ---- Infinite Scroll ----
+        const io = new IntersectionObserver(
+            (entries) => entries.forEach((e) => e.isIntersecting && fetchMore()),
+            {rootMargin: "600px"}
+        );
+        io.observe(sentinel);
 
-  // ---- Init ----
-  resetAndFetch();
-})();
+        // ---- Init ----
+        resetAndFetch();
+    })();
 </script>
 
 
 <script>
-(function(){
-  const popup = document.getElementById("commentPopup");
-  const overlay = popup.querySelector(".popup-overlay");
-  const closeBtn = document.getElementById("closeCommentPopup");
-  const listEl = document.getElementById("commentsList");
-  const form = document.getElementById("commentForm");
-  const input = document.getElementById("commentInput");
-  const API_COMMENTS = "/post/api/comments/";
-  let currentPostId = null;
+    (function () {
+        const popup = document.getElementById("commentPopup");
+        const overlay = popup.querySelector(".popup-overlay");
+        const closeBtn = document.getElementById("closeCommentPopup");
+        const listEl = document.getElementById("commentsList");
+        const form = document.getElementById("commentForm");
+        const input = document.getElementById("commentInput");
+        const API_COMMENTS = "/post/api/comments/";
+        let currentPostId = null;
 
-  // --- باز کردن پاپ‌آپ ---
-  window.openComments = function(postId) {
-    currentPostId = postId;
-    listEl.innerHTML = `<div class="text-center text-muted small">در حال بارگذاری...</div>`;
-    popup.classList.remove("d-none");
-    requestAnimationFrame(() => popup.classList.add("show"));
-    document.body.style.overflow = "hidden";
-    loadComments();
-  };
+        // --- باز کردن پاپ‌آپ ---
+        window.openComments = function (postId) {
+            currentPostId = postId;
+            listEl.innerHTML = `<div class="text-center text-muted small">در حال بارگذاری...</div>`;
+            popup.classList.remove("d-none");
+            requestAnimationFrame(() => popup.classList.add("show"));
+            document.body.style.overflow = "hidden";
+            loadComments();
+        };
 
-  // --- بستن پاپ‌آپ ---
-  function closePopup() {
-    popup.classList.remove("show");
-    setTimeout(() => popup.classList.add("d-none"), 300);
-    document.body.style.overflow = "";
-  }
-  overlay.addEventListener("click", closePopup);
-  closeBtn.addEventListener("click", closePopup);
+        // --- بستن پاپ‌آپ ---
+        function closePopup() {
+            popup.classList.remove("show");
+            setTimeout(() => popup.classList.add("d-none"), 300);
+            document.body.style.overflow = "";
+        }
 
-  // --- دریافت کامنت‌ها ---
-  async function loadComments() {
-    try {
-      const res = await fetch(`${API_COMMENTS}?post=${currentPostId}`);
-      const data = await res.json();
-      renderComments(data.results || []);
-    } catch {
-      listEl.innerHTML = `<div class="text-danger text-center small">خطا در بارگذاری کامنت‌ها ❌</div>`;
-    }
-  }
+        overlay.addEventListener("click", closePopup);
+        closeBtn.addEventListener("click", closePopup);
 
-  // --- رندر لیست کامنت‌ها ---
-  function renderComments(comments) {
-    if (!comments.length) {
-      listEl.innerHTML = `<div class="text-muted text-center small">هنوز نظری ثبت نشده 😌</div>`;
-      return;
-    }
-    listEl.innerHTML = comments.map(c => renderComment(c)).join("");
-    bindReplyButtons();
-  }
+        // --- دریافت کامنت‌ها ---
+        async function loadComments() {
+            try {
+                const res = await fetch(`${API_COMMENTS}?post=${currentPostId}`);
+                const data = await res.json();
+                renderComments(data.results || []);
+            } catch {
+                listEl.innerHTML = `<div class="text-danger text-center small">خطا در بارگذاری کامنت‌ها ❌</div>`;
+            }
+        }
 
-  // --- قالب هر کامنت ---
-  function renderComment(c) {
-    const date = new Date(c.created_at).toLocaleString("fa-IR");
-    const replies = c.replies?.length ? `
+        // --- رندر لیست کامنت‌ها ---
+        function renderComments(comments) {
+            if (!comments.length) {
+                listEl.innerHTML = `<div class="text-muted text-center small">هنوز نظری ثبت نشده 😌</div>`;
+                return;
+            }
+            listEl.innerHTML = comments.map(c => renderComment(c)).join("");
+            bindReplyButtons();
+        }
+
+        // --- قالب هر کامنت ---
+        function renderComment(c) {
+            const date = new Date(c.created_at).toLocaleString("fa-IR");
+            const replies = c.replies?.length ? `
       <div class="ms-4 mt-2 border-start ps-3">
         ${c.replies.map(r => renderComment(r)).join("")}
       </div>` : "";
 
-    return `
+            return `
       <div class="comment-item mb-3 p-2 border rounded-3" data-id="${c.id}">
         <div class="fw-bold small">${c.user_name || "کاربر مهمان"}</div>
         <div class="small text-muted">${date}</div>
@@ -436,63 +441,62 @@
         </div>
         ${replies}
       </div>`;
-  }
+        }
 
-  // --- فرم ارسال کامنت ---
-  form.addEventListener("submit", async e => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-    input.disabled = true;
-    try {
-      const res = await fetch(API_COMMENTS, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ post: currentPostId, text })
-      });
-      if (!res.ok) throw new Error();
-      input.value = "";
-      await loadComments();
-    } catch {
-      alert("ارسال ناموفق بود ❌");
-    } finally {
-      input.disabled = false;
-    }
-  });
+        // --- فرم ارسال کامنت ---
+        form.addEventListener("submit", async e => {
+            e.preventDefault();
+            const text = input.value.trim();
+            if (!text) return;
+            input.disabled = true;
+            try {
+                const res = await fetch(API_COMMENTS, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({post: currentPostId, text})
+                });
+                if (!res.ok) throw new Error();
+                input.value = "";
+                await loadComments();
+            } catch {
+                alert("ارسال ناموفق بود ❌");
+            } finally {
+                input.disabled = false;
+            }
+        });
 
-  // --- پاسخ دادن به کامنت ---
-  function bindReplyButtons() {
-    document.querySelectorAll(".reply-btn:not([data-bound])").forEach(btn => {
-      btn.dataset.bound = "1";
-      btn.addEventListener("click", e => {
-        const cid = e.target.dataset.id;
-        const target = e.target.closest(".comment-item");
-        const replyBox = document.createElement("form");
-        replyBox.className = "reply-form mt-2 d-flex gap-2";
-        replyBox.innerHTML = `
+        // --- پاسخ دادن به کامنت ---
+        function bindReplyButtons() {
+            document.querySelectorAll(".reply-btn:not([data-bound])").forEach(btn => {
+                btn.dataset.bound = "1";
+                btn.addEventListener("click", e => {
+                    const cid = e.target.dataset.id;
+                    const target = e.target.closest(".comment-item");
+                    const replyBox = document.createElement("form");
+                    replyBox.className = "reply-form mt-2 d-flex gap-2";
+                    replyBox.innerHTML = `
           <input type="text" class="form-control form-control-sm" placeholder="پاسخ بنویس..." required>
           <button class="btn btn-sm btn-primary">ارسال</button>
         `;
-        target.appendChild(replyBox);
+                    target.appendChild(replyBox);
 
-        replyBox.addEventListener("submit", async ev => {
-          ev.preventDefault();
-          const text = replyBox.querySelector("input").value.trim();
-          if (!text) return;
-          const res = await fetch(API_COMMENTS, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ post: currentPostId, text, parent: cid })
-          });
-          if (res.ok) loadComments();
-        });
-      });
-    });
-  }
+                    replyBox.addEventListener("submit", async ev => {
+                        ev.preventDefault();
+                        const text = replyBox.querySelector("input").value.trim();
+                        if (!text) return;
+                        const res = await fetch(API_COMMENTS, {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({post: currentPostId, text, parent: cid})
+                        });
+                        if (res.ok) loadComments();
+                    });
+                });
+            });
+        }
 
-})();
+    })();
 </script>
-
 
 
 {% endblock %}
