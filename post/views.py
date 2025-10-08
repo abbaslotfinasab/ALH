@@ -1,5 +1,5 @@
 # posts/views_api.py
-from django.db.models import F, Q
+from django.db.models import F
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -11,9 +11,18 @@ from .serializers import *
 from .permissions import IsStaffOrReadOnly
 
 
-def feed(request):
+def feed(request, slug=None):
     tags = Tag.objects.all().order_by("name")
-    return render(request, "feed.html", {"tags": tags})
+    context = {"tags": tags}
+    if slug:
+        # اگر اسلاگ داده شده، پست مورد نظر رو هم بفرست
+        try:
+            post = Post.objects.get(slug=slug, is_published=True)
+            context["open_slug"] = slug
+        except Post.DoesNotExist:
+            pass
+    return render(request, "feed.html", context)
+
 
 
 def detail(request, slug):

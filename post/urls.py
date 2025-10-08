@@ -13,5 +13,5 @@ router.register(r"comments", CommentViewSet, basename="comment")
 urlpatterns = [
     path('api/', include(router.urls)),
     path("", feed, name="feed-view"),  # فید
-    path("<slug:slug>/", detail, name="detail-view"),  # جزئیات پست
+    path("<slug:slug>/", feed, name="feed-with-popup"),  # جزئیات پست
 ]
