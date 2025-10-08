@@ -228,7 +228,6 @@
                 btn.dataset.bound = "1";
 
                 btn.addEventListener("click", async () => {
-                    const icon = btn.querySelector("i");
                     const id = btn.dataset.id;
 
                     const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
@@ -273,7 +272,7 @@
                 });
             });
 
-            document.querySelectorAll(".post-card").forEach(card => {
+            document.querySelectorAll(".comment-btn").forEach(card => {
                 if (card.dataset.boundPopup) return;
                 card.dataset.boundPopup = "1";
 
