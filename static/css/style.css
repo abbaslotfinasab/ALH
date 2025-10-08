@@ -855,3 +855,7 @@ pre {
     color: #e63946 !important;
     transition: 0.2s;
 }
+
+.tag-link {
+  text-decoration: none; /* حذف خط زیر */
+}
