@@ -342,27 +342,41 @@
         overlay.addEventListener("click", closePopup);
 
 
-        // وقتی صفحه لود میشه چک کن آیا open_slug از سرور اومده؟
         document.addEventListener("DOMContentLoaded", async () => {
+            // ۱. چک کنیم سرور گفت پاپ‌آپ باید باز بشه یا نه
             const openSlug = "{{ open_slug|default:'' }}".trim();
-            if (openSlug) {
-                try {
-                    // از API پست رو بگیر
-                    const res = await fetch(`/post/api/posts/?search=${encodeURIComponent(openSlug)}`);
-                    const data = await res.json();
 
-                    let post = null;
-                    if (Array.isArray(data.results)) {
-                        // حالت DRF pagination
-                        post = data.results.find(p => p.slug === openSlug);
-                    } else if (Array.isArray(data)) {
-                        post = data.find(p => p.slug === openSlug);
-                    }
+            if (!openSlug) return; // اگه اسلاگی از ویو نیومده، هیچی نکن
 
-                    if (post) openPopup(post);
-                } catch (err) {
-                    console.error("خطا در لود پست برای popup:", err);
+            try {
+                // ۲. از API پست‌ها بگیر
+                const res = await fetch(`/post/api/posts/?search=${encodeURIComponent(openSlug)}`);
+
+                if (!res.ok) {
+                    console.error("خطا در گرفتن داده از API:", res.status);
+                    return;
                 }
+
+                const data = await res.json();
+
+                // ۳. چون ممکنه API پست‌ها pagination داشته باشه، هر دو حالت رو پشتیبانی کن
+                let post = null;
+                if (Array.isArray(data.results)) {
+                    post = data.results.find(p => p.slug === openSlug);
+                } else if (Array.isArray(data)) {
+                    post = data.find(p => p.slug === openSlug);
+                }
+
+                if (!post) {
+                    console.warn("پست با این اسلاگ پیدا نشد:", openSlug);
+                    return;
+                }
+
+                // ۴. حالا پاپ‌آپ رو باز کن با دادهٔ پست
+                openPopup(post);
+
+            } catch (err) {
+                console.error("خطا در باز کردن پاپ‌آپ:", err);
             }
         });
 

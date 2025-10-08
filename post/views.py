@@ -10,7 +10,6 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from .serializers import *
 from .permissions import IsStaffOrReadOnly
 
-
 def feed(request, slug=None):
     tags = Tag.objects.all().order_by("name")
     context = {"tags": tags}
