@@ -120,7 +120,7 @@
                 : (p.video ? `<video class="w-100 rounded mb-3" controls preload="metadata" src="${p.video}"></video>` : "");
             const date = new Date(p.created_at).toLocaleString("fa-IR");
             const tags = (p.tags || [])
-                .map(t => `<a href="#" class="tag-link badge bg-light text-dark border me-1" data-tag="${t.slug || t.name}"># ${t.name}</a>`)
+                .map(t => `<a href="#" class="tag-link text-decoration-none  badge bg-light text-dark border me-1" data-tag="${t.slug || t.name}"># ${t.name}</a>`)
                 .join("");
             const short = p.content.length > 550
                 ? `${p.content.slice(0, 550)}… <a href="/post/${p.slug}/" class="text-decoration-none fw-semibold">ادامه مطلب</a>`
