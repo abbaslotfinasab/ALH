@@ -794,8 +794,14 @@ body {
     color: #adb5bd;
 }
 
+
+
 .action-btn.comment-btn i {
     color: #adb5bd;
+}
+
+.action-btn.share-btn i {
+    color: #003c70;
 }
 
 .action-btn.like-btn:hover i {
@@ -809,6 +815,11 @@ body {
 
 }
 
+
+.action-btn.share-btn:hover {
+    border-color: transparent;
+
+}
 
 .action-btn.comment-btn:hover {
     border-color: transparent;
