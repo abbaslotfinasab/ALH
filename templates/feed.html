@@ -55,19 +55,23 @@
 
 <script>
     (function () {
-        const API_POSTS = "/post/api/posts/";
+        const API_BASE = "/post/api/posts/";
         const API_COMMENTS = "/post/api/comments/";
         const feedEl = document.getElementById("feed");
         const sentinel = document.getElementById("sentinel");
         const spinner = document.getElementById("spinner");
         const toast = document.getElementById("toast");
 
+
+        // ---- State ----
         let nextUrl = null;
         let loading = false;
-        let openSlug = new URLSearchParams(location.search).get("post") || "";
+        let abortCtrl = null;
 
-        // --- Helpers ---
-        const showToast = msg => {
+
+        // ---- Helpers ----
+        window.showToast = function (msg) {
+            const toast = document.getElementById("toast");
             toast.textContent = msg;
             toast.classList.remove("d-none");
             toast.classList.add("show");
@@ -77,46 +81,93 @@
             }, 1500);
         };
 
-        const prettyNum = num =>
+
+        const showSpinner = (state) => spinner.classList.toggle("d-none", !state);
+
+        const prettyNum = (num) =>
             num > 999999 ? (num / 1e6).toFixed(1) + "M"
                 : num > 999 ? (num / 1e3).toFixed(1) + "K"
                     : num;
 
-        // --- Templates ---
-        const renderPost = p => {
+        const buildApiUrl = (pageUrl = null) => {
+            if (pageUrl) return pageUrl;
+            const params = new URLSearchParams();
+            if (activeTag) params.set("tags__slug", activeTag);
+            if (activeQuery) params.set("search", activeQuery);
+            if (activeDate) params.set("created_at__date", activeDate);
+            return params.toString() ? `${API_BASE}?${params}` : API_BASE;
+        };
+
+        // ---- Templates ----
+        const renderSkeleton = () =>
+            `<div class="skeleton rounded-4 mb-4 p-4 bg-white shadow-sm">
+      <div class="placeholder-glow mb-3">
+        <div class="placeholder col-7"></div>
+        <div class="placeholder col-4"></div>
+      </div>
+      <div class="placeholder-glow">
+        <div class="placeholder col-12 mb-2"></div>
+        <div class="placeholder col-10"></div>
+      </div>
+    </div>`;
+
+        const renderPostCard = (p) => {
             const date = new Date(p.created_at).toLocaleString("fa-IR");
             const media = p.image
-                ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy">`
+                ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy" decoding="async">`
                 : p.video
-                    ? `<video class="w-100 rounded mb-3" controls><source src="${p.video}" type="video/mp4"></video>` : "";
+                    ? `<video class="w-100 rounded mb-3" preload="none" controls poster="${p.thumbnail || ''}">
+            <source src="${p.video}" type="video/mp4">
+        </video>`
+                    : "";
+
+            const tags = (p.tags || [])
+                .map(
+                    (t) =>
+                        `<a href="#" class="tag-link badge bg-light border me-1" data-tag="${t.slug || t.name}">
+            # ${t.name}
+          </a>`
+                )
+                .join("");
+
+            const short =
+                p.content.length > 550
+                    ? `${p.content.slice(0, 550)}… <a href="/post/${p.slug}/" class="fw-semibold">ادامه مطلب</a>`
+                    : p.content;
 
             return `
-    <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4" data-id="${p.id}">
-      <header class="d-flex justify-content-between align-items-center mb-3">
-        <div class="d-flex align-items-center">
-          <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="logo">
-          <div>
-            <div class="fw-bold">عباس لطفی نسب</div>
-            <div class="small text-muted">${date}</div>
+      <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4 fade-in" data-id="${p.id}">
+        <header class="d-flex align-items-center mb-3 justify-content-between">
+          <div class="d-flex align-items-center">
+            <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="ALH">
+            <div>
+              <div class="fw-bold">عباس لطفی نسب</div>
+              <div class="small text-muted">${date}</div>
+            </div>
           </div>
+          <button class="share-btn more-link btn" data-url="${location.origin}/post/${p.slug}/">
+            <i class="fa-solid fa-share"></i>
+          </button>
+        </header>
+
+        <div class="fw-bold mb-2">${p.title}</div>
+        <p class="mb-4" dir="auto">${short}</p>
+        <div class="small mb-3">${tags}</div>
+        ${media}
+
+        <div class="post-actions d-flex gap-3 border-top pt-2 mt-3">
+          <button class="action-btn btn view-btn">
+            <i class="fa-solid fa-eye"></i> <span>${p.views}</span>
+          </button>
+          <button class="action-btn btn like-btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
+            ❤️</i> <span class="lcount">${prettyNum(p.likes)}</span>
+          </button>
+          <button class="action-btn btn comment-btn" data-id="${p.id}">
+            <i class="fa-solid fa-comment"></i> <span>${p.comments_count}</span>
+          </button>
         </div>
-        <button class="btn share-btn" data-url="${location.origin}/post/?post=${p.slug}">
-          <i class="fa-solid fa-share"></i>
-        </button>
-      </header>
 
-      <div class="fw-bold mb-2">${p.title}</div>
-      <p class="mb-4">${p.content}</p>
-      ${media}
-
-      <div class="post-actions d-flex gap-3 border-top pt-2 mt-3">
-        <button class="btn like-btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
-          ❤️ <span class="lcount">${prettyNum(p.likes)}</span>
-        </button>
-        <span class="small text-muted"><i class="fa-solid fa-eye"></i> ${p.views}</span>
-      </div>
-
-      <div class="comments mt-4" id="comments-${p.id}">
+        <div class="comments mt-4" id="comments-${p.id}">
         <h6 class="fw-bold mb-3">نظرات کاربران</h6>
         <div class="comments-list small mb-3 text-muted" id="list-${p.id}">در حال بارگذاری...</div>
         <button class="btn btn-outline-teal btn-sm w-100 d-none" id="loadmore-${p.id}">مشاهده بیشتر</button>
@@ -125,51 +176,92 @@
           <button class="btn btn-primary px-3">ارسال</button>
         </form>
       </div>
-    </article>`;
+
+      </article>`;
         };
 
-        // --- Fetch Posts ---
-        async function fetchPosts() {
-            if (loading) return;
+        // ---- Fetch Posts ----
+        async function fetchMore() {
+            if (loading || !nextUrl) return;
             loading = true;
-            spinner.classList.remove("d-none");
-            const url = nextUrl || API_POSTS + (openSlug ? `?slug=${openSlug}` : "");
+            showSpinner(true);
+            abortCtrl?.abort();
+            abortCtrl = new AbortController();
+
             try {
-                const res = await fetch(url);
+                const res = await fetch(nextUrl, {signal: abortCtrl.signal});
                 const data = await res.json();
                 nextUrl = data.next || null;
-                const html = (data.results || []).map(renderPost).join("");
+
+                document.querySelectorAll(".skeleton").forEach((el) => el.remove());
+                const html = (data.results || []).map(renderPostCard).join("");
                 feedEl.insertAdjacentHTML("beforeend", html);
-                bindPostActions(data.results || []);
-            } catch {
-                feedEl.innerHTML = `<div class="text-danger text-center py-5">خطا در دریافت پست‌ها ❌</div>`;
+                bindActions();
+
+                // اگر slug خاصی داریم
+                if (openSlug) {
+                    const post = data.results.find((p) => p.slug === openSlug);
+                    if (post) openPopup(post);
+                    openSlug = "";
+                }
+            } catch (e) {
+                console.warn("Fetch error:", e);
+                showToast("خطا در دریافت پست‌ها ❌");
             } finally {
-                spinner.classList.add("d-none");
                 loading = false;
+                showSpinner(false);
+                sentinel.style.opacity = nextUrl ? 1 : 0;
             }
         }
 
-        // --- Bind actions (likes, share, comments) ---
-        function bindPostActions(posts) {
-            posts.forEach(p => loadComments(p.id));
-
-            document.querySelectorAll(".like-btn:not([data-bound])").forEach(btn => {
+        // ---- Bind Actions ----
+        function bindActions() {
+            document.querySelectorAll(".like-btn:not([data-bound])").forEach((btn) => {
                 btn.dataset.bound = "1";
                 btn.addEventListener("click", async () => {
                     const id = btn.dataset.id;
-                    const res = await fetch(`${API_POSTS}${id}/like/`, {method: "POST"});
+                    const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
                     const data = await res.json();
-                    btn.querySelector(".lcount").textContent = prettyNum(data.likes);
-                    btn.classList.toggle("liked", data.liked);
+                    if (data.likes !== undefined) {
+                        btn.querySelector(".lcount").textContent = prettyNum(data.likes);
+                        btn.classList.toggle("liked", data.liked);
+                    }
                 });
             });
 
-            document.querySelectorAll(".share-btn:not([data-bound])").forEach(btn => {
+            document.querySelectorAll(".share-btn").forEach(btn => {
+                if (btn.dataset.bound) return;
                 btn.dataset.bound = "1";
+
                 btn.addEventListener("click", async e => {
                     e.preventDefault();
-                    await navigator.clipboard.writeText(btn.dataset.url);
-                    showToast("لینک کپی شد ✅");
+                    try {
+                        await navigator.clipboard.writeText(btn.dataset.url);
+                        showToast("لینک کپی شد ✅");
+                    } catch {
+                    }
+                });
+            });
+
+
+            document.querySelectorAll(".tag-link:not([data-bound])").forEach((a) => {
+                a.dataset.bound = "1";
+                a.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    activeTag = a.dataset.tag;
+                    updateUrl();
+                    resetAndFetch();
+                });
+            });
+
+            document.querySelectorAll(".comment-btn:not([data-bound])").forEach((btn) => {
+                btn.dataset.bound = "1";
+                btn.addEventListener("click", async () => {
+                    const id = btn.dataset.id;
+                    const res = await fetch(`${API_BASE}${id}/`);
+                    const post = await res.json();
+                    await loadComments(post.id)
+                    history.pushState({}, "", `/post/${post.slug}/`);
                 });
             });
 
@@ -197,7 +289,6 @@
             });
         }
 
-        // --- Comments ---
         async function loadComments(postId, page = 1) {
             const list = document.getElementById(`list-${postId}`);
             const moreBtn = document.getElementById(`loadmore-${postId}`);
@@ -229,8 +320,30 @@
             }
         }
 
-        // --- Init ---
-        fetchPosts();
+        // ---- URL & Scroll ----
+        function updateUrl() {
+            const params = new URLSearchParams();
+            if (activeTag) params.set("tag", activeTag);
+            if (activeQuery) params.set("q", activeQuery);
+            if (activeDate) params.set("date", activeDate);
+            history.replaceState({}, "", params.toString() ? `/post/?${params}` : "/post/");
+        }
+
+        function resetAndFetch() {
+            feedEl.innerHTML = renderSkeleton();
+            nextUrl = buildApiUrl();
+            fetchMore();
+        }
+
+        // ---- Infinite Scroll ----
+        const io = new IntersectionObserver(
+            (entries) => entries.forEach((e) => e.isIntersecting && fetchMore()),
+            {rootMargin: "600px"}
+        );
+        io.observe(sentinel);
+
+        // ---- Init ----
+        resetAndFetch();
     })();
 </script>
 
