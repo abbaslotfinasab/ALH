@@ -782,8 +782,8 @@ body {
 
 }
 
-.action-btn.view-btn{
-    cursor: default!important;
+.action-btn.view-btn {
+    cursor: default !important;
 }
 
 .action-btn.like-btn i {
@@ -798,19 +798,20 @@ body {
     color: #adb5bd;
 }
 
-.action-btn.like-btn:hover i{
+.action-btn.like-btn:hover i {
     color: #dc3545 !important;
 }
 
-.action-btn.like-btn:hover{
-    border-color: transparent ;
+.action-btn.like-btn:hover {
+    border-color: transparent;
 }
 
-.action-btn.comment-btn:hover{
-    border-color: transparent ;
+.action-btn.comment-btn:hover {
+    border-color: transparent;
 }
+
 .action-btn.like-btn.liked i {
-  color: #dc3545; /* قرمز دائمی */
+    color: #dc3545; /* قرمز دائمی */
 }
 
 
@@ -857,125 +858,145 @@ pre {
 }
 
 .tag-link {
-    color: #003c70!important;
+    color: #003c70 !important;
 }
 
 .post-popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1050;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
 }
 
 .post-popup .popup-content {
-  background: #fff;
-  max-height: 90vh;
-  overflow: hidden;
+    background: #fff;
+    max-height: 90vh;
+    overflow: hidden;
 }
 
 .post-popup .popup-media {
-  flex: 1;
-  max-width: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+    flex: 1;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .post-popup .popup-details {
-  flex-shrink: 0;
-  overflow-y: auto;
+    flex-shrink: 0;
+    overflow-y: auto;
 }
 
 /* fade-in cards */
 .fade-in {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeUp .4s ease forwards;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp .4s ease forwards;
 }
+
 @keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* popup animation */
 #postPopup {
-  opacity: 0;
-  transition: opacity .3s ease;
+    opacity: 0;
+    transition: opacity .3s ease;
 }
+
 #postPopup.show {
-  opacity: 1;
+    opacity: 1;
 }
 
 /* toast animation */
 #toast {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  background: #22c7b7;
-  color: white;
-  padding: .6rem 1.2rem;
-  border-radius: .75rem;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all .3s ease;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background: #22c7b7;
+    color: white;
+    padding: .6rem 1.2rem;
+    border-radius: .75rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all .3s ease;
 }
+
 #toast.show {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #commentPopup {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  opacity: 0;
-  transition: opacity .3s ease;
-  backdrop-filter: blur(3px);
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity .3s ease;
+    backdrop-filter: blur(3px);
 }
-#commentPopup.show { opacity: 1; }
+
+#commentPopup.show {
+    opacity: 1;
+}
+
 #commentPopup .popup-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
 }
+
 #commentPopup .popup-box {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
-  animation: slideUp .3s ease forwards;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideUp .3s ease forwards;
 }
+
 @keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
+
 .comment-item {
-  background: #f8fafc;
-  transition: background .2s;
+    background: #f8fafc;
+    transition: background .2s;
 }
+
 .comment-item:hover {
-  background: #eef9f8;
+    background: #eef9f8;
 }
+
 .reply-btn {
-  color: #22c7b7 !important;
+    color: #22c7b7 !important;
 }
 
 #toast {
-  z-index: 9999 !important;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+    z-index: 9999 !important;
+    color: #003c70;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
+
 #toast.show {
-  opacity: 1;
+    opacity: 1;
 }
