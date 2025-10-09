@@ -314,7 +314,7 @@
       <h5>${post.title}</h5>
       <p>${post.content}</p>
       <div class="small text-muted">${date}</div>
-      <button class="action-btn btn like-btn mt-3 ${p.liked ? "liked" : ""}"  data-id="${post.id}">
+      <button class="action-btn btn like-btn mt-3 ${post.liked ? "liked" : ""}"  data-id="${post.id}">
         ❤️ ${prettyNum(post.likes)}
       </button>
     `;
