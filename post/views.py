@@ -13,7 +13,9 @@ from .permissions import IsStaffOrReadOnly
 
 def feed(request, slug=None):
     tags = Tag.objects.all().order_by("name")
-    context = {"tags": tags}
+    posts = Post.objects.filter(is_published=True).order_by('-created_at')
+
+    context = {"tags": tags, 'posts': posts}
 
     if slug:
         post = get_object_or_404(Post, slug=slug, is_published=True)
