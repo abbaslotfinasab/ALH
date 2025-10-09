@@ -68,6 +68,11 @@
         let loading = false;
         let abortCtrl = null;
 
+        let activeTag = "";
+        let activeQuery = "";
+        let activeDate = "";
+        let openSlug = new URLSearchParams(location.search).get("post") || "";
+
 
         // ---- Helpers ----
         window.showToast = function (msg) {
