@@ -28,7 +28,7 @@
                     <!-- تگ‌ها -->
                     <div class="small mb-3">
                         {% for tag in post.tags.all %}
-                        <a href="{% url 'post_list' %}?tag={{ tag.slug }}" class="badge bg-light border me-1"># {{
+                        <a href="{% url 'post:feed-view' %}?tag={{ tag.slug }}" class="badge bg-light border me-1"># {{
                             tag.name }}</a>
                         {% endfor %}
                     </div>
