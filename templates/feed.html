@@ -171,16 +171,14 @@
             <i class="fa-solid fa-comment"></i> <span>${p.comments_count}</span>
           </button>
         </div>
-
-        <div class="comments mt-4" id="comments-${p.id}">
-        <h6 class="fw-bold mb-3">نظرات کاربران</h6>
-        <div class="comments-list small mb-3 text-muted" id="list-${p.id}">در حال بارگذاری...</div>
-        <button class="btn btn-outline-teal btn-sm w-100 d-none" id="loadmore-${p.id}">مشاهده بیشتر</button>
-        <form class="comment-form d-flex gap-2 mt-3" data-post="${p.id}">
-          <input type="text" class="form-control" placeholder="نظر شما..." required>
-          <button class="btn btn-primary px-3">ارسال</button>
-        </form>
-      </div>
+ <div class="comments mt-4 d-none" id="comments-${p.id}">
+            <form class="comment-form d-flex gap-2 mb-3" data-post="${p.id}">
+                <input type="text" class="form-control" placeholder="نظر شما..." required>
+                <button class="btn btn-primary px-3">ارسال</button>
+            </form>
+            <div class="comments-list small mb-3 text-muted" id="list-${p.id}"></div>
+            <button class="btn btn-outline-teal btn-sm w-100 d-none" id="loadmore-${p.id}">مشاهده بیشتر</button>
+        </div>
 
       </article>`;
         };

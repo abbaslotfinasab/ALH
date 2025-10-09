@@ -17,10 +17,26 @@ class CommentReadSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ["id", "post", "name", "text", "created_at"]
 
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(",")[0].strip()
+    else:
+        ip = request.META.get("REMOTE_ADDR")
+    return ip
+
 class CommentWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ["post", "name", "text", "is_approved"]
+        fields = ["post", "text"]  # 👈 name رو از ورودی حذف کن چون خودمون تنظیمش می‌کنیم
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        ip = get_client_ip(request)
+        validated_data["name"] = ip
+        return super().create(validated_data)
+
 
 class PostReadSerializer(serializers.ModelSerializer):
     tags = TagReadSerializer(many=True, read_only=True)
