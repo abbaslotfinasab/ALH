@@ -804,7 +804,7 @@ body {
 
 .action-btn.like-btn:hover {
     border-color: transparent;
-    color: white!important;
+    color: white !important;
     background-color: #dc3545 !important;
 
 }
@@ -814,8 +814,9 @@ body {
     border-color: transparent;
 }
 
-.action-btn.like-btn.liked i {
-    color: #dc3545; /* قرمز دائمی */
+.action-btn.like-btn.liked {
+    color: white !important;
+    background-color: #dc3545 !important;
 }
 
 
