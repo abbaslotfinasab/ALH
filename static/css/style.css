@@ -992,7 +992,7 @@ pre {
 
 #toast {
     z-index: 9999 !important;
-    color: #003c70;
+    color: #003c70!important;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
