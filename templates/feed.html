@@ -1,354 +1,72 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="feed-section py-5">
-    <div class="container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
 
-        <!-- Search -->
-        <div class="feed-search bg-transparent">
-            <div class="search-wrap shadow-sm rounded-4 p-2 p-md-3">
-                <form class="row g-2 align-items-center" role="search" onsubmit="return false;">
-                    <div class="col-12 col-md">
-                        <div class="search-input d-flex align-items-center gap-2 px-3 py-2 rounded-3">
-                            <i class="fa-solid fa-magnifying-glass search-ico"></i>
-                            <input id="qInput" type="search" inputmode="search" autocomplete="off"
-                                   class="form-control border-0 bg-transparent"
-                                   placeholder="جستجو بین عنوان و متن پست‌ها…">
-                            <button id="clearSearch" class="btn btn-clear d-none" type="button"
-                                    aria-label="پاک کردن جستجو">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-auto">
-                        <div class="date-chip d-flex align-items-center gap-2 px-3 py-2 rounded-3">
-                            <i class="fa-regular fa-calendar"></i>
-                            <input id="dateInput" type="date"
-                                   class="form-control form-control-sm border-0 bg-transparent">
-                            <button id="clearDate" class="btn btn-clear" type="button" aria-label="پاک کردن تاریخ">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+        {% for post in posts %}
+        <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4">
+          <header class="d-flex align-items-center mb-3 justify-content-between">
+            <div class="d-flex align-items-center">
+              <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="ALH">
+              <div>
+                <div class="fw-bold">عباس لطفی نسب</div>
+                <div class="small text-muted">{{ post.created_at|date:"Y/m/d H:i" }}</div>
+              </div>
             </div>
-        </div>
+            <button class="share-btn btn" data-url="{{ request.build_absolute_uri }}/post/{{ post.slug }}/">
+              <i class="fa-solid fa-share"></i>
+            </button>
+          </header>
 
-        <!-- Feed -->
-        <div class="row justify-content-center mt-4">
-            <div class="col-lg-8">
-                <div id="feed"></div>
+          <div class="fw-bold mb-2">{{ post.title }}</div>
+          <p class="mb-4" dir="auto">{{ post.content|truncatechars:550|safe }}</p>
 
-                <div id="spinner" class="text-center py-4 d-none">
-                    <div class="spinner-border text-success" role="status"></div>
-                </div>
+          {% if post.image %}
+            <img src="{{ post.image.url }}" class="img-fluid rounded mb-3" alt="{{ post.title }}">
+          {% elif post.video %}
+            <video class="w-100 rounded mb-3" controls>
+              <source src="{{ post.video.url }}" type="video/mp4">
+            </video>
+          {% endif %}
 
-                <div id="sentinel" class="py-4 text-center text-muted small">در حال بارگذاری…</div>
-            </div>
-        </div>
+          <div class="post-actions d-flex gap-3 border-top pt-2 mt-3">
+            <button class="action-btn btn view-btn" disabled>
+              <i class="fa-solid fa-eye"></i> <span>{{ post.views }}</span>
+            </button>
 
-        <!-- Toast -->
-        <div id="toast" class="position-fixed bottom-0 end-0 m-4 bg-white px-3 py-2 rounded-3 d-none shadow">
-            کپی شد ✅
-        </div>
+            <button
+              class="action-btn btn like-btn {% if post.user_liked %}liked{% endif %}"
+              data-id="{{ post.id }}">
+              ❤️ <span class="lcount">{{ post.likes }}</span>
+            </button>
+          </div>
+        </article>
+        {% empty %}
+          <p class="text-center text-muted">هیچ پستی پیدا نشد 😌</p>
+        {% endfor %}
+
+      </div>
     </div>
+  </div>
 </section>
 
 <script>
-    (function () {
-        const API_BASE = "/post/api/posts/";
-        const API_COMMENTS = "/post/api/comments/";
-        const feedEl = document.getElementById("feed");
-        const sentinel = document.getElementById("sentinel");
-        const spinner = document.getElementById("spinner");
-        const toast = document.getElementById("toast");
+document.querySelectorAll('.like-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const id = btn.dataset.id;
+    const res = await fetch(`/post/api/posts/${id}/like/`, {method: 'POST'});
+    const data = await res.json();
 
-
-        // ---- State ----
-        let nextUrl = null;
-        let loading = false;
-        let abortCtrl = null;
-
-        let activeTag = "";
-        let activeQuery = "";
-        let activeDate = "";
-        let openSlug = new URLSearchParams(location.search).get("post") || "";
-
-
-        // ---- Helpers ----
-        window.showToast = function (msg) {
-            const toast = document.getElementById("toast");
-            toast.textContent = msg;
-            toast.classList.remove("d-none");
-            toast.classList.add("show");
-            setTimeout(() => {
-                toast.classList.remove("show");
-                setTimeout(() => toast.classList.add("d-none"), 300);
-            }, 1500);
-        };
-
-
-        const showSpinner = (state) => spinner.classList.toggle("d-none", !state);
-
-        const prettyNum = (num) =>
-            num > 999999 ? (num / 1e6).toFixed(1) + "M"
-                : num > 999 ? (num / 1e3).toFixed(1) + "K"
-                    : num;
-
-        const buildApiUrl = (pageUrl = null) => {
-            if (pageUrl) return pageUrl;
-            const params = new URLSearchParams();
-            if (activeTag) params.set("tags__slug", activeTag);
-            if (activeQuery) params.set("search", activeQuery);
-            if (activeDate) params.set("created_at__date", activeDate);
-            return params.toString() ? `${API_BASE}?${params}` : API_BASE;
-        };
-
-        // ---- Templates ----
-        const renderSkeleton = () =>
-            `<div class="skeleton rounded-4 mb-4 p-4 bg-white shadow-sm">
-      <div class="placeholder-glow mb-3">
-        <div class="placeholder col-7"></div>
-        <div class="placeholder col-4"></div>
-      </div>
-      <div class="placeholder-glow">
-        <div class="placeholder col-12 mb-2"></div>
-        <div class="placeholder col-10"></div>
-      </div>
-    </div>`;
-
-        const renderPostCard = (p) => {
-            const date = new Date(p.created_at).toLocaleString("fa-IR");
-            const media = p.image
-                ? `<img src="${p.image}" class="img-fluid rounded mb-3" alt="${p.title}" loading="lazy" decoding="async">`
-                : p.video
-                    ? `<video class="w-100 rounded mb-3" preload="none" controls poster="${p.thumbnail || ''}">
-            <source src="${p.video}" type="video/mp4">
-        </video>`
-                    : "";
-
-            const tags = (p.tags || [])
-                .map(
-                    (t) =>
-                        `<a href="#" class="tag-link badge bg-light border me-1" data-tag="${t.slug || t.name}">
-            # ${t.name}
-          </a>`
-                )
-                .join("");
-
-            const short =
-                p.content.length > 550
-                    ? `${p.content.slice(0, 550)}… <a href="/post/${p.slug}/" class="fw-semibold">ادامه مطلب</a>`
-                    : p.content;
-
-            return `
-      <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4 fade-in" data-id="${p.id}">
-        <header class="d-flex align-items-center mb-3 justify-content-between">
-          <div class="d-flex align-items-center">
-            <img src="/static/images/logo.png" width="40" height="40" class="rounded-circle ms-2" alt="ALH">
-            <div>
-              <div class="fw-bold">عباس لطفی نسب</div>
-              <div class="small text-muted">${date}</div>
-            </div>
-          </div>
-          <button class="share-btn more-link btn" data-url="${location.origin}/post/${p.slug}/">
-            <i class="fa-solid fa-share"></i>
-          </button>
-        </header>
-
-        <div class="fw-bold mb-2">${p.title}</div>
-        <p class="mb-4" dir="auto">${short}</p>
-        <div class="small mb-3">${tags}</div>
-        ${media}
-
-        <div class="post-actions d-flex gap-3 border-top pt-2 mt-3">
-          <button class="action-btn btn view-btn">
-            <i class="fa-solid fa-eye"></i> <span>${p.views}</span>
-          </button>
-          <button class="action-btn btn like-btn ${p.liked ? "liked" : ""}" data-id="${p.id}">
-            ❤️</i> <span class="lcount">${prettyNum(p.likes)}</span>
-          </button>
-          <button class="action-btn btn comment-btn" data-id="${p.id}">
-            <i class="fa-solid fa-comment"></i> <span>${p.comments_count}</span>
-          </button>
-        </div>
- <div class="comments mt-4 d-none" id="comments-${p.id}">
-            <form class="comment-form d-flex gap-2 mb-3" data-post="${p.id}">
-                <input type="text" class="form-control" placeholder="نظر شما..." required>
-                <button class="btn btn-primary px-3">ارسال</button>
-            </form>
-            <div class="comments-list small mb-3 text-muted" id="list-${p.id}"></div>
-            <button class="btn btn-outline-teal btn-sm w-100 d-none" id="loadmore-${p.id}">مشاهده بیشتر</button>
-        </div>
-
-      </article>`;
-        };
-
-        // ---- Fetch Posts ----
-        async function fetchMore() {
-            if (loading || !nextUrl) return;
-            loading = true;
-            showSpinner(true);
-            abortCtrl?.abort();
-            abortCtrl = new AbortController();
-
-            try {
-                const res = await fetch(nextUrl, {signal: abortCtrl.signal});
-                const data = await res.json();
-                nextUrl = data.next || null;
-
-                document.querySelectorAll(".skeleton").forEach((el) => el.remove());
-                const html = (data.results || []).map(renderPostCard).join("");
-                feedEl.insertAdjacentHTML("beforeend", html);
-                bindActions();
-
-                // اگر slug خاصی داریم
-                if (openSlug) {
-                    const post = data.results.find((p) => p.slug === openSlug);
-                    if (post) openPopup(post);
-                    openSlug = "";
-                }
-            } catch (e) {
-                console.warn("Fetch error:", e);
-                showToast("خطا در دریافت پست‌ها ❌");
-            } finally {
-                loading = false;
-                showSpinner(false);
-                sentinel.style.opacity = nextUrl ? 1 : 0;
-            }
-        }
-
-        // ---- Bind Actions ----
-        function bindActions() {
-            document.querySelectorAll(".like-btn:not([data-bound])").forEach((btn) => {
-                btn.dataset.bound = "1";
-                btn.addEventListener("click", async () => {
-                    const id = btn.dataset.id;
-                    const res = await fetch(`${API_BASE}${id}/like/`, {method: "POST"});
-                    const data = await res.json();
-                    if (data.likes !== undefined) {
-                        btn.querySelector(".lcount").textContent = prettyNum(data.likes);
-                        btn.classList.toggle("liked", data.liked);
-                    }
-                });
-            });
-
-            document.querySelectorAll(".share-btn").forEach(btn => {
-                if (btn.dataset.bound) return;
-                btn.dataset.bound = "1";
-
-                btn.addEventListener("click", async e => {
-                    e.preventDefault();
-                    try {
-                        await navigator.clipboard.writeText(btn.dataset.url);
-                        showToast("لینک کپی شد ✅");
-                    } catch {
-                    }
-                });
-            });
-
-
-            document.querySelectorAll(".tag-link:not([data-bound])").forEach((a) => {
-                a.dataset.bound = "1";
-                a.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    activeTag = a.dataset.tag;
-                    updateUrl();
-                    resetAndFetch();
-                });
-            });
-
-            document.querySelectorAll(".comment-btn:not([data-bound])").forEach((btn) => {
-                btn.dataset.bound = "1";
-                btn.addEventListener("click", async () => {
-                    const id = btn.dataset.id;
-                    const res = await fetch(`${API_BASE}${id}/`);
-                    const post = await res.json();
-                    await loadComments(post.id)
-                    history.pushState({}, "", `/post/${post.slug}/`);
-                });
-            });
-
-            document.querySelectorAll(".comment-form:not([data-bound])").forEach(form => {
-                form.dataset.bound = "1";
-                form.addEventListener("submit", async e => {
-                    e.preventDefault();
-                    const postId = form.dataset.post;
-                    const input = form.querySelector("input");
-                    const text = input.value.trim();
-                    if (!text) return;
-                    input.disabled = true;
-                    try {
-                        await fetch(API_COMMENTS, {
-                            method: "POST",
-                            headers: {"Content-Type": "application/json"},
-                            body: JSON.stringify({post: postId, text})
-                        });
-                        input.value = "";
-                        loadComments(postId);
-                    } catch {
-                    }
-                    input.disabled = false;
-                });
-            });
-        }
-
-        async function loadComments(postId, page = 1) {
-            const list = document.getElementById(`list-${postId}`);
-            const moreBtn = document.getElementById(`loadmore-${postId}`);
-            try {
-                const res = await fetch(`${API_COMMENTS}?post=${postId}&page=${page}`);
-                const data = await res.json();
-                const comments = data.results || [];
-                if (!comments.length) {
-                    list.innerHTML = `<div class="text-muted small">نظری ثبت نشده 😌</div>`;
-                    return;
-                }
-                const html = comments
-                    .slice(0, 5)
-                    .map(c => `<div class="border rounded-3 p-2 mb-2"><div class="fw-bold small">${c.user_name || "کاربر مهمان"}</div><p class="mb-1">${c.text}</p></div>`)
-                    .join("");
-                list.innerHTML = html;
-                if (comments.length > 5) {
-                    moreBtn.classList.remove("d-none");
-                    moreBtn.onclick = () => {
-                        const extra = comments.slice(5)
-                            .map(c => `<div class="border rounded-3 p-2 mb-2"><div class="fw-bold small">${c.user_name || "کاربر مهمان"}</div><p class="mb-1">${c.text}</p></div>`)
-                            .join("");
-                        list.insertAdjacentHTML("beforeend", extra);
-                        moreBtn.remove();
-                    };
-                }
-            } catch {
-                list.innerHTML = `<div class="text-danger small">خطا در بارگذاری نظرات ❌</div>`;
-            }
-        }
-
-        // ---- URL & Scroll ----
-        function updateUrl() {
-            const params = new URLSearchParams();
-            if (activeTag) params.set("tag", activeTag);
-            if (activeQuery) params.set("q", activeQuery);
-            if (activeDate) params.set("date", activeDate);
-            history.replaceState({}, "", params.toString() ? `/post/?${params}` : "/post/");
-        }
-
-        function resetAndFetch() {
-            feedEl.innerHTML = renderSkeleton();
-            nextUrl = buildApiUrl();
-            fetchMore();
-        }
-
-        // ---- Infinite Scroll ----
-        const io = new IntersectionObserver(
-            (entries) => entries.forEach((e) => e.isIntersecting && fetchMore()),
-            {rootMargin: "600px"}
-        );
-        io.observe(sentinel);
-
-        // ---- Init ----
-        resetAndFetch();
-    })();
+    if (data.likes !== undefined) {
+      btn.querySelector('.lcount').textContent = data.likes;
+      btn.classList.toggle('liked', data.liked);
+    }
+  });
+});
 </script>
+
 
 
 {% endblock %}
