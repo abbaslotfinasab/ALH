@@ -15,7 +15,7 @@
                 <div class="small text-muted">{{ post.created_at|date:"Y/m/d H:i" }}</div>
               </div>
             </div>
-            <button class="share-btn btn" data-url="{{ request.build_absolute_uri }}/post/{{ post.slug }}/">
+            <button class="action-btn share-btn btn" data-url="{{ request.build_absolute_uri }}/post/{{ post.slug }}/">
               <i class="fa-solid fa-share"></i>
             </button>
           </header>
