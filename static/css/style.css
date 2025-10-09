@@ -805,7 +805,8 @@ body {
 
 .action-btn.like-btn:hover {
     border-color: transparent;
-    background: #a94442;
+    background-color: #a94442!important;
+
 }
 
 
