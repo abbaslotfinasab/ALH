@@ -799,12 +799,15 @@ body {
 }
 
 .action-btn.like-btn:hover i {
-    color: #dc3545 !important;
+    color: #e63946 !important;
+    transition: 0.2s;
 }
 
 .action-btn.like-btn:hover {
     border-color: transparent;
+    background: #a94442;
 }
+
 
 .action-btn.comment-btn:hover {
     border-color: transparent;
@@ -920,11 +923,10 @@ pre {
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-    background: #22c7b7;
-    color: white;
     padding: .6rem 1.2rem;
     border-radius: .75rem;
     opacity: 0;
+    z-index: 9999 !important;
     transform: translateY(20px);
     transition: all .3s ease;
 }
@@ -988,12 +990,6 @@ pre {
 
 .reply-btn {
     color: #22c7b7 !important;
-}
-
-#toast {
-    z-index: 9999 !important;
-    opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
 #toast.show {
