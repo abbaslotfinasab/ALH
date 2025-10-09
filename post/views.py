@@ -95,7 +95,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsStaffOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = {"post": ["exact"], "is_approved": ["exact"]}
+    filterset_fields = {"post": ["exact"]}
     search_fields = ["name", "text"]
     ordering_fields = ["created_at"]
     ordering = ["-created_at"]
@@ -104,7 +104,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         qs = Comment.objects.select_related("post")
         # فقط کامنت‌های تأییدشده برای کاربران عادی
         if self.request.method == "GET":
-            return qs.filter(is_approved=True)
+            return qs.all()
         return qs
 
     def get_serializer_class(self):
