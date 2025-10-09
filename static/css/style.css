@@ -799,13 +799,13 @@ body {
 }
 
 .action-btn.like-btn:hover i {
-    color: #e63946 !important;
+    color: #a5202c !important;
     transition: 0.2s;
 }
 
 .action-btn.like-btn:hover {
     border-color: transparent;
-    background-color: #dc3545!important;
+    background-color: #e63946!important;
 
 }
 
