@@ -33,7 +33,7 @@
                 <!-- Tags Filter -->
                 <div class="tags-list mt-3" style="gap: 8px">
                     {% for tag in tags %}
-                    <a href="#" class="tag-btn me-1 mb-2" data-tag="{{ tag.slug }}">
+                    <a href="#" class="tag-link tag-btn me-1 mb-2" data-tag="{{ tag.slug }}">
                         {{ tag.slug }}
                     </a>
                     {% endfor %}
@@ -50,7 +50,7 @@
                 <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4"
                          data-title="{{ post.title|lower }}"
                          data-content="{{ post.content|striptags|lower }}"
-                         data-tags="{{ post.tags.all|join:',' }}"
+                         data-tags="{% for tag in post.tags.all %}{{ tag.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
                          data-date="{{ post.created_at|date:'Y-m-d' }}">
 
                     <header class="d-flex align-items-center mb-3 justify-content-between">
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         <button class="action-btn share-btn btn"
-                                data-url="{{ request.build_absolute_uri }}/post/{{ post.slug }}/">
+                                data-url="{{ request.build_absolute_uri|slice:':-1' }}post/{{ post.slug }}/">
                             <i class="fa-solid fa-share"></i>
                         </button>
                     </header>
@@ -75,7 +75,7 @@
                     <div class="tags-list small mb-3" style="gap: 2px">
                         {% for tag in post.tags.all %}
                         <a href="{% url 'post:feed-view' %}?tag={{ tag.slug }}"
-                           class="tag-pill">
+                           class="tag-pill tag-link">
                             #{{tag.slug }}
                         </a>
                         {% endfor %}
@@ -123,6 +123,23 @@
             }
         });
     });
+
+    document.querySelectorAll('.share-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const url = btn.dataset.url;
+            try {
+                await navigator.share({
+                    title: document.title,
+                    text: "بیا این پست رو ببین 👇",
+                    url: url
+                });
+            } catch (err) {
+                navigator.clipboard.writeText(url);
+                alert("📋 لینک پست کپی شد!");
+            }
+        });
+    });
+
 </script>
 
 <script>
