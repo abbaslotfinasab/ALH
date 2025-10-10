@@ -103,6 +103,31 @@ class PostViewSet(viewsets.ModelViewSet):
             request.session["viewed_posts"] = viewed
         return Response({"views": post.views})
 
+    @action(detail=True, methods=["POST"])
+    def add_view(self, request, pk=None):
+        post = self.get_object()
+        ip = get_client_ip(request)
+
+        # جلوگیری از تکرار ویو از یه آی‌پی
+        viewed_key = f"viewed_{ip}_{post.id}"
+        from django.core.cache import cache
+
+        if not cache.get(viewed_key):
+            post.views = F('views') + 1
+            post.save(update_fields=["views"])
+            post.refresh_from_db()
+            cache.set(viewed_key, True, 60 * 60 * 6)  # هر آی‌پی هر ۶ ساعت فقط ۱ بار
+        return Response({"views": post.views})
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(",")[0]
+    else:
+        ip = request.META.get("REMOTE_ADDR")
+    return ip
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsStaffOrReadOnly]
