@@ -869,7 +869,7 @@ pre {
 
 .tag-link:hover {
     color: white!important;
-    background: transparent;
+    background: transparent!important;
     border: none ;
 
 }
