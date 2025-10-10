@@ -75,7 +75,7 @@
                     <div class="tags-list small mb-3">
                         {% for tag in post.tags.all %}
                         <a href="{% url 'post:feed-view' %}?tag={{ tag.slug }}"
-                           class="tag-btn me-1">
+                           class="tag-pill me-1">
                             #{{tag.slug }}
                         </a>
                         {% endfor %}

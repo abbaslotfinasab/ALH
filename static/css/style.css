@@ -479,27 +479,6 @@ body {
     background: #f2f7fb;
 }
 
-/* pill تگ‌ها */
-.tag-pill {
-    background: #fff;
-    color: #0b3e54;
-    border: 1px solid #dbe7f3;
-    border-radius: 999px;
-    padding: .35rem .9rem;
-    font-weight: 600;
-}
-
-.tag-pill:hover {
-    background: #f1f6fb;
-}
-
-.tag-pill.active {
-    background: #003c70;
-    color: #fff;
-    border-color: #003c70;
-    box-shadow: 0 6px 16px rgba(0, 60, 112, .18);
-}
-
 /* 🤝 همکاری */
 .collab-hero {
     background: #f8fafc;
@@ -1029,8 +1008,29 @@ pre {
     transition: all 0.2s;
 }
 
+.tag-pill {
+    padding: 6px 12px;
+    display: inline-flex; /* flex اما اندازه‌ش به محتوای داخل */
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 400;
+    text-decoration: none!important;
+    border: 2px solid #003c70!important;
+    color: #003c70!important;
+    transition: all 0.2s;
+}
 
 
 .tag-btn:hover {
     border-color: transparent!important;
 }
+
+/* pill تگ‌ها */
+.tag-pill {
+    color: #003c70!important;
+    padding: .35rem .9rem;
+    font-weight: 600;
+}
+
