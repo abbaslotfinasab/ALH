@@ -15,14 +15,24 @@ def feed(request, slug=None):
     tags = Tag.objects.all().order_by("name")
     posts = Post.objects.filter(is_published=True).order_by('-created_at')
 
-    context = {"tags": tags, 'posts': posts}
+    # فیلتر تگ
+    tag_slug = request.GET.get("tag")
+    if tag_slug:
+        posts = posts.filter(tags__slug=tag_slug)
 
+    context = {
+        "tags": tags,
+        "posts": posts,
+        "active_tag": tag_slug
+    }
+
+    # اگر پست خاصی خواسته شده
     if slug:
         post = get_object_or_404(Post, slug=slug, is_published=True)
         context["open_slug"] = slug
+        context["posts"] = [post]  # فقط همون پست نمایش داده بشه
 
     return render(request, "feed.html", context)
-
 
 def detail(request, slug):
     post = get_object_or_404(Post.objects.prefetch_related("tags"), slug=slug, is_published=True)

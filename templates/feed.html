@@ -33,7 +33,9 @@
                 <!-- Tags Filter -->
                 <div class="tags-list mt-3" style="gap: 8px">
                     {% for tag in tags %}
-                    <a href="#" class="tag-link tag-btn me-1 mb-2" data-tag="{{ tag.slug }}">
+                    <a href="?tag={{ tag.slug }}"
+                       class="tag-link tag-btn me-1 mb-2 {% if tag.slug == active_tag %}bg-success text-white{% endif %}"
+                       data-tag="{{ tag.slug }}">
                         {{ tag.slug }}
                     </a>
                     {% endfor %}
@@ -63,9 +65,10 @@
                             </div>
                         </div>
                         <button class="action-btn share-btn btn"
-                                data-url="{{ request.build_absolute_uri|slice:':-1' }}post/{{ post.slug }}/">
+                                data-url="{{ request.build_absolute_uri|slice:':-1' }}{{ post.slug }}/">
                             <i class="fa-solid fa-share"></i>
                         </button>
+
                     </header>
 
                     <div class="fw-bold mb-2">{{ post.title }}</div>
@@ -130,15 +133,16 @@
             try {
                 await navigator.share({
                     title: document.title,
-                    text: "بیا این پست رو ببین 👇",
+                    text: "یه پست جالب از عباس 👇",
                     url: url
                 });
-            } catch (err) {
+            } catch {
                 navigator.clipboard.writeText(url);
                 alert("📋 لینک پست کپی شد!");
             }
         });
     });
+
 
 </script>
 
