@@ -1008,6 +1008,11 @@ pre {
     transition: all 0.2s;
 }
 
+
+.tag-btn:hover {
+    border-color: transparent!important;
+}
+
 .tag-pill {
     padding: 6px 12px;
     display: inline-flex; /* flex اما اندازه‌ش به محتوای داخل */
@@ -1017,20 +1022,6 @@ pre {
     cursor: pointer;
     font-weight: 400;
     text-decoration: none!important;
-    border: 2px solid #003c70!important;
     color: #003c70!important;
     transition: all 0.2s;
 }
-
-
-.tag-btn:hover {
-    border-color: transparent!important;
-}
-
-/* pill تگ‌ها */
-.tag-pill {
-    color: #003c70!important;
-    padding: .35rem .9rem;
-    font-weight: 600;
-}
-
