@@ -882,6 +882,14 @@ pre {
 
 }
 
+
+.tag-link.active:hover {
+    color: #003c70!important;
+    background: transparent;
+    border: none ;
+
+}
+
 .post-popup {
     position: fixed;
     inset: 0;
