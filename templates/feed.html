@@ -215,12 +215,19 @@
         tagLinks.forEach(tag => {
             tag.addEventListener("click", e => {
                 e.preventDefault();
-                activeTag = tag.dataset.tag;
-                tagLinks.forEach(t => t.classList.remove("bg-success", "text-white"));
-                tag.classList.add("bg-success", "text-white");
+                const selected = tag.dataset.tag;
+                if (activeTag === selected) {
+                    activeTag = "";
+                    tag.classList.remove("bg-success", "text-white");
+                } else {
+                    activeTag = selected;
+                    tagLinks.forEach(t => t.classList.remove("bg-success", "text-white"));
+                    tag.classList.add("bg-success", "text-white");
+                }
                 filterPosts();
             });
         });
+
     });
 </script>
 
