@@ -100,7 +100,7 @@
                         </button>
 
                         <button
-                                class="action-btn btn like-btn {% if post.user_liked %}liked{% endif %}"
+                                class="action-btn like-btn {% if post.id|stringformat:'s' in request.session.liked_posts %}liked{% elif post.liked %}liked{% endif %}"
                                 data-id="{{ post.id }}">
                             ❤️ <span class="lcount">{{ post.likes }}</span>
                         </button>
@@ -238,28 +238,28 @@
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const seenPosts = new Set(JSON.parse(localStorage.getItem("seenPosts") || "[]"));
+    document.addEventListener("DOMContentLoaded", () => {
+        const seenPosts = new Set(JSON.parse(localStorage.getItem("seenPosts") || "[]"));
 
-    document.querySelectorAll(".post-card").forEach(card => {
-        const id = card.dataset.id;
+        document.querySelectorAll(".post-card").forEach(card => {
+            const id = card.dataset.id;
 
-        // فقط اگه این آی‌پی قبلاً ندیده بود، یه بار ویو بزن
-        if (!seenPosts.has(id)) {
-            fetch(`/post/api/posts/${id}/add_view/`, { method: "POST" })
-                .then(res => res.json())
-                .then(data => {
-                    const viewBtn = card.querySelector(".view-btn span");
-                    if (data.views && viewBtn) {
-                        viewBtn.textContent = data.views;
-                    }
-                    seenPosts.add(id);
-                    localStorage.setItem("seenPosts", JSON.stringify([...seenPosts]));
-                })
-                .catch(err => console.error("Error updating view:", err));
-        }
+            // فقط اگه این آی‌پی قبلاً ندیده بود، یه بار ویو بزن
+            if (!seenPosts.has(id)) {
+                fetch(`/post/api/posts/${id}/add_view/`, {method: "POST"})
+                    .then(res => res.json())
+                    .then(data => {
+                        const viewBtn = card.querySelector(".view-btn span");
+                        if (data.views && viewBtn) {
+                            viewBtn.textContent = data.views;
+                        }
+                        seenPosts.add(id);
+                        localStorage.setItem("seenPosts", JSON.stringify([...seenPosts]));
+                    })
+                    .catch(err => console.error("Error updating view:", err));
+            }
+        });
     });
-});
 </script>
 
 {% endblock %}
