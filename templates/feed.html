@@ -34,7 +34,7 @@
                 <div class="tags-list mt-3" style="gap: 8px">
                     {% for tag in tags %}
                     <a href="?tag={{ tag.slug }}"
-                       class="tag-link tag-btn me-1 mb-2 {% if tag.slug == active_tag %}bg-success text-white{% endif %}"
+                       class="tag-link tag-btn me-1 mb-2 {% if tag.slug == active_tag %}active text-white{% endif %}"
                        data-tag="{{ tag.slug }}">
                         {{ tag.slug }}
                     </a>

@@ -856,6 +856,11 @@ pre {
     color: #003c70 !important;
 }
 
+.tag-link.active {
+    color: white;
+    background: #003c70;
+}
+
 .post-popup {
     position: fixed;
     inset: 0;
