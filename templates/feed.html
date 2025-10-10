@@ -222,11 +222,11 @@
                 const selected = tag.dataset.tag;
                 if (activeTag === selected) {
                     activeTag = "";
-                    tag.classList.remove("bg-success", "text-white");
+                    tag.classList.remove("active", "text-white");
                 } else {
                     activeTag = selected;
-                    tagLinks.forEach(t => t.classList.remove("bg-success", "text-white"));
-                    tag.classList.add("bg-success", "text-white");
+                    tagLinks.forEach(t => t.classList.remove("active", "text-white"));
+                    tag.classList.add("active", "text-white");
                 }
                 filterPosts();
             });
