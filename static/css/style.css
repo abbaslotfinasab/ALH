@@ -991,7 +991,6 @@ pre {
 .tags-list {
     display: flex;
     flex-wrap: wrap; /* اجازه بده وقتی عرض کم شد برن خط بعد */
-    gap: 8px; /* فاصله بین تگ‌ها */
 }
 
 .tag-btn {
