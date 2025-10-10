@@ -764,6 +764,10 @@ body {
     cursor: default !important;
 }
 
+.action-btn.like-btn {
+    background: transparent!important;
+}
+
 .action-btn.like-btn i {
     color: #adb5bd;
 }
