@@ -1015,7 +1015,7 @@ pre {
 .tag-pill {
     padding: 6px 12px;
     display: inline-flex; /* flex اما اندازه‌ش به محتوای داخل */
-    gap: 6px;
+    gap: 3px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
