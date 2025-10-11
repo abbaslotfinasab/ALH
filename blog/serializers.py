@@ -1,27 +1,17 @@
 from rest_framework import serializers
-from .models import BlogPost, Tag, BlogImage
+from .models import Blog
 
-class TagSerializer(serializers.ModelSerializer):
+
+class BlogSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Tag
-        fields = ["id", "name", "slug"]
-        read_only_fields = ["slug"]
-
-class BlogImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BlogImage
-        fields = ["id", "image", "caption"]
-
-class BlogPostSerializer(serializers.ModelSerializer):
-    gallery = BlogImageSerializer(many=True, read_only=True)
-    slug = serializers.CharField(read_only=True)
-
-    class Meta:
-        model = BlogPost
+        model = Blog
         fields = [
-            "id", "title", "slug", "excerpt", "content",
-            "cover", "tags", "gallery",
-            "views", "likes", "comments_count",
-            "is_published", "created_at", "updated_at"
+            "id",
+            "title",
+            "slug",
+            "content",
+            "image",
+            "meta_title",
+            "meta_description",
+            "meta_keywords",
         ]
-        read_only_fields = ["slug", "views", "likes", "comments_count", "created_at", "updated_at"]

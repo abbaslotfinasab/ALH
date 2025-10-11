@@ -1,74 +1,103 @@
-# api_views.py
-from rest_framework import viewsets, filters
-from rest_framework.decorators import action
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.response import Response
-from django.db.models import F
-from .models import BlogPost, Tag
-from .serializers import BlogPostSerializer, TagSerializer
+from django.db.models import Q
 from django.views.generic import ListView, DetailView
+from rest_framework import viewsets
+from rest_framework.generics import get_object_or_404
 
-class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = "page_size"
-    max_page_size = 50
-
-class BlogPostViewSet(viewsets.ModelViewSet):
-    queryset = BlogPost.objects.filter(is_published=True).prefetch_related("tags", "gallery")
-    serializer_class = BlogPostSerializer
-    pagination_class = StandardResultsSetPagination
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ["title", "excerpt", "content", "tags__name"]
-    ordering_fields = ["created_at", "views", "likes"]
-
-    @action(detail=True, methods=["post"])
-    def like(self, request, pk=None):
-        post = self.get_object()
-        post.likes = F("likes") + 1
-        post.save(update_fields=["likes"])
-        post.refresh_from_db()
-        return Response({"likes": post.likes})
-
-    @action(detail=True, methods=["post"])
-    def viewed(self, request, pk=None):
-        post = self.get_object()
-        post.views = F("views") + 1
-        post.save(update_fields=["views"])
-        post.refresh_from_db()
-        return Response({"views": post.views})
-
-class TagViewSet(viewsets.ModelViewSet):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+from blog.models import Blog
+from blog.serializers import BlogSerializer
 
 
-class BlogListView(ListView):
-    model = BlogPost
+# لیست مقالات
+class BlogPostListView(ListView):
+    model = Blog
     template_name = "blogs.html"
-    context_object_name = "posts"
-    paginate_by = 10
+    context_object_name = "blog_posts"
+    paginate_by = 10  # تعداد مقالات در هر صفحه
 
     def get_queryset(self):
-        qs = super().get_queryset().filter(is_published=True)
-        q = self.request.GET.get("q")
-        tag = self.request.GET.get("tag")
-        if q:
-            qs = qs.filter(title__icontains=q)  # ساده؛ یا از SearchFilter استفاده کن
-        if tag:
-            qs = qs.filter(tags__slug=tag)
-        return qs
+        queryset = Blog.objects.all().order_by("-published_date")
+        filters = Q()
+        author = self.request.GET.get("author")
+        search = self.request.GET.get("search")
 
-class BlogDetailView(DetailView):
-    model = BlogPost
+        if author:
+            filters &= Q(author__username__icontains=author)
+        if search:
+            filters &= Q(title__icontains=search)
+
+        return queryset.filter(filters)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_posts'] = Blog.objects.count()  # تعداد کل مقالات
+
+        return context
+
+
+# جزئیات مقاله
+class BlogPostDetailView(DetailView):
+    model = Blog
     template_name = "blogpost.html"
-    context_object_name = "post"
-    slug_field = "slug"
-    slug_url_kwarg = "slug"
+    context_object_name = "blog_post"
 
     def get_object(self, queryset=None):
-        obj = super().get_object(queryset=queryset)
-        # افزایش بازدید (آسان، با توجه به concurrency میشه atomic کرد)
-        obj.views = F('views') + 1
-        obj.save(update_fields=["views"])
-        obj.refresh_from_db()
-        return obj
+        slug = self.kwargs.get("slug")
+        return get_object_or_404(Blog, slug=slug, is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        page_title = self.get_page_title()  # عنوان صفحه
+        page_content = self.get_page_content()  # توصیف صفحه
+        page_image = self.get_page_image()
+
+        meta_title = self.get_meta_title()  # عنوان صفحه
+        meta_description = self.get_meta_description()  # توصیف صفحه
+        meta_keywords = self.get_meta_keywords()  # کلمات کلیدی
+        canonical_url = self.request.build_absolute_uri(self.request.path)
+
+        context['page_title'] = page_title
+        context['page_content'] = page_content
+        context['page_image'] = page_image
+
+        context['meta_title'] = meta_title
+        context['meta_description'] = meta_description
+        context['meta_keywords'] = meta_keywords
+        context['canonical_url'] = canonical_url
+
+        return context
+
+    def get_page_title(self):
+        # شما می‌توانید عنوان صفحه را بر اساس عنوان مقاله بسازید
+        blog_post = self.get_object()
+        return blog_post.title
+
+    def get_page_content(self):
+        # توصیف صفحه می‌تواند از محتوای مقاله گرفته شود
+        blog_post = self.get_object()
+        return blog_post.content  # یا هر فیلدی که توصیف کوتاهی از مقاله باشد
+
+    def get_page_image(self):
+        # کلمات کلیدی می‌تواند بر اساس دسته‌بندی یا برچسب‌های مقاله باشد
+        blog_post = self.get_object()
+        return blog_post.image  # اگر مقاله دسته‌بندی‌ها داشته باشد
+
+    def get_meta_title(self):
+        # شما می‌توانید عنوان صفحه را بر اساس عنوان مقاله بسازید
+        blog_post = self.get_object()
+        return blog_post.meta_title
+
+    def get_meta_description(self):
+        # توصیف صفحه می‌تواند از محتوای مقاله گرفته شود
+        blog_post = self.get_object()
+        return blog_post.meta_description  # یا هر فیلدی که توصیف کوتاهی از مقاله باشد
+
+    def get_meta_keywords(self):
+        # کلمات کلیدی می‌تواند بر اساس دسته‌بندی یا برچسب‌های مقاله باشد
+        blog_post = self.get_object()
+        return blog_post.meta_keywords  # اگر مقاله دسته‌بندی‌ها داشته باشد
+
+
+class BlogPostViewSet(viewsets.ModelViewSet):
+    queryset = Blog.objects.all().order_by('-published_date')  # لیست مقالات مرتب‌شده بر اساس تاریخ انتشار
+    serializer_class = BlogSerializer

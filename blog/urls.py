@@ -1,17 +1,16 @@
 from django.urls import path, include
-from .views import *
 from rest_framework.routers import DefaultRouter
+from .views import *
+
+app_name = 'blogs'
 
 router = DefaultRouter()
-router.register(r"posts", BlogPostViewSet, basename="api-posts")
-router.register(r"tags", TagViewSet, basename="api-tags")
-
-app_name = "blogs"
+router.register(r'blog', BlogPostViewSet, basename='blog')
 
 urlpatterns = [
-    # API
-    path("api/", include(router.urls)),
-    # Frontend
-    path("", BlogListView.as_view(), name="blogs_view"),
-    path("<slug:slug>/", BlogDetailView.as_view(), name="post_detail"),
+    path('', BlogPostListView.as_view(), name='blog-view'),  # صفحه اصلی
+    path('<slug:slug>/', BlogPostDetailView.as_view(), name='detail'),
+
+    path('api/', include(router.urls)),
+
 ]
