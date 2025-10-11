@@ -3,7 +3,7 @@ from .models import Blog
 
 
 class BlogReadSerializer(serializers.ModelSerializer):
-    meta_keywords = serializers.SerializerMethodField()
+    keywords = serializers.SerializerMethodField()
 
     class Meta:
         model = Blog
