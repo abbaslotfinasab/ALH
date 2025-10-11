@@ -35,7 +35,7 @@ class BlogWriteSerializer(serializers.ModelSerializer):
             "image",
             "meta_title",
             "meta_description",
-            "meta_keywords",
+            "keywords",
         ]
 
     def validate_meta_description(self, value):
