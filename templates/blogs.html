@@ -120,4 +120,78 @@
         </div>
     </div>
 </section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const qInput = document.getElementById("qInput");
+    const dateInput = document.getElementById("dateInput");
+    const clearSearch = document.getElementById("clearSearch");
+    const clearDate = document.getElementById("clearDate");
+    const articles = document.querySelectorAll(".card"); // همه کارت‌های مقاله
+
+    // --- تابع فیلتر ---
+    function filterArticles() {
+        const searchTerm = qInput.value.toLowerCase().trim();
+        const selectedDate = dateInput.value;
+
+        let visibleCount = 0;
+
+        articles.forEach((card) => {
+            const title = card.querySelector(".card-title").innerText.toLowerCase();
+            const content = card.querySelector(".card-text").innerText.toLowerCase();
+            const publishedDate = card.querySelector("[data-published-date]")?.dataset.publishedDate || "";
+
+            const matchesSearch =
+                title.includes(searchTerm) || content.includes(searchTerm);
+            const matchesDate = selectedDate ? publishedDate.startsWith(selectedDate) : true;
+
+            if (matchesSearch && matchesDate) {
+                card.parentElement.style.display = "block";
+                visibleCount++;
+            } else {
+                card.parentElement.style.display = "none";
+            }
+        });
+
+        // اگر هیچ نتیجه‌ای نبود
+        if (visibleCount === 0) {
+            if (!document.getElementById("noResults")) {
+                const div = document.createElement("div");
+                div.id = "noResults";
+                div.className = "text-center text-muted mt-5";
+                div.innerHTML = "<p>نتیجه‌ای یافت نشد.</p>";
+                document.querySelector(".row.g-4").appendChild(div);
+            }
+        } else {
+            document.getElementById("noResults")?.remove();
+        }
+    }
+
+    // --- رویدادها ---
+    qInput.addEventListener("input", () => {
+        clearSearch.classList.toggle("d-none", qInput.value === "");
+        filterArticles();
+    });
+
+    clearSearch.addEventListener("click", () => {
+        qInput.value = "";
+        clearSearch.classList.add("d-none");
+        filterArticles();
+    });
+
+    dateInput.addEventListener("change", () => {
+        clearDate.classList.toggle("d-none", dateInput.value === "");
+        filterArticles();
+    });
+
+    clearDate.addEventListener("click", () => {
+        dateInput.value = "";
+        clearDate.classList.add("d-none");
+        filterArticles();
+    });
+});
+</script>
+
+
 {% endblock %}
