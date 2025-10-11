@@ -19,8 +19,6 @@
                 "datePublished": "{{ post.published_date|date:'Y-m-d' }}",
                 "description": "{{ post.meta_description|default:post.content|truncatechars:160|escapejs }}"
             }
-            {% if not for loop.last %},
-            {% endif %}
             {% endfor %}
         ],
         "publisher": {
