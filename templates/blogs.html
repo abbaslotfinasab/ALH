@@ -211,6 +211,23 @@
             clearDate.classList.add("d-none");
             filterArticles();
         });
+
+
+         tagLinks.forEach(tag => {
+            tag.addEventListener("click", e => {
+                e.preventDefault();
+                const selected = tag.dataset.tag;
+                if (activeTag === selected) {
+                    activeTag = "";
+                    tag.classList.remove("active", "text-white");
+                } else {
+                    activeTag = selected;
+                    tagLinks.forEach(t => t.classList.remove("active", "text-white"));
+                    tag.classList.add("active", "text-white");
+                }
+                filterPosts();
+            });
+        });
     });
 </script>
 
