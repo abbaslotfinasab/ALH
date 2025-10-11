@@ -81,7 +81,7 @@
                          data-title="{{ post.title|lower }}"
                          data-content="{{ post.content|striptags|lower }}"
                          data-tags="{% for keywords in post.keywords.all %}{{ keywords.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
-                         data-date="{{ post.created_at|date:'Y-m-d' }}"
+                         data-date="{{ post.published_date|date:'Y-m-d' }}"
                          data-id="{{ post.id }}"
                          data-slug="{{ post.slug }}"
                 >
