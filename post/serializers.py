@@ -29,14 +29,13 @@ class CommentWriteSerializer(serializers.ModelSerializer):
 
 
 class PostReadSerializer(serializers.ModelSerializer):
-    tags = TagReadSerializer(many=True, read_only=True)
     liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = [
             "id","slug","title","content","image","video",
-            "tags","views","likes","comments_count","is_published","created_at", "liked"
+            "keywords","views","likes","comments_count","is_published","created_at", "liked"
         ]
 
     def get_liked(self, obj):
@@ -51,4 +50,4 @@ class PostReadSerializer(serializers.ModelSerializer):
 class PostWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ["title","content","image","video","tags","is_published"]
+        fields = ["title","content","image","video","keywords","is_published"]

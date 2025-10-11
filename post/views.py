@@ -12,7 +12,7 @@ from .permissions import IsStaffOrReadOnly
 
 
 def feed(request, slug=None):
-    tags = Keyword.objects.all().order_by("name")
+    keywords = Keyword.objects.all().order_by("name")
     posts = Post.objects.filter(is_published=True).order_by('-created_at')
 
     # فیلتر تگ
@@ -21,7 +21,7 @@ def feed(request, slug=None):
         posts = posts.filter(tags__slug=tag_slug)
 
     context = {
-        "tags": tags,
+        "tags": keywords,
         "posts": posts,
         "active_tag": tag_slug,
     }
@@ -39,7 +39,7 @@ def feed(request, slug=None):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(is_published=True).prefetch_related("tags")
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = {"tags__id": ["exact"], "tags__name": ["exact"], "is_published": ["exact"],
+    filterset_fields = {"keywords__id": ["exact"], "keywords__name": ["exact"], "is_published": ["exact"],
                         "created_at": ["date", "date__gte", "date__lte"]}
     search_fields = ["title", "content"]
     ordering_fields = ["created_at", "views", "likes"]
