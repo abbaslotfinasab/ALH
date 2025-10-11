@@ -14,10 +14,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from django.views.generic import TemplateView
+from ALH.views import robots_txt
+from blog.sitemaps import BlogSitemap
+from experience.sitemaps import ExperienceSitemap, ProjectSitemap
+from seo.sitemaps import StaticViewSitemap
+from service.sitemaps import ServiceSitemap
+
+sitemaps = {
+    'static': StaticViewSitemap(),
+    'blog': BlogSitemap(),
+    'service': ServiceSitemap(),
+    'experience': ExperienceSitemap(),
+    'project': ProjectSitemap(),
+
+}
 
 urlpatterns = [
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
+    path("robots.txt", robots_txt, name="robots_txt"),
+
     path('', include('home.urls')),  # صفحه اصلی به اپ home وصل میشه
     path('experience/', include('experience.urls')),  # صفحه اصلی به اپ home وصل میشه
     path('post/', include('post.urls')),  # صفحه اصلی به اپ home وصل میشه
