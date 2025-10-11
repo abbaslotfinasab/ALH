@@ -37,8 +37,8 @@ class Service(models.Model):
     is_active = models.BooleanField(default=True)
     technologies = models.ManyToManyField( 'Technology', blank=True, related_name='services')
     highlight_techs = models.ManyToManyField('Technology', blank=True, related_name='highlighted_in')
-    created_at = models.DateTimeField(auto_now_add=True, default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True, default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
     def save(self, *args, **kwargs):
         if not self.slug:
