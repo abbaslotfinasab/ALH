@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Company(models.Model):
@@ -44,8 +45,8 @@ class Project(models.Model):
     technology = models.CharField(max_length=200, blank=True, null=True)  # "Django, React, PostgreSQL"
     link_demo = models.URLField(blank=True, null=True)
     screenshot = models.ImageField(upload_to='project_shots/', blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ["name"]
