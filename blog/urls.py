@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 from .views import *
 
@@ -8,9 +8,7 @@ router = DefaultRouter()
 router.register(r'blog', BlogPostViewSet, basename='blog')
 
 urlpatterns = [
-    path('', BlogPostListView.as_view(), name='blog-view'),  # صفحه اصلی
-    path('<slug:slug>/', BlogPostDetailView.as_view(), name='detail'),
-
-    path('api/', include(router.urls)),
-
+    path('api/', include(router.urls)),  # 👈 اول بیار بالا
+    path('', BlogPostListView.as_view(), name='blog-view'),
+    re_path(r'^(?P<slug>[-\w\u0600-\u06FF]+)/$', BlogPostDetailView.as_view(), name='detail'),
 ]
