@@ -37,8 +37,3 @@ class KeywordViewSet(viewsets.ModelViewSet):
     queryset = Keyword.objects.all().order_by("name")
     serializer_class = KeyWordSerializer
 
-
-
-class KeywordView(viewsets.ModelViewSet):
-    queryset = Keyword.objects.all()
-    serializer_class = KeyWordSerializer
