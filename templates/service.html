@@ -1,6 +1,47 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_head %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "{{ service.title|escapejs }}",
+    "description": "{{ service.description|truncatewords:40|escapejs }}",
+    "url": "{{ request.build_absolute_uri }}",
+    "serviceType": "{{ service.title|escapejs }}",
+    "provider": {
+        "@type": "Organization",
+        "name": "abbaslotfinasab.ir",
+        "url": "https://abbaslotfinasab.ir",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{% static 'images/logo.png' %}"
+        }
+    },
+    "areaServed": {
+        "@type": "Place",
+        "name": "ایران"
+    },
+    "offers": {
+        "@type": "Offer",
+        "priceCurrency": "IRR",
+        "availability": "https://schema.org/InStock",
+        "url": "{{ request.build_absolute_uri }}"
+    },
+    "image": [
+        "{{ service.image.url|default:static('images/default-service.jpg') }}"
+    ],
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ service.rating|default:'5.0' }}",
+        "reviewCount": "{{ service.review_count|default:'10' }}"
+    }
+}
+</script>
+{% endblock %}
+
+
 {% block content %}
 <section class="service-section py-5">
   <div class="container my-5">

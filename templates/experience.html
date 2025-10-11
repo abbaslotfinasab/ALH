@@ -2,6 +2,44 @@
 {% load static %}
 
 
+{% block extra_head %}
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "{{ seo_title|escapejs }}",
+    "description": "{{ seo_description|escapejs }}",
+    "url": "{{ canonical_url|default:request.build_absolute_uri }}",
+    "mainEntity": {
+        "@type": "ItemList",
+        "name": "نمونه کارهای عباس لطفی نسب",
+        "itemListElement": [
+            {% for project in projects %}
+            {
+                "@type": "ListItem",
+                "position": {{ forloop.counter }},
+                "url": "{{ request.build_absolute_uri }}{{ project.get_absolute_url }}",
+                "name": "{{ project.title|escapejs }}",
+                "description": "{{ project.short_description|escapejs }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "abbaslotfinasab.ir",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{% static 'images/logo.png' %}"
+        }
+    }
+}
+</script>
+
+{% endblock %}
+
+
 {% block content %}
 
 <section class=" experience-section py-5">

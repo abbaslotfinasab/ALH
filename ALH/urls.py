@@ -26,5 +26,6 @@ urlpatterns = [
     path("handwrite/", include("handwrite.urls", namespace="handwrite")),
     path("blogs/", include("blog.urls", namespace="blogs")),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
+    path("seo/", include("seo.urls", namespace="seo")),
 
 ]

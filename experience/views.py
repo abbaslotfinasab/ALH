@@ -13,7 +13,12 @@ def experience(request):
         .prefetch_related("experiences__projects")
         .order_by("name")
     )
-    return render(request, "experience.html", {"companies": companies})
+
+    projects = (
+        Project.objects.all()
+        .order_by("name")
+    )
+    return render(request, "experience.html", {"companies": companies, "projects": projects})
 
 
 

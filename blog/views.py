@@ -1,10 +1,11 @@
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.generics import get_object_or_404
 
-from blog.models import Blog
-from blog.serializers import BlogSerializer
+from blog.serializers import *
+from seo.models import SEOPage  # ← اپ سئو که ساختی
+from django.conf import settings
 
 
 # لیست مقالات
@@ -12,22 +13,33 @@ class BlogPostListView(ListView):
     model = Blog
     template_name = "blogs.html"
     context_object_name = "blog_posts"
-    paginate_by = 10  # تعداد مقالات در هر صفحه
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = Blog.objects.all().order_by("-published_date")
-        filters = Q()
         search = self.request.GET.get("search")
-
         if search:
-            filters &= Q(title__icontains=search) | Q(content__icontains=search)
-
-        return queryset.filter(filters)
+            queryset = queryset.filter(Q(title__icontains=search) | Q(content__icontains=search))
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['total_posts'] = Blog.objects.count()  # تعداد کل مقالات
+        context["total_posts"] = Blog.objects.count()
 
+        # داده‌های سئو برای صفحه لیست بلاگ‌ها
+        seo_data = SEOPage.objects.filter(page_url=self.request.path).first()
+        if seo_data:
+            context["meta_title"] = seo_data.title
+            context["meta_description"] = seo_data.description
+            context["meta_keywords"] = ", ".join([kw.name for kw in seo_data.keywords.all()])
+        else:
+            # fallback از settings
+            default = settings.SEO["default"]
+            context["meta_title"] = default["title"]
+            context["meta_description"] = default["description"]
+            context["meta_keywords"] = ", ".join(default["keywords"])
+
+        context["canonical_url"] = self.request.build_absolute_uri()
         return context
 
 
@@ -43,58 +55,43 @@ class BlogPostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        blog_post = self.get_object()
+        current_path = self.request.path
 
-        page_title = self.get_page_title()  # عنوان صفحه
-        page_content = self.get_page_content()  # توصیف صفحه
-        page_image = self.get_page_image()
+        # مرحله ۱: بررسی در SEOPage
+        seo_data = SEOPage.objects.filter(page_url=current_path).first()
 
-        meta_title = self.get_meta_title()  # عنوان صفحه
-        meta_description = self.get_meta_description()  # توصیف صفحه
-        meta_keywords = self.get_meta_keywords()  # کلمات کلیدی
-        canonical_url = self.request.build_absolute_uri(self.request.path)
+        if seo_data:
+            context["meta_title"] = seo_data.title
+            context["meta_description"] = seo_data.description
+            context["meta_keywords"] = ", ".join([kw.name for kw in seo_data.keywords.all()])
+        else:
+            # مرحله ۲: بررسی فیلدهای خود مدل بلاگ
+            context["meta_title"] = blog_post.meta_title or blog_post.title
+            context["meta_description"] = (
+                blog_post.meta_description
+                or (blog_post.content[:157] + "..." if blog_post.content else "")
+            )
+            context["meta_keywords"] = blog_post.meta_keywords or ""
 
-        context['page_title'] = page_title
-        context['page_content'] = page_content
-        context['page_image'] = page_image
-
-        context['meta_title'] = meta_title
-        context['meta_description'] = meta_description
-        context['meta_keywords'] = meta_keywords
-        context['canonical_url'] = canonical_url
+        context["canonical_url"] = self.request.build_absolute_uri()
+        context["page_title"] = blog_post.title
+        context["page_content"] = blog_post.content
+        context["page_image"] = blog_post.image.url if blog_post.image else None
 
         return context
 
-    def get_page_title(self):
-        # شما می‌توانید عنوان صفحه را بر اساس عنوان مقاله بسازید
-        blog_post = self.get_object()
-        return blog_post.title
 
-    def get_page_content(self):
-        # توصیف صفحه می‌تواند از محتوای مقاله گرفته شود
-        blog_post = self.get_object()
-        return blog_post.content  # یا هر فیلدی که توصیف کوتاهی از مقاله باشد
-
-    def get_page_image(self):
-        # کلمات کلیدی می‌تواند بر اساس دسته‌بندی یا برچسب‌های مقاله باشد
-        blog_post = self.get_object()
-        return blog_post.image  # اگر مقاله دسته‌بندی‌ها داشته باشد
-
-    def get_meta_title(self):
-        # شما می‌توانید عنوان صفحه را بر اساس عنوان مقاله بسازید
-        blog_post = self.get_object()
-        return blog_post.meta_title
-
-    def get_meta_description(self):
-        # توصیف صفحه می‌تواند از محتوای مقاله گرفته شود
-        blog_post = self.get_object()
-        return blog_post.meta_description  # یا هر فیلدی که توصیف کوتاهی از مقاله باشد
-
-    def get_meta_keywords(self):
-        # کلمات کلیدی می‌تواند بر اساس دسته‌بندی یا برچسب‌های مقاله باشد
-        blog_post = self.get_object()
-        return blog_post.meta_keywords  # اگر مقاله دسته‌بندی‌ها داشته باشد
-
-
+# برای API
 class BlogPostViewSet(viewsets.ModelViewSet):
-    queryset = Blog.objects.all().order_by('-published_date')  # لیست مقالات مرتب‌شده بر اساس تاریخ انتشار
-    serializer_class = BlogSerializer
+    queryset = Blog.objects.all().order_by('-published_date')
+
+    def get_serializer_class(self):
+        """
+        هوشمند انتخاب Serializer:
+        - خواندنی (GET, LIST, RETRIEVE) => BlogReadSerializer
+        - نوشتنی (POST, PUT, PATCH, DELETE) => BlogWriteSerializer
+        """
+        if self.action in ['list', 'retrieve']:
+            return BlogReadSerializer
+        return BlogWriteSerializer

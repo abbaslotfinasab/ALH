@@ -2,19 +2,7 @@
 from django.db import models
 from django.utils.text import slugify
 
-
-class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=70, unique=True, blank=True)
-
-    class Meta: ordering = ["name"]
-
-    def save(self, *a, **kw):
-        if not self.slug:
-            self.slug = slugify(self.name, allow_unicode=True)[:70]
-        super().save(*a, **kw)
-
-    def __str__(self): return self.name
+from seo.models import Keyword
 
 
 class Post(models.Model):
@@ -23,7 +11,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to="posts/images/", blank=True, null=True)
     video = models.FileField(upload_to="posts/videos/", blank=True, null=True)
 
-    tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
+    keywords = models.ManyToManyField(Keyword, related_name="posts", blank=True)
 
     is_published = models.BooleanField(default=False)
 

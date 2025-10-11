@@ -33,30 +33,20 @@
 
 
     <script src="https://kit.fontawesome.com/1228ed801f.js" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/1228ed801f.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.css">
     <script type="text/javascript"
             src="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
+    {% block extra_head %}
 
-    {% block extra_head %}{% endblock %}
+    {% endblock %}
 
 
     <style>
 
     </style>
-
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "IranianShiningPhoenix",
-            "url": "https://www.iranianshiningphoenix.com/",
-            "logo": "https://www.iranianshiningphoenix.com/static/images/logo.jpg/"
-        }
-    </script>
 
 
     <!-- Google Tag Manager -->
@@ -72,7 +62,8 @@
         j.src =
             'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
         f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-TXPGHMF2');</script>
+    })(window, document, 'script', 'dataLayer', 'GTM-TXPGHMF2');
+    </script>
     <!-- End Google Tag Manager -->
 
 

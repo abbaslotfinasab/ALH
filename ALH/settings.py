@@ -79,7 +79,8 @@ INSTALLED_APPS = [
     'collab',
     'service',
     'handwrite',
-    'blog'
+    'blog',
+    'seo'
 
 ]
 
@@ -119,6 +120,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'home.context_processors.availability_status',
+                'seo.context_processors.seo_context',  # این خطو اضافه کن
 
             ],
         },
@@ -240,5 +242,28 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+    }
+}
+
+SEO = {
+    'default': {
+        'title': "عباس لطفی نسب | توسعه‌دهنده نرم‌افزار و طراح ‌سایت",
+        'description': (
+            "عباس لطفی نسب، برنامه‌نویس و توسعه‌دهنده نرم‌افزار با بیش از ۷ سال تجربه در طراحی سایت، "
+            "توسعه اپلیکیشن و پیاده‌سازی سیستم‌های تحت وب با Django. "
+            "عاشق کدنویسی تمیز، مقیاس‌پذیر و طراحی کاربرپسند."
+        ),
+        'keywords': [
+            "عباس لطفی نسب",
+            "لطفی نسب",
+            "طراح سایت",
+            "برنامه نویس موبایل",
+            "برنامه نویس کاتلین",
+            "برنامه نویس جنگو",
+            "توسعه اپلیکیشن",
+            "طراح وب حرفه‌ای",
+            "برنامه نویس بک‌اند",
+            "رزومه برنامه نویس",
+        ],
     }
 }

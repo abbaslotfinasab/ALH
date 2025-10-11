@@ -1,4 +1,32 @@
 {% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_head %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{{ seo_title|escapejs }}",
+  "description": "{{ seo_description|escapejs }}",
+  "url": "{{ canonical_url|default:request.build_absolute_uri }}",
+  "hasPart": [
+    {% for post in posts %}
+    {
+      "@type": "BlogPosting",
+      "headline": "{{ post.title|escapejs }}",
+      "url": "{{ request.build_absolute_uri }}post/{{ post.slug }}/"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+
+
+{% endblock %}
+
+
 {% block content %}
 <section class="feed-section py-5">
     <div class="container">

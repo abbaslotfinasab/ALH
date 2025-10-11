@@ -1,4 +1,3 @@
-# posts/views_api.py
 from django.db.models import F
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
@@ -7,12 +6,13 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
+from seo.models import Keyword
 from .serializers import *
 from .permissions import IsStaffOrReadOnly
 
 
 def feed(request, slug=None):
-    tags = Tag.objects.all().order_by("name")
+    tags = Keyword.objects.all().order_by("name")
     posts = Post.objects.filter(is_published=True).order_by('-created_at')
 
     # فیلتر تگ
@@ -23,7 +23,7 @@ def feed(request, slug=None):
     context = {
         "tags": tags,
         "posts": posts,
-        "active_tag": tag_slug
+        "active_tag": tag_slug,
     }
 
     # اگر پست خاصی خواسته شده
@@ -32,27 +32,8 @@ def feed(request, slug=None):
         context["open_slug"] = slug
         context["posts"] = [post]  # فقط همون پست نمایش داده بشه
 
+
     return render(request, "feed.html", context)
-
-def detail(request, slug):
-    post = get_object_or_404(Post.objects.prefetch_related("tags"), slug=slug, is_published=True)
-
-    # افزایش بازدید یک‌بار برای هر session+post
-    viewed_key = f"viewed_post_{post.id}"
-    if not request.session.get(viewed_key):
-        Post.objects.filter(id=post.id).update(views=F("views") + 1)
-        request.session[viewed_key] = True
-        post.refresh_from_db(fields=["views"])
-
-    # پست‌های مرتبط با تگ مشترک (به‌جز خودش)
-    related = Post.objects.filter(
-        is_published=True, tags__in=post.tags.all()
-    ).exclude(id=post.id).distinct().order_by("-created_at")[:6]
-
-    return render(request, "detail.html", {
-        "post": post,
-        "related": related,
-    })
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -155,7 +136,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class TagViewSet(viewsets.ModelViewSet):
-    queryset = Tag.objects.all().order_by("name")
+    queryset = Keyword.objects.all().order_by("name")
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ["name"]
     ordering_fields = ["name"]
