@@ -15,7 +15,7 @@ class BlogReadSerializer(serializers.ModelSerializer):
             "image",
             "meta_title",
             "meta_description",
-            "meta_keywords",
+            "keywords",
             "published_date",
         ]
 
