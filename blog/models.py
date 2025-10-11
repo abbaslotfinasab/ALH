@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 
 from seo.models import Keyword
@@ -15,6 +16,8 @@ class Blog(models.Model):
     meta_title = models.CharField(max_length=255, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True ,help_text="حداکثر 160 کاراکتر")
     keywords = models.ManyToManyField(Keyword, related_name="blogs", blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
     def save(self, *args, **kwargs):
         if not self.slug or self.slug.strip() == "":
