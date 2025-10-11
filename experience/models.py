@@ -22,8 +22,8 @@ class Experience(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)  # اگر هنوز ادامه دارد خالی بماند
     description = models.TextField(blank=True, null=True)  # وظایف/دستاوردها
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ["-start_date"]
