@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 
 
 class Company(models.Model):
@@ -22,6 +21,8 @@ class Experience(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)  # اگر هنوز ادامه دارد خالی بماند
     description = models.TextField(blank=True, null=True)  # وظایف/دستاوردها
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-start_date"]
@@ -43,6 +44,8 @@ class Project(models.Model):
     technology = models.CharField(max_length=200, blank=True, null=True)  # "Django, React, PostgreSQL"
     link_demo = models.URLField(blank=True, null=True)
     screenshot = models.ImageField(upload_to='project_shots/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["name"]
@@ -51,4 +54,4 @@ class Project(models.Model):
         return self.name
 
     def tech_list(self):
-        return [t.strip() for t in self.technologies.split(",") if t.strip()]
+        return [t.strip() for t in self.technology.split(",") if t.strip()]
