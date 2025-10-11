@@ -12,7 +12,7 @@ class Blog(models.Model):
     image = models.ImageField(upload_to='blog_images/', blank=True, null=True)
 
     # --- SEO Fields ---
-    meta_title = models.CharField(max_length=255, blank=True)
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True ,help_text="حداکثر 160 کاراکتر")
     keywords = models.ManyToManyField(Keyword, related_name="blogs", blank=True)
 

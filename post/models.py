@@ -23,7 +23,7 @@ class Post(models.Model):
 
     slug = models.SlugField(max_length=280, unique=True, blank=True)
     # فیلدهای سئو:
-    meta_title = models.CharField(max_length=70, blank=True)
+    meta_title = models.CharField(max_length=70, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True ,help_text="حداکثر 160 کاراکتر")
     og_image = models.ImageField(upload_to="posts/og/", blank=True, null=True)
     canonical_url = models.URLField(blank=True)
