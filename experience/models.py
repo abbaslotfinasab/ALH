@@ -33,9 +33,6 @@ class Experience(models.Model):
     def is_current(self):
         return self.end_date is None
 
-    def get_absolute_url(self):
-        return reverse('experience:experience-view')
-
 
 
 class Project(models.Model):
@@ -55,7 +52,3 @@ class Project(models.Model):
 
     def tech_list(self):
         return [t.strip() for t in self.technologies.split(",") if t.strip()]
-
-    def get_absolute_url(self):
-        return reverse('experience:experience-view')
-

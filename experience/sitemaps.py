@@ -1,4 +1,5 @@
 from django.contrib.sitemaps import Sitemap
+from django.urls import reverse
 
 from experience.models import Project, Experience
 
@@ -11,11 +12,10 @@ class ExperienceSitemap(Sitemap):
         return Experience.objects.all()  # اگر فیلد انتشار دارید
 
     def location(self, obj):
-        return obj.get_absolute_url()  # یا reverse('portfolio:detail', args=[obj.slug])
+        return reverse('experience:experience-view')
 
     def lastmod(self, obj):
-        return obj.upda
-
+        return obj.updated_at if hasattr(obj, 'updated_at') else obj.created_at
 
 class ProjectSitemap(Sitemap):
     changefreq = "monthly"
@@ -25,7 +25,7 @@ class ProjectSitemap(Sitemap):
         return Project.objects.all()  # اگر فیلد انتشار دارید
 
     def location(self, obj):
-        return obj.get_absolute_url()  # یا reverse('portfolio:detail', args=[obj.slug])
+        return reverse('experience:experience-view')
 
     def lastmod(self, obj):
         return obj.updated_at if hasattr(obj, 'updated_at') else obj.created_at
