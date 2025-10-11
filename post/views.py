@@ -133,16 +133,3 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """در زمان ساخت، IP رو از request بفرستیم به serializer"""
         serializer.save()
-
-
-class TagViewSet(viewsets.ModelViewSet):
-    queryset = Keyword.objects.all().order_by("name")
-    filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ["name"]
-    ordering_fields = ["name"]
-    ordering = ["name"]
-
-    def get_serializer_class(self):
-        if self.action in ["create", "update", "partial_update"]:
-            return TagWriteSerializer
-        return TagReadSerializer

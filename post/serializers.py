@@ -1,16 +1,6 @@
 # posts/serializers.py
 from rest_framework import serializers
-from .models import Post, Tag, Comment
-
-class TagReadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ["id", "name"]
-
-class TagWriteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ["name"]
+from .models import Post, Comment
 
 class CommentReadSerializer(serializers.ModelSerializer):
     class Meta:
