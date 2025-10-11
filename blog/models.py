@@ -17,12 +17,12 @@ class Blog(models.Model):
     keywords = models.ManyToManyField(Keyword, related_name="blogs", blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
+        if not self.slug or self.slug.strip() == "":
+            self.slug = slugify(self.title, allow_unicode=True)
         if not self.meta_title:
             self.meta_title = self.title
         if not self.meta_description:
-            self.meta_description = self.content[:157] + "..."
+            self.meta_description = (self.content[:157] + "...") if self.content else ""
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

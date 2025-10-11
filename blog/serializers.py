@@ -1,8 +1,11 @@
 from rest_framework import serializers
+
+from seo.serializers import KeyWordSerializer
 from .models import Blog
 
 
 class BlogReadSerializer(serializers.ModelSerializer):
+    keywords = KeyWordSerializer(many=True, read_only=True)
 
     class Meta:
         model = Blog

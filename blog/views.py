@@ -69,10 +69,10 @@ class BlogPostDetailView(DetailView):
             # مرحله ۲: بررسی فیلدهای خود مدل بلاگ
             context["meta_title"] = blog_post.meta_title or blog_post.title
             context["meta_description"] = (
-                blog_post.meta_description
-                or (blog_post.content[:157] + "..." if blog_post.content else "")
+                    blog_post.meta_description
+                    or (blog_post.content[:157] + "..." if blog_post.content else "")
             )
-            context["meta_keywords"] = blog_post.meta_keywords or ""
+            context["meta_keywords"] = ", ".join([kw.name for kw in blog_post.keywords.all()])
 
         context["canonical_url"] = self.request.build_absolute_uri()
         context["page_title"] = blog_post.title
