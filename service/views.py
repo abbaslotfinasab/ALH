@@ -5,8 +5,8 @@ from .serializers import ServiceSerializer, TechnologySerializer
 
 
 
-def service_view(request,pk):
-    service = get_object_or_404(Service,pk=pk)
+def service_view(request, slug=None):
+    service = get_object_or_404(Service,slug=slug)
     return render(request, "service.html", {"service": service})
 
 
