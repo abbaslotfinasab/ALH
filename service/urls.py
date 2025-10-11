@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 from . import views
 from .views import ServiceViewSet, TechnologyViewSet
@@ -13,7 +13,7 @@ router.register(r'technologies', TechnologyViewSet, basename='technology')
 
 
 urlpatterns = [
-    path('<int:pk>/', views.service_view, name='service-view'),
+    re_path(r'^(?P<slug>[-\w\u0600-\u06FF]+)/$', views.service_view, name='service-view'),
     path('api/', include(router.urls)),
 
 ]
