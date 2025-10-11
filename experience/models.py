@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Company(models.Model):
@@ -32,6 +33,10 @@ class Experience(models.Model):
     def is_current(self):
         return self.end_date is None
 
+    def get_absolute_url(self):
+        return reverse('experience:experience-view')
+
+
 
 class Project(models.Model):
     experience = models.ForeignKey(Experience, on_delete=models.CASCADE, related_name="projects")
@@ -50,3 +55,7 @@ class Project(models.Model):
 
     def tech_list(self):
         return [t.strip() for t in self.technologies.split(",") if t.strip()]
+
+    def get_absolute_url(self):
+        return reverse('experience:experience-view')
+
