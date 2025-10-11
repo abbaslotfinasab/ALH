@@ -1,5 +1,5 @@
 {% load static %}
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -84,7 +84,7 @@
         <div class="col-lg-8 mx-auto" id="blog-content">
             <h1 class="blog-title" id="blog-title">{{ page_title }}</h1>
             <p class="text-muted text-center">{{ meta_description }}</p>
-            <img id="blog-image" src="{{ page_image.url }}" alt="Blog Image" class="blog-image">
+            <img id="blog-image" src="{{ page_image }}" alt="Blog Image" class="blog-image">
             <div id="blog-body" class="blog-body">{{ page_content|linebreaks }}</div>
         </div>
     </div>
