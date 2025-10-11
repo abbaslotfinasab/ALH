@@ -29,7 +29,7 @@ class Blog(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return f"/blog/{self.slug}/"
+        return f"/blogs/{self.slug}/"
 
     def __str__(self):
         return self.title

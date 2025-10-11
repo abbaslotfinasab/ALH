@@ -104,7 +104,7 @@ body {
 
 .section-title {
     color: #003c70;
-    text-decoration: none;
+    text-decoration: none!important;
     font-weight: 500;
     font-size: 1.5rem;
 }
