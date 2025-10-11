@@ -17,13 +17,10 @@ class BlogPostListView(ListView):
     def get_queryset(self):
         queryset = Blog.objects.all().order_by("-published_date")
         filters = Q()
-        author = self.request.GET.get("author")
         search = self.request.GET.get("search")
 
-        if author:
-            filters &= Q(author__username__icontains=author)
         if search:
-            filters &= Q(title__icontains=search)
+            filters &= Q(title__icontains=search) | Q(content__icontains=search)
 
         return queryset.filter(filters)
 
@@ -42,7 +39,7 @@ class BlogPostDetailView(DetailView):
 
     def get_object(self, queryset=None):
         slug = self.kwargs.get("slug")
-        return get_object_or_404(Blog, slug=slug, is_published=True)
+        return get_object_or_404(Blog, slug=slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
