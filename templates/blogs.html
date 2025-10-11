@@ -4,32 +4,55 @@
 {% block extra_head %}
 
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "{{ seo_title|escapejs }}",
-  "description": "{{ seo_description|escapejs }}",
-  "url": "{{ canonical_url|default:request.build_absolute_uri }}",
-  "hasPart": [
-    {% for post in blog_posts %}
     {
-      "@type": "BlogPosting",
-      "headline": "{{ post.title|escapejs }}",
-      "url": "{{ request.build_absolute_uri }}{{ post.get_absolute_url }}",
-      "datePublished": "{{ post.published_date|date:'Y-m-d' }}",
-      "description": "{{ post.meta_description|default:post.content|truncatechars:160|escapejs }}"
-    }{% if not forloop.last %},{% endif %}
-    {% endfor %}
-  ],
-  "publisher": {
-    "@type": "Organization",
-    "name": "abbaslotfinasab.ir",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "{% static 'images/logo.png' %}"
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "{{ seo_title|escapejs }}",
+        "description": "{{ seo_description|escapejs }}",
+        "url": "{{ canonical_url|default:request.build_absolute_uri }}",
+        "hasPart": [
+            {
+                %
+            for
+            post
+            in
+            blog_posts
+            %
+        }
+            {
+                "@type": "BlogPosting",
+                "headline": "{{ post.title|escapejs }}",
+                "url": "{{ request.build_absolute_uri }}{{ post.get_absolute_url }}",
+                "datePublished": "{{ post.published_date|date:'Y-m-d' }}",
+                "description": "{{ post.meta_description|default:post.content|truncatechars:160|escapejs }}"
+            }
+            {
+                %
+            if
+            not
+            forloop.last
+            %
+        },
+            {
+                %
+            endif
+            %
+        }
+            {
+                %
+            endfor
+            %
+        }
+        ],
+        "publisher": {
+            "@type": "Organization",
+            "name": "abbaslotfinasab.ir",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{% static 'images/logo.png' %}"
+            }
+        }
     }
-  }
-}
 </script>
 
 {% endblock %}
@@ -75,9 +98,16 @@
         </div>
 
         <div class="row g-4 py-5">
-            {% for post in blog_posts  %}
+            {% for post in blog_posts %}
             <div class="col-md-6 col-lg-4">
-                <article class="card h-100 shadow-sm border-0">
+                <article class="card h-100 shadow-sm border-0"
+                         data-title="{{ post.title|lower }}"
+                         data-content="{{ post.content|striptags|lower }}"
+                         data-tags="{% for keywords in post.keywords.all %}{{ keywords.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
+                         data-date="{{ post.created_at|date:'Y-m-d' }}"
+                         data-id="{{ post.id }}"
+                         data-slug="{{ post.slug }}"
+                >
                     {% if post.image %}
                     <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
                     {% else %}
@@ -87,7 +117,8 @@
                     </div>
                     {% endif %}
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title"><a href="{{ post.get_absolute_url }}" class="text-dark">{{ post.title}}</a></h5>
+                        <h5 class="card-title"><a href="{{ post.get_absolute_url }}" class="text-dark">{{
+                            post.title}}</a></h5>
                         <p class="card-text text-muted small">{{ post.content|truncatewords:25 }}</p>
                         <div class="mt-auto d-flex justify-content-between align-items-center pt-3">
                             <a href="{% url 'blogs:detail' post.slug %}" class="btn btn-sm btn-primary">خواندن</a>
@@ -123,74 +154,74 @@
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const qInput = document.getElementById("qInput");
-    const dateInput = document.getElementById("dateInput");
-    const clearSearch = document.getElementById("clearSearch");
-    const clearDate = document.getElementById("clearDate");
-    const articles = document.querySelectorAll(".card"); // همه کارت‌های مقاله
+    document.addEventListener("DOMContentLoaded", function () {
+        const qInput = document.getElementById("qInput");
+        const dateInput = document.getElementById("dateInput");
+        const clearSearch = document.getElementById("clearSearch");
+        const clearDate = document.getElementById("clearDate");
+        const articles = document.querySelectorAll(".card"); // همه کارت‌های مقاله
 
-    // --- تابع فیلتر ---
-    function filterArticles() {
-        const searchTerm = qInput.value.toLowerCase().trim();
-        const selectedDate = dateInput.value;
+        // --- تابع فیلتر ---
+        function filterArticles() {
+            const searchTerm = qInput.value.toLowerCase().trim();
+            const selectedDate = dateInput.value;
 
-        let visibleCount = 0;
+            let visibleCount = 0;
 
-        articles.forEach((card) => {
-            const title = card.querySelector(".card-title").innerText.toLowerCase();
-            const content = card.querySelector(".card-text").innerText.toLowerCase();
-            const publishedDate = card.querySelector("[data-published-date]")?.dataset.publishedDate || "";
+            articles.forEach((card) => {
+                const title = card.querySelector(".card-title").innerText.toLowerCase();
+                const content = card.querySelector(".card-text").innerText.toLowerCase();
+                const publishedDate = card.querySelector("[data-published-date]")?.dataset.publishedDate || "";
 
-            const matchesSearch =
-                title.includes(searchTerm) || content.includes(searchTerm);
-            const matchesDate = selectedDate ? publishedDate.startsWith(selectedDate) : true;
+                const matchesSearch =
+                    title.includes(searchTerm) || content.includes(searchTerm);
+                const matchesDate = selectedDate ? publishedDate.startsWith(selectedDate) : true;
 
-            if (matchesSearch && matchesDate) {
-                card.parentElement.style.display = "block";
-                visibleCount++;
+                if (matchesSearch && matchesDate) {
+                    card.parentElement.style.display = "block";
+                    visibleCount++;
+                } else {
+                    card.parentElement.style.display = "none";
+                }
+            });
+
+            // اگر هیچ نتیجه‌ای نبود
+            if (visibleCount === 0) {
+                if (!document.getElementById("noResults")) {
+                    const div = document.createElement("div");
+                    div.id = "noResults";
+                    div.className = "text-center text-muted mt-5";
+                    div.innerHTML = "<p>نتیجه‌ای یافت نشد.</p>";
+                    document.querySelector(".row.g-4").appendChild(div);
+                }
             } else {
-                card.parentElement.style.display = "none";
+                document.getElementById("noResults")?.remove();
             }
+        }
+
+        // --- رویدادها ---
+        qInput.addEventListener("input", () => {
+            clearSearch.classList.toggle("d-none", qInput.value === "");
+            filterArticles();
         });
 
-        // اگر هیچ نتیجه‌ای نبود
-        if (visibleCount === 0) {
-            if (!document.getElementById("noResults")) {
-                const div = document.createElement("div");
-                div.id = "noResults";
-                div.className = "text-center text-muted mt-5";
-                div.innerHTML = "<p>نتیجه‌ای یافت نشد.</p>";
-                document.querySelector(".row.g-4").appendChild(div);
-            }
-        } else {
-            document.getElementById("noResults")?.remove();
-        }
-    }
+        clearSearch.addEventListener("click", () => {
+            qInput.value = "";
+            clearSearch.classList.add("d-none");
+            filterArticles();
+        });
 
-    // --- رویدادها ---
-    qInput.addEventListener("input", () => {
-        clearSearch.classList.toggle("d-none", qInput.value === "");
-        filterArticles();
-    });
+        dateInput.addEventListener("change", () => {
+            clearDate.classList.toggle("d-none", dateInput.value === "");
+            filterArticles();
+        });
 
-    clearSearch.addEventListener("click", () => {
-        qInput.value = "";
-        clearSearch.classList.add("d-none");
-        filterArticles();
+        clearDate.addEventListener("click", () => {
+            dateInput.value = "";
+            clearDate.classList.add("d-none");
+            filterArticles();
+        });
     });
-
-    dateInput.addEventListener("change", () => {
-        clearDate.classList.toggle("d-none", dateInput.value === "");
-        filterArticles();
-    });
-
-    clearDate.addEventListener("click", () => {
-        dateInput.value = "";
-        clearDate.classList.add("d-none");
-        filterArticles();
-    });
-});
 </script>
 
 

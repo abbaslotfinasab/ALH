@@ -82,6 +82,7 @@
                          data-content="{{ post.content|striptags|lower }}"
                          data-tags="{% for tag in post.tags.all %}{{ tag.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
                          data-date="{{ post.created_at|date:'Y-m-d' }}"
+                         data-published-date = "{{ post.created_at|date:'Y-m-d' }}"
                          data-id="{{ post.id }}"
                          data-slug="{{ post.slug }}">
 
