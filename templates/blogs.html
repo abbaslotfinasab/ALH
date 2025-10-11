@@ -151,7 +151,8 @@
 
                 const matchesSearch =
                     title.includes(searchTerm) || content.includes(searchTerm);
-                const matchesDate = selectedDate ? publishedDate.startsWith(selectedDate) : true;
+                const matchesDate = selectedDate ? publishedDate.trim() === selectedDate.trim() : true;
+
 
                 if (matchesSearch && matchesDate) {
                     card.parentElement.style.display = "block";
