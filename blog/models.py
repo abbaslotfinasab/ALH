@@ -13,7 +13,7 @@ class Blog(models.Model):
 
     # --- SEO Fields ---
     meta_title = models.CharField(max_length=255, blank=True)
-    meta_description = models.TextField(blank=True, help_text="حداکثر 160 کاراکتر")
+    meta_description = models.TextField(blank=True, null=True ,help_text="حداکثر 160 کاراکتر")
     keywords = models.ManyToManyField(Keyword, related_name="blogs", blank=True)
 
     def save(self, *args, **kwargs):
