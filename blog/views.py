@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 
 from blog.serializers import *
-from seo.models import SEOPage  # ← اپ سئو که ساختی
+from seo.models import SEOPage, Keyword  # ← اپ سئو که ساختی
 from django.conf import settings
 
 
@@ -40,6 +40,8 @@ class BlogPostListView(ListView):
             context["meta_keywords"] = ", ".join(default["keywords"])
 
         context["canonical_url"] = self.request.build_absolute_uri()
+        context["keywords"] = Keyword.objects.all()
+
         return context
 
 
