@@ -11,7 +11,7 @@
   "description": "{{ seo_description|escapejs }}",
   "url": "{{ canonical_url|default:request.build_absolute_uri }}",
   "hasPart": [
-    {% for post in blog_post %}
+    {% for post in blog_posts %}
     {
       "@type": "BlogPosting",
       "headline": "{{ post.title|escapejs }}",
@@ -75,7 +75,7 @@
         </div>
 
         <div class="row g-4">
-            {% for post in blog_post %}
+            {% for post in blog_posts  %}
             <div class="col-md-6 col-lg-4">
                 <article class="card h-100 shadow-sm border-0">
                     {% if post.cover %}
