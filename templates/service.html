@@ -29,9 +29,6 @@
         "availability": "https://schema.org/InStock",
         "url": "{{ request.build_absolute_uri }}"
     },
-    "image": [
-        "{{ service.image.url|default:static('images/logo.png') }}"
-    ],
     "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "{{ service.rating|default:'5.0' }}",
