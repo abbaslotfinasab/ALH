@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from unicodedata import category
 
 from seo.models import Keyword
 from .serializers import *
@@ -12,7 +13,7 @@ from .permissions import IsStaffOrReadOnly
 
 
 def feed(request, slug=None):
-    keywords = Keyword.objects.all().order_by("name")
+    keywords = Keyword.objects.filter(category='post').order_by("name")
     posts = Post.objects.filter(is_published=True).order_by('-created_at')
 
     # فیلتر تگ

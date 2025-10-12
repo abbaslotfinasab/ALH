@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from unicodedata import category
 
 from blog.serializers import *
 from seo.models import SEOPage, Keyword  # ← اپ سئو که ساختی
@@ -31,7 +32,7 @@ class BlogPostListView(ListView):
         if seo_data:
             context["meta_title"] = seo_data.title
             context["meta_description"] = seo_data.description
-            context["meta_keywords"] = ", ".join([kw.name for kw in seo_data.keywords.all()])
+            context["meta_keywords"] = ", ".join([kw.name for kw in seo_data.keywords.filter(category="blog")])
         else:
             # fallback از settings
             default = settings.SEO["default"]
@@ -66,7 +67,7 @@ class BlogPostDetailView(DetailView):
         if seo_data:
             context["meta_title"] = seo_data.title
             context["meta_description"] = seo_data.description
-            context["meta_keywords"] = ", ".join([kw.name for kw in seo_data.keywords.all()])
+            context["meta_keywords"] = ", ".join([kw.name for kw in seo_data.keywords.filter(category="blog")])
         else:
             # مرحله ۲: بررسی فیلدهای خود مدل بلاگ
             context["meta_title"] = blog_post.meta_title or blog_post.title
