@@ -1,6 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_head %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{{ seo_title|default:'دستخط'|escapejs }}",
+  "description": "{{ seo_description|default:'مجموعه‌ای از دستخط‌ها و نمونه‌های نوشته شده'|escapejs }}",
+  "url": "{{ canonical_url|default:request.build_absolute_uri }}",
+  "hasPart": [
+    {% for snippet in snippets %}
+    {
+      "@type": "BlogPosting",
+      "headline": "{{ snippet.title|escapejs }}",
+      "url": "{{ request.build_absolute_uri|slice:':-1' }}{{ snippet.get_absolute_url|escapejs }}"
+    }{% if not forloop.last %},{% endif %}
+    {% empty %}
+    {}
+    {% endfor %}
+  ]
+}
+</script>
+
+{% endblock %}
+
 {% block content %}
 
 <section id="handwriting" class="feed-section py-5">

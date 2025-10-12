@@ -20,6 +20,7 @@ from django.views.generic import TemplateView
 from ALH.views import robots_txt
 from blog.sitemaps import BlogSitemap
 from experience.sitemaps import ExperienceSitemap, ProjectSitemap
+from handwrite.sitemaps import SnippetSitemap
 from seo.sitemaps import StaticViewSitemap
 from service.sitemaps import ServiceSitemap
 
@@ -29,6 +30,7 @@ sitemaps = {
     'service': ServiceSitemap(),
     'experience': ExperienceSitemap(),
     'project': ProjectSitemap(),
+    'Snippet':SnippetSitemap()
 
 }
 
