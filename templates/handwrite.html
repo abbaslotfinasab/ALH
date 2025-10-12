@@ -4,94 +4,119 @@
 {% block content %}
 
 <section id="handwriting" class="feed-section py-5">
-  <div class="container">
+    <div class="container">
+        <!-- Search Header -->
+        <div class="feed-search bg-transparent">
+            <div class="search-wrap shadow-sm rounded-4 p-2 p-md-3">
+                <form class="row g-2 align-items-center" role="search" onsubmit="return false;">
+                    <!-- سرچ -->
+                    <div class="col-12 col-md">
+                        <div class="search-input d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+                            <i class="fa-solid fa-magnifying-glass search-ico"></i>
+                            <input id="qInput" type="search" inputmode="search" autocomplete="off"
+                                   class="form-control border-0 bg-transparent"
+                                   placeholder="جستجو بین عنوان و متن پژوهش ها…">
+                            <button id="clearSearch" class="btn btn-clear d-none" type="button"
+                                    aria-label="پاک کردن جستجو">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
 
-    <!-- عنوان صفحه -->
-    <div class="text-center mb-5">
-      <h2 class="fw-bold section-title mb-3">✍️ دستخط من</h2>
-      <p class="section-subtitle text-muted">
-        اینجا تکه‌کدهایی از مسیر یادگیری، چالش‌ها و تجربیات کاری منو می‌خونی — جایی که کد فقط کار نمی‌کنه، <strong>زیبا</strong> هم هست.
-      </p>
-    </div>
+                    <!-- تاریخ -->
+                    <div class="col-6 col-md-auto">
+                        <div class="date-chip d-flex align-items-center gap-2 px-3 py-2 rounded-3">
+                            <i class="fa-regular fa-calendar"></i>
+                            <input id="dateInput" type="date"
+                                   class="form-control form-control-sm border-0 bg-transparent">
+                            <button id="clearDate" class="btn btn-clear" type="button" aria-label="پاک کردن تاریخ">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
 
-    <!-- جمله الهام‌بخش -->
-    <blockquote class="blockquote text-center mb-5">
-      <p class="fst-italic text-muted border-start border-3 ps-3 d-inline-block">
-        "کد خوب فقط نتیجه‌ نیست، بازتابِ طرز فکر نویسنده‌ست."
-      </p>
-    </blockquote>
+                </form>
 
-    <!-- فیلتر موضوعی -->
-    <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
-      <button class="btn btn-sm btn-outline-dark active">همه</button>
-      <button class="btn btn-sm btn-outline-dark">Django</button>
-      <button class="btn btn-sm btn-outline-dark">Performance</button>
-      <button class="btn btn-sm btn-outline-dark">Clean Code</button>
-      <button class="btn btn-sm btn-outline-dark">DevOps</button>
-    </div>
+                <!-- Tags Filter -->
+                <!-- Tags Filter -->
+                <div class="tags-list mt-3" style="gap: 8px">
+                    {% for tag in keywords %}
+                    <a href="?tag={{ tag.slug }}"
+                       class="tag-link me-1 mb-2 {% if tag.slug == active_tag %}active text-white{% endif %}"
+                       data-tag="{{ tag.slug }}">
+                        {{ tag.slug }}
+                    </a>
+                    {% endfor %}
+                </div>
 
-    <!-- کارت‌ها -->
-    <div class="row g-4">
-      {% for snippet in snippets %}
-      <div class="col-12 col-md-6 col-lg-4">
-        <article class="card h-100 border-0 shadow-sm rounded-4 hover-shadow">
-          <div class="card-body d-flex flex-column">
 
-            <!-- تگ موضوع -->
-            <span class="badge bg-dark-subtle text-dark mb-2">{{ snippet.category }}</span>
-
-            <!-- عنوان -->
-            <h5 class="fw-bold mb-2">{{ snippet.title }}</h5>
-
-            <!-- توضیح کوتاه -->
-            <p class="text-muted small mb-3">{{ snippet.short_description }}</p>
-
-            <!-- کد خلاصه -->
-            <pre class="bg-light rounded-3 p-3 mb-3"><code class="language-python">{{ snippet.preview_code }}</code></pre>
-
-            <!-- فوتر کارت -->
-            <div class="mt-auto d-flex justify-content-between align-items-center">
-              <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#snippetModal{{ snippet.id }}">
-                دیدن کامل
-              </a>
-              <small class="text-muted">{{ snippet.date|date:"Y/m/d" }}</small>
             </div>
-          </div>
-        </article>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- Modal جزئیات -->
-  {% for snippet in snippets %}
-  <div class="modal fade" id="snippetModal{{ snippet.id }}" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content bg-dark text-white border-0 rounded-4">
-        <div class="modal-header border-secondary">
-          <h5 class="modal-title">{{ snippet.title }}</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body">
-          <pre><code class="language-python">{{ snippet.full_code }}</code></pre>
 
-          <hr class="border-secondary my-4">
 
-          <h6 class="fw-bold text-info">💡 نکته / تجربه شخصی:</h6>
-          <p class="small text-light opacity-75 mb-0">
-            {{ snippet.lesson }}
-          </p>
+        <!-- کارت‌ها -->
+        <div class="row g-4">
+            {% for snippet in snippets %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <article class="card h-100 border-0 shadow-sm rounded-4 hover-shadow">
+                    <div class="card-body d-flex flex-column">
 
-          {% if snippet.project_name %}
-          <div class="mt-3 small text-secondary">
-            <i class="bi bi-briefcase me-1"></i>
-            استفاده‌شده در پروژه: {{ snippet.project_name }}
-          </div>
-          {% endif %}
+                        <!-- تگ موضوع -->
+                        <span class="badge bg-dark-subtle text-dark mb-2">{{ snippet.category }}</span>
+
+                        <!-- عنوان -->
+                        <h5 class="fw-bold mb-2">{{ snippet.title }}</h5>
+
+                        <!-- توضیح کوتاه -->
+                        <p class="text-muted small mb-3">{{ snippet.short_description }}</p>
+
+                        <!-- کد خلاصه -->
+                        <pre class="bg-light rounded-3 p-3 mb-3"><code class="language-python">{{ snippet.preview_code }}</code></pre>
+
+                        <!-- فوتر کارت -->
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                               data-bs-target="#snippetModal{{ snippet.id }}">
+                                دیدن کامل
+                            </a>
+                            <small class="text-muted">{{ snippet.date|date:"Y/m/d" }}</small>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
         </div>
-      </div>
     </div>
-  </div>
-  {% endfor %}
+
+    <!-- Modal جزئیات -->
+    {% for snippet in snippets %}
+    <div class="modal fade" id="snippetModal{{ snippet.id }}" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-0 rounded-4">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">{{ snippet.title }}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <pre><code class="language-python">{{ snippet.full_code }}</code></pre>
+
+                    <hr class="border-secondary my-4">
+
+                    <h6 class="fw-bold text-info">💡 نکته / تجربه شخصی:</h6>
+                    <p class="small text-light opacity-75 mb-0">
+                        {{ snippet.lesson }}
+                    </p>
+
+                    {% if snippet.project_name %}
+                    <div class="mt-3 small text-secondary">
+                        <i class="bi bi-briefcase me-1"></i>
+                        استفاده‌شده در پروژه: {{ snippet.project_name }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </section>
 {% endblock %}
