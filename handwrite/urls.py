@@ -5,10 +5,10 @@ from .views import *
 app_name = 'handwrite'
 
 router = DefaultRouter()
-# router.register(r'availability', AvailabilityViewSet)
+router.register(r"snippets", SnippetViewSet, basename="snippet")
 
 urlpatterns = [
-    path('', handwrite_view, name='handwrite-view'),
+    path("", SnippetListView.as_view(), name="handwrite-view"),
     path('api/', include(router.urls)),
 
 ]
