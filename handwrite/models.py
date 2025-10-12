@@ -37,7 +37,7 @@ class Snippet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("handwrite:detail", kwargs={"slug": self.slug})
+        return reverse("handwrite:handwrite-view", kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         if not self.slug:
