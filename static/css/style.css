@@ -1063,3 +1063,21 @@ pre {
     color: #003c70 !important;
     transition: all 0.2s;
 }
+
+.hover-shadow {
+  transition: all 0.3s ease;
+}
+.hover-shadow:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.badge.bg-dark-subtle {
+  background-color: #e6e9e8;
+  font-weight: 500;
+}
+
