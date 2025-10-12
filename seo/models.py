@@ -3,17 +3,30 @@ from django.utils.text import slugify
 
 
 class Keyword(models.Model):
+    class Category(models.TextChoices):
+        BLOG = "blog", "وبلاگ"
+        POST = "post", "روزنوشت"
+        HANDWRITING = "handwriting", "دستخط"
+
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=70, unique=True, blank=True)
+    category = models.CharField(
+        max_length=20,
+        choices=Category.choices,
+        default=Category.BLOG,
+        verbose_name="دسته مربوطه"
+    )
 
-    class Meta: ordering = ["name"]
+    class Meta:
+        ordering = ["name"]
 
     def save(self, *a, **kw):
         if not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)[:70]
         super().save(*a, **kw)
 
-    def __str__(self): return self.name
+    def __str__(self):
+        return f"{self.name}"
 
 
 class SEOPage(models.Model):

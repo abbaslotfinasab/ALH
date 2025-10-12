@@ -11,4 +11,4 @@ class SEOPageSerializer(serializers.ModelSerializer):
 class KeyWordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Keyword
-        fields = ['name']
+        fields = ['name', 'category']
