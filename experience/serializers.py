@@ -14,13 +14,13 @@ class CompanyReadSerializer(serializers.ModelSerializer):
 class ProjectWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ["id", "experience", "name", "role", "description", "technologies", "link_demo", "screenshot"]
+        fields = ["id", "experience", "name", "role", "description", "technology", "link_demo", "screenshot"]
 
 class ProjectReadSerializer(serializers.ModelSerializer):
     experience = serializers.StringRelatedField()
     class Meta:
         model = Project
-        fields = ["id", "experience", "name", "role", "description", "technologies", "link_demo", "screenshot"]
+        fields = ["id", "experience", "name", "role", "description", "technology", "link_demo", "screenshot"]
 
 class ExperienceWriteSerializer(serializers.ModelSerializer):
     class Meta:
