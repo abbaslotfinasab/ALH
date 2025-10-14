@@ -80,7 +80,7 @@
                 <article class="post-card rounded-4 shadow-sm bg-white p-4 mb-4"
                          data-title="{{ post.title|lower }}"
                          data-content="{{ post.content|striptags|lower }}"
-                         data-tags="{% for tag in post.tags.all %}{{ tag.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
+                         data-keywords="{% for kw in post.keywords.all %}{{ kw.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
                          data-date="{{ post.created_at|date:'Y-m-d' }}"
                          data-published-date = "{{ post.created_at|date:'Y-m-d' }}"
                          data-id="{{ post.id }}"
@@ -186,93 +186,81 @@
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const qInput = document.getElementById("qInput");
-        const dateInput = document.getElementById("dateInput");
-        const clearSearch = document.getElementById("clearSearch");
-        const clearDate = document.getElementById("clearDate");
-        const tagLinks = document.querySelectorAll(".tag-link");
-        const posts = document.querySelectorAll(".post-card"); // هر پست در template
-        const feed = document.getElementById("feed");
+document.addEventListener("DOMContentLoaded", () => {
+    const qInput = document.getElementById("qInput");
+    const dateInput = document.getElementById("dateInput");
+    const clearSearch = document.getElementById("clearSearch");
+    const clearDate = document.getElementById("clearDate");
+    const tagLinks = document.querySelectorAll(".tag-link");
+    const posts = document.querySelectorAll(".post-card");
 
-        let activeTag = "";
-        let searchQuery = "";
-        let selectedDate = "";
+    let activeTag = "";
+    let searchQuery = "";
+    let selectedDate = "";
 
-        // تابع اصلی فیلتر
-        function filterPosts() {
-            posts.forEach(post => {
-                const title = post.dataset.title.toLowerCase();
-                const content = post.dataset.content.toLowerCase();
-                const tags = post.dataset.tags.split(",");
-                const date = post.dataset.date; // مثل yyyy-mm-dd
+    function filterPosts() {
+        posts.forEach(post => {
+            const title = post.dataset.title.toLowerCase();
+            const content = post.dataset.content.toLowerCase();
+            const keywords = post.dataset.keywords ? post.dataset.keywords.split(",") : [];
+            const date = post.dataset.date;
 
-                const matchQuery =
-                    !searchQuery ||
-                    title.includes(searchQuery) ||
-                    content.includes(searchQuery);
+            const matchQuery = !searchQuery || title.includes(searchQuery) || content.includes(searchQuery);
+            const matchTag = !activeTag || keywords.includes(activeTag);
+            const matchDate = !selectedDate || date.startsWith(selectedDate);
 
-                const matchTag =
-                    !activeTag || tags.includes(activeTag);
-
-                const matchDate =
-                    !selectedDate || date.startsWith(selectedDate);
-
-                if (matchQuery && matchTag && matchDate) {
-                    post.classList.remove("d-none");
-                } else {
-                    post.classList.add("d-none");
-                }
-            });
-        }
-
-        // --- جستجو ---
-        qInput.addEventListener("input", e => {
-            searchQuery = e.target.value.trim().toLowerCase();
-            clearSearch.classList.toggle("d-none", !searchQuery);
-            filterPosts();
+            if (matchQuery && matchTag && matchDate) {
+                post.classList.remove("d-none");
+            } else {
+                post.classList.add("d-none");
+            }
         });
+    }
 
-        clearSearch.addEventListener("click", () => {
-            qInput.value = "";
-            searchQuery = "";
-            clearSearch.classList.add("d-none");
-            filterPosts();
-        });
-
-        // --- تاریخ ---
-        dateInput.addEventListener("change", e => {
-            selectedDate = e.target.value;
-            clearDate.classList.toggle("d-none", !selectedDate);
-            filterPosts();
-        });
-
-        clearDate.addEventListener("click", () => {
-            dateInput.value = "";
-            selectedDate = "";
-            clearDate.classList.add("d-none");
-            filterPosts();
-        });
-
-        // --- تگ‌ها ---
-        tagLinks.forEach(tag => {
-            tag.addEventListener("click", e => {
-                e.preventDefault();
-                const selected = tag.dataset.tag;
-                if (activeTag === selected) {
-                    activeTag = "";
-                    tag.classList.remove("active", "text-white");
-                } else {
-                    activeTag = selected;
-                    tagLinks.forEach(t => t.classList.remove("active", "text-white"));
-                    tag.classList.add("active", "text-white");
-                }
-                filterPosts();
-            });
-        });
-
+    qInput.addEventListener("input", e => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        clearSearch.classList.toggle("d-none", !searchQuery);
+        filterPosts();
     });
+
+    clearSearch.addEventListener("click", () => {
+        qInput.value = "";
+        searchQuery = "";
+        clearSearch.classList.add("d-none");
+        filterPosts();
+    });
+
+    dateInput.addEventListener("change", e => {
+        selectedDate = e.target.value;
+        clearDate.classList.toggle("d-none", !selectedDate);
+        filterPosts();
+    });
+
+    clearDate.addEventListener("click", () => {
+        dateInput.value = "";
+        selectedDate = "";
+        clearDate.classList.add("d-none");
+        filterPosts();
+    });
+
+    tagLinks.forEach(tag => {
+        tag.addEventListener("click", e => {
+            e.preventDefault();
+            const selected = tag.dataset.tag;
+            if (activeTag === selected) {
+                activeTag = "";
+                tag.classList.remove("active", "text-white");
+            } else {
+                activeTag = selected;
+                tagLinks.forEach(t => t.classList.remove("active", "text-white"));
+                tag.classList.add("active", "text-white");
+            }
+            filterPosts();
+        });
+    });
+});
 </script>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
