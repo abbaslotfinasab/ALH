@@ -107,7 +107,7 @@
 
                     <!-- تگ‌ها -->
                     <div class="tags-list small mb-3" style="gap: 2px">
-                        {% for tag in post.keyqords.all %}
+                        {% for tag in post.keywords.all %}
                         <a href="{% url 'post:feed-view' %}?tag={{ tag.slug }}"
                            class="tag-pill">
                             #{{tag.slug }}
