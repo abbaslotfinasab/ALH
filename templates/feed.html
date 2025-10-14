@@ -103,7 +103,14 @@
                     </header>
 
                     <div class="fw-bold mb-2">{{ post.title }}</div>
-                    <p class="mb-4" dir="auto">{{ post.content|truncatechars:550|safe }}</p>
+                    <p class="post-content mb-4" dir="auto">
+                        <span class="short-text">{{ post.content|truncatechars:250|safe }}</span>
+                        <span class="full-text d-none">{{ post.content|safe }}</span>
+                        {% if post.content|length > 250 %}
+                        <a href="#" class="read-more">... بیشتر بخوانید</a>
+                        {% endif %}
+                    </p>
+
 
                     <!-- تگ‌ها -->
                     <div class="tags-list small mb-3" style="gap: 2px">
@@ -289,6 +296,21 @@
             }
         });
     });
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".read-more").forEach(function(btn){
+        btn.addEventListener("click", function(e){
+            e.preventDefault();
+            const parent = btn.parentElement;
+            parent.querySelector(".short-text").classList.add("d-none");
+            parent.querySelector(".full-text").classList.remove("d-none");
+            btn.style.display = "none"; // مخفی کردن دکمه بعد از باز شدن
+        });
+    });
+});
 </script>
 
 {% endblock %}
