@@ -104,12 +104,13 @@
 
                     <div class="fw-bold mb-2">{{ post.title }}</div>
                     <p class="post-content mb-4" dir="auto">
-                        <span class="short-text">{{ post.content|truncatechars:250|safe }}</span>
-                        <span class="full-text d-none">{{ post.content|safe }}</span>
+                        <span class="short-text">{{ post.content|truncatechars:250|linebreaksbr|safe }}</span>
+                        <span class="full-text d-none">{{ post.content|linebreaksbr|safe }}</span>
                         {% if post.content|length > 250 %}
                         <a href="#" class="read-more">... بیشتر بخوانید</a>
                         {% endif %}
                     </p>
+
 
 
                     <!-- تگ‌ها -->
