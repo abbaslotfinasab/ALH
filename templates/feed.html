@@ -176,7 +176,7 @@
                     url: url
                 });
             } catch {
-                navigator.clipboard.writeText(url);
+                await navigator.clipboard.writeText(url);
                 alert("📋 لینک پست کپی شد!");
             }
         });

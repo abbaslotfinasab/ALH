@@ -19,7 +19,7 @@ def feed(request, slug=None):
     # فیلتر تگ
     tag_slug = request.GET.get("tag")
     if tag_slug:
-        posts = posts.filter(tags__slug=tag_slug)
+        posts = posts.filter(keywords__slug=tag_slug)
 
     context = {
         "tags": keywords,
