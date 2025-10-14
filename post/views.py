@@ -38,7 +38,7 @@ def feed(request, slug=None):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.filter(is_published=True).prefetch_related("tags")
+    queryset = Post.objects.filter(is_published=True).prefetch_related("keywords")
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = {"keywords__id": ["exact"], "keywords__name": ["exact"], "is_published": ["exact"],
                         "created_at": ["date", "date__gte", "date__lte"]}
