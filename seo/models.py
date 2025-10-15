@@ -7,6 +7,8 @@ class Keyword(models.Model):
         BLOG = "blog", "وبلاگ"
         POST = "post", "روزنوشت"
         HANDWRITING = "handwriting", "دستخط"
+        SEO = "seo", "سئو"
+
 
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=70, unique=True, blank=True)
