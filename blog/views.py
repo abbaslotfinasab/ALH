@@ -41,7 +41,8 @@ class BlogPostListView(ListView):
             context["meta_keywords"] = ", ".join(default["keywords"])
 
         context["canonical_url"] = self.request.build_absolute_uri()
-        context["keywords"] = Keyword.objects.all()
+        context["keywords"] = Keyword.objects.filter(category=Keyword.Category.BLOG).order_by("name")
+
 
         return context
 
