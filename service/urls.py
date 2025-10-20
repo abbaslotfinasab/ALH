@@ -14,6 +14,8 @@ router.register(r'technologies', TechnologyViewSet, basename='technology')
 
 urlpatterns = [
     re_path(r'^(?P<slug>[-\w\u0600-\u06FF]+)/$', views.service_view, name='service-view'),
+    re_path('<int:pk>/', views.service_view, name='service-view'),
+
     path('api/', include(router.urls)),
 
 ]

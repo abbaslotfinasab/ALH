@@ -5,9 +5,20 @@ from .serializers import ServiceSerializer, TechnologySerializer
 
 
 
-def service_view(request, slug=None):
-    service = get_object_or_404(Service,slug=slug)
+from django.shortcuts import render, get_object_or_404
+from .models import Service
+
+def service_view(request, id=None, slug=None):
+    if id:
+        service = get_object_or_404(Service, id=id)
+    elif slug:
+        service = get_object_or_404(Service, slug=slug)
+    else:
+        # اگه هیچکدوم نبود خطا بده
+        return render(request, "404.html", status=404)
+
     return render(request, "service.html", {"service": service})
+
 
 
 
