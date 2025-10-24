@@ -1,13 +1,19 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
-
 class StaticViewSitemap(Sitemap):
-    priority = 0.9
-    changefreq = 'monthly'
-
     def items(self):
-        return ['home:home-view', 'about', 'collab:collab-view']
+        return [
+            {'name': 'home:home-view', 'priority': 1.0, 'changefreq': 'daily'},
+            {'name': 'about', 'priority': 0.7, 'changefreq': 'yearly'},
+            {'name': 'collab:collab-view', 'priority': 0.8, 'changefreq': 'monthly'},
+        ]
 
     def location(self, item):
-        return reverse(item)
+        return reverse(item['name'])
+
+    def priority(self, item):
+        return item['priority']
+
+    def changefreq(self, item):
+        return item['changefreq']
