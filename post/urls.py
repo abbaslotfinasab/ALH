@@ -12,5 +12,8 @@ router.register(r"comments", CommentViewSet, basename="comment")
 urlpatterns = [
     path('api/', include(router.urls)),
     path("", feed, name="feed-view"),  # فید
-    re_path(r"^(?P<slug>[-\w\u0600-\u06FF]+)/$", feed, name="feed-with-popup"),
-]
+    re_path(
+        r'^(?P<combined_slug>[-\w\u0600-\u06FF/]+)/?$',
+        feed,
+        name='feed-with-slug-or-keyword'
+    ),]

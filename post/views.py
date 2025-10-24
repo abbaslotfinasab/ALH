@@ -5,35 +5,35 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from unicodedata import category
 
 from seo.models import Keyword
 from .serializers import *
 from .permissions import IsStaffOrReadOnly
 
 
-def feed(request, slug=None):
-    keywords = Keyword.objects.filter(category='post').order_by("name")
+def feed(request, combined_slug=None):
     posts = Post.objects.filter(is_published=True).order_by('-created_at')
 
-    # فیلتر تگ
-    tag_slug = request.GET.get("tag")
-    if tag_slug:
-        posts = posts.filter(keywords__slug=tag_slug)
+    if combined_slug:
+        parts = combined_slug.strip("/").split("/")  # لیست بخش‌ها
+        post_slug = parts[0] if len(parts) > 0 else None
+        keyword_slug = parts[1] if len(parts) > 1 else None
 
-    context = {
-        "tags": keywords,
-        "posts": posts,
-        "active_tag": tag_slug,
-    }
+        if post_slug and keyword_slug:
+            # جستجو بر اساس هر دو
+            post = get_object_or_404(Post, slug=post_slug, keywords__slug=keyword_slug, is_published=True)
+        elif post_slug:
+            # فقط بر اساس slug
+            post = get_object_or_404(Post, slug=post_slug, is_published=True)
+        elif keyword_slug:
+            # فقط بر اساس keyword
+            post = get_object_or_404(Post, keywords__slug=keyword_slug, is_published=True)
+        else:
+            post = None
 
-    # اگر پست خاصی خواسته شده
-    if slug:
-        post = get_object_or_404(Post, slug=slug, is_published=True)
-        context["open_slug"] = slug
-        context["posts"] = [post]  # فقط همون پست نمایش داده بشه
+        posts = [post] if post else []
 
-
+    context = {"posts": posts}
     return render(request, "feed.html", context)
 
 
