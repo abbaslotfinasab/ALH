@@ -19,7 +19,7 @@
       "name": "{{ snippet.title|escapejs }}",
       "description": "{{ snippet.short_description|default:snippet.full_code|truncatechars:155|escapejs }}",
       "datePublished": "{{ snippet.created_at|date:'c' }}",
-      "dateModified": "{{ snippet.updated_at|date:'c' if snippet.updated_at else snippet.created_at|date:'c' }}"
+      "dateModified": "{{ snippet.last_modified|date:'c' }}"
     }{% if not forloop.last %},{% endif %}
     {% endfor %}
   ]

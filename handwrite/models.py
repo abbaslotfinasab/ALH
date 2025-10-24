@@ -56,3 +56,7 @@ class Snippet(models.Model):
         preview = self.full_code.strip().splitlines()
         preview = preview[:8]  # چند خط اول
         return "\n".join(preview)
+
+    @property
+    def last_modified(self):
+        return self.updated_at if self.updated_at else self.created_at
