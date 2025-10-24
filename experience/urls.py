@@ -15,7 +15,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('', views.experience, name='experience-view'),
     re_path(
-        r'^experience/(?P<slug>[-\u0600-\u06FFa-zA-Z0-9_]+)/$',
+        r'^(?P<slug>[-\u0600-\u06FFa-zA-Z0-9_]+)/$',
         views.experience,
         name='experience-view-slug'
     )
