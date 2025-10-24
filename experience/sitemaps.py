@@ -3,7 +3,7 @@ from django.urls import reverse
 from experience.models import Experience
 
 
-class ExperienceQuerySitemap(Sitemap):
+class ExperienceSitemap(Sitemap):
     changefreq = "monthly"
     priority = 0.8
 
