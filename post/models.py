@@ -20,6 +20,8 @@ class Post(models.Model):
     comments_count = models.PositiveIntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(default=timezone.now)
+
 
     slug = models.SlugField(max_length=280, unique=True, blank=True)
     # فیلدهای سئو:
