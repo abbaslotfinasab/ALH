@@ -15,8 +15,8 @@ class FeedSitemap(Sitemap):
         # اگر می‌خوای همه حالت‌ها رو داشته باشی، default فقط slug پست
         keyword_slug = obj.keywords.first().slug if obj.keywords.exists() else None
         if keyword_slug:
-            return reverse('feed:feed-with-slug-or-keyword', kwargs={'combined_slug': f"{obj.slug}/{keyword_slug}"})
-        return reverse('feed:feed-with-slug-or-keyword', kwargs={'combined_slug': obj.slug})
+            return reverse('post:feed-with-slug-or-keyword', kwargs={'combined_slug': f"{obj.slug}/{keyword_slug}"})
+        return reverse('post:feed-with-slug-or-keyword', kwargs={'combined_slug': obj.slug})
 
     def lastmod(self, obj):
         return obj.updated_at if hasattr(obj, 'updated_at') else obj.created_at
