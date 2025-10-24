@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from . import views
 from rest_framework.routers import DefaultRouter
 
@@ -12,8 +12,12 @@ router.register(r"projects", ProjectViewSet, basename="project")
 app_name = 'experience'
 
 urlpatterns = [
-    path('', views.experience, name='experience-view'),
-    path('<slug:slug>/', views.experience, name='experience-view-slug'),
     path('api/', include(router.urls)),
+    path('', views.experience, name='experience-view'),
+    re_path(
+        r'^experience/(?P<slug>[-\u0600-\u06FFa-zA-Z0-9_]+)/$',
+        views.experience,
+        name='experience-view-slug'
+    )
 
 ]
