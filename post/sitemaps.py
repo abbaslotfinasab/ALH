@@ -22,4 +22,10 @@ class FeedSitemap(Sitemap):
         return reverse('post:feed-with-slug-or-keyword', kwargs={'combined_slug': obj.slug})
 
     def lastmod(self, obj):
+        if obj is None:
+            # آخرین بروزرسانی صفحه feed = آخرین پست منتشر شده
+            last_post = Post.objects.filter(is_published=True).order_by('-updated_at').first()
+            if last_post:
+                return last_post.updated_at if hasattr(last_post, 'updated_at') else last_post.created_at
+            return None  # اگه پستی نبود
         return obj.updated_at if hasattr(obj, 'updated_at') else obj.created_at
