@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -61,3 +62,6 @@ class Project(models.Model):
 
     def tech_list(self):
         return [t.strip() for t in self.technology.split(",") if t.strip()]
+
+    def get_absolute_url(self):
+        return reverse('experience:experience-view-slug', args=[self.experience.company.slug])
