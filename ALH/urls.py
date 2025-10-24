@@ -21,15 +21,17 @@ from ALH.views import robots_txt
 from blog.sitemaps import BlogSitemap
 from experience.sitemaps import ExperienceSitemap
 from handwrite.sitemaps import SnippetSitemap
+from post.sitemaps import FeedSitemap
 from seo.sitemaps import StaticViewSitemap
 from service.sitemaps import ServiceSitemap
 
 sitemaps = {
     'static': StaticViewSitemap(),
-    'blog': BlogSitemap(),
-    'service': ServiceSitemap(),
     'experience': ExperienceSitemap(),
-    'Snippet':SnippetSitemap()
+    'service': ServiceSitemap(),
+    'feed': FeedSitemap(),
+    'Snippet': SnippetSitemap(),
+    'blog': BlogSitemap()
 
 }
 
