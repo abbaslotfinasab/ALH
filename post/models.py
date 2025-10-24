@@ -1,7 +1,6 @@
 # posts/models.py
-from datetime import timezone
-
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 
 from seo.models import Keyword
