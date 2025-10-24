@@ -6,19 +6,21 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "{{ seo_title|default:'دستخط'|escapejs }}",
-  "description": "{{ seo_description|default:'مجموعه‌ای از دستخط‌ها و نمونه‌های نوشته شده'|escapejs }}",
-  "url": "{{ canonical_url|default:request.build_absolute_uri }}",
-  "hasPart": [
+  "@type": "ItemList",
+  "name": "دست‌خط‌های عباس لطفی نسب",
+  "description": "مجموعه‌ای از نمونه کدها، نکات و دست‌خط‌های آموزشی",
+  "url": "{{ request.build_absolute_uri|slice:":-1" }}",
+  "itemListElement": [
     {% for snippet in snippets %}
     {
-      "@type": "BlogPosting",
-      "headline": "{{ snippet.title|escapejs }}",
-      "url": "{{ request.build_absolute_uri|slice:':-1' }}{{ snippet.get_absolute_url|escapejs }}"
+      "@type": "ListItem",
+      "position": {{ forloop.counter }},
+      "url": "{{ request.build_absolute_uri|slice:":-1" }}/{{ snippet.slug }}/",
+      "name": "{{ snippet.title|escapejs }}",
+      "description": "{{ snippet.short_description|default:snippet.full_code|truncatechars:155|escapejs }}",
+      "datePublished": "{{ snippet.created_at|date:'c' }}",
+      "dateModified": "{{ snippet.updated_at|date:'c' if snippet.updated_at else snippet.created_at|date:'c' }}"
     }{% if not forloop.last %},{% endif %}
-    {% empty %}
-    {}
     {% endfor %}
   ]
 }
