@@ -13,6 +13,7 @@ app_name = 'experience'
 
 urlpatterns = [
     path('', views.experience, name='experience-view'),
+    path('<slug:slug>/', views.experience, name='experience-view-slug'),
     path('api/', include(router.urls)),
 
 ]

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -7,19 +7,26 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from .serializers import *
 
 
-def experience(request):
-    companies = (
-        Company.objects.filter(is_active=True)
-        .prefetch_related("experiences__projects")
-        .order_by("name")
-    )
+def experience(request, slug=None):
+    # همه شرکت‌های فعال
+    companies = Company.objects.filter(is_active=True).prefetch_related("experiences__projects").order_by("name")
 
-    projects = (
-        Project.objects.all()
-        .order_by("name")
-    )
-    return render(request, "experience.html", {"companies": companies, "projects": projects})
+    # اگه slug داده شده، فقط اون شرکت فیلتر میشه
+    if slug:
+        companies = get_object_or_404(companies, slug=slug)
 
+    # همه پروژه‌ها (می‌تونی براساس نیاز تغییر بدی)
+    projects = Project.objects.all().order_by("name")
+
+    return render(
+        request,
+        "experience.html",
+        {
+            "companies": companies,
+            "projects": projects,
+            "slug": slug,
+        }
+    )
 
 
 class CompanyViewSet(viewsets.ModelViewSet):

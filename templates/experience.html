@@ -6,36 +6,38 @@
 
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "{{ seo_title|escapejs }}",
-    "description": "{{ seo_description|escapejs }}",
-    "url": "{{ canonical_url|default:request.build_absolute_uri }}",
-    "mainEntity": {
-        "@type": "ItemList",
-        "name": "نمونه کارهای عباس لطفی نسب",
-        "itemListElement": [
-            {% for project in projects %}
-            {
-                "@type": "ListItem",
-                "position": {{ forloop.counter }},
-                "url": "{{ request.build_absolute_uri }}{{ project.get_absolute_url }}",
-                "name": "{{ project.title|escapejs }}",
-                "description": "{{ project.short_description|escapejs }}"
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ]
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "abbaslotfinasab.ir",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "{% static 'images/logo.png' %}"
-        }
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{{ seo_title|escapejs }}",
+  "description": "{{ seo_description|escapejs }}",
+  "url": "{{ canonical_url|default:request.build_absolute_uri }}",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "نمونه کارهای عباس لطفی نسب",
+    "itemListElement": [
+      {% for project in projects %}
+      {
+        "@type": "ListItem",
+        "position": {{ forloop.counter }},
+        "url": "{{ request.build_absolute_uri(project.get_absolute_url) }}",
+        "name": "{{ project.name|escapejs }}",
+        "description": "{{ project.description|truncatechars:160|escapejs }}"
+      }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "abbaslotfinasab.ir",
+    "url": "https://abbaslotfinasab.ir",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{% static 'images/logo.png' %}"
     }
+  }
 }
 </script>
+
 
 {% endblock %}
 
@@ -49,7 +51,7 @@
       {% for company in companies %}
       <!-- کارت شرکت -->
       <div class="col-12">
-        <article id="{{ company.name|slugify }}" class="company-card p-4 p-md-5 rounded-4 shadow-sm border">
+        <article class="company-card p-4 p-md-5 rounded-4 shadow-sm border">
           <header class="d-flex align-items-center gap-3 mb-4">
             {% if company.logo %}
               <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="company-logo">
@@ -137,32 +139,5 @@
     </div>
   </div>
 </section>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const hash = decodeURIComponent(window.location.hash);
-  if (hash) {
-    const target = document.querySelector(hash);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
-  }
-
-  // وقتی رو لینک داخلی کلیک میشه، اسکرول نرم انجام بده
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const id = decodeURIComponent(this.getAttribute('href'));
-      const element = document.querySelector(id);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-        history.pushState(null, null, id);
-      }
-    });
-  });
-});
-</script>
-
 
 {% endblock %}
