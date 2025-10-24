@@ -12,6 +12,9 @@ class FeedSitemap(Sitemap):
         return Post.objects.filter(is_published=True)
 
     def location(self, obj):
+        if obj is None:
+            # صفحه اصلی feed
+            return reverse('post:feed-view')  # /post/ یا /feed/
         # اگر می‌خوای همه حالت‌ها رو داشته باشی، default فقط slug پست
         keyword_slug = obj.keywords.first().slug if obj.keywords.exists() else None
         if keyword_slug:
