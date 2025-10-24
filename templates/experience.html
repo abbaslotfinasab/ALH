@@ -19,7 +19,7 @@
       {
         "@type": "ListItem",
         "position": {{ forloop.counter }},
-        "url": "{{ request.build_absolute_uri(project.get_absolute_url) }}",
+        "url": "{{ project.get_absolute_url }}",
         "name": "{{ project.name|escapejs }}",
         "description": "{{ project.description|truncatechars:160|escapejs }}"
       }{% if not forloop.last %},{% endif %}
