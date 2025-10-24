@@ -13,7 +13,7 @@ def experience(request, slug=None):
 
     # اگه slug داده شده، فقط اون شرکت فیلتر میشه
     if slug:
-        companies = get_object_or_404(Company, slug=slug)
+        companies = companies.filter(slug=slug)  # QuerySet حتی اگر 1 مورد هم باشه
 
     # همه پروژه‌ها (می‌تونی براساس نیاز تغییر بدی)
     projects = Project.objects.all().order_by("name")
