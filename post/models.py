@@ -1,4 +1,6 @@
 # posts/models.py
+from datetime import timezone
+
 from django.db import models
 from django.utils.text import slugify
 
