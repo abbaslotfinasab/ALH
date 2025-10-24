@@ -9,7 +9,7 @@ class FeedSitemap(Sitemap):
     priority = 0.9
 
     def items(self):
-        return Post.objects.filter(is_published=True)
+        return [None] + list(Post.objects.filter(is_published=True))
 
     def location(self, obj):
         if obj is None:
