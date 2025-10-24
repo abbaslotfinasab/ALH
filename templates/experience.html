@@ -49,7 +49,7 @@
       {% for company in companies %}
       <!-- کارت شرکت -->
       <div class="col-12">
-        <article class="company-card p-4 p-md-5 rounded-4 shadow-sm border">
+        <article id="{{ company.name|slugify }}" class="company-card p-4 p-md-5 rounded-4 shadow-sm border">
           <header class="d-flex align-items-center gap-3 mb-4">
             {% if company.logo %}
               <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="company-logo">
@@ -137,6 +137,32 @@
     </div>
   </div>
 </section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const hash = decodeURIComponent(window.location.hash);
+  if (hash) {
+    const target = document.querySelector(hash);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  // وقتی رو لینک داخلی کلیک میشه، اسکرول نرم انجام بده
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const id = decodeURIComponent(this.getAttribute('href'));
+      const element = document.querySelector(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        history.pushState(null, null, id);
+      }
+    });
+  });
+});
+</script>
 
 
 {% endblock %}
