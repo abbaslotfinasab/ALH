@@ -4,9 +4,15 @@ from django.utils import timezone
 
 class Company(models.Model):
     name = models.CharField(max_length=120)
+    slug = models.SlugField(max_length=120, unique=True, blank=True, null=True)  # می‌تونه فارسی باشه
     logo = models.ImageField(upload_to='company_logos/', blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.name  # همین نام فارسی رو بذار
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["name"]
@@ -34,7 +40,6 @@ class Experience(models.Model):
     @property
     def is_current(self):
         return self.end_date is None
-
 
 
 class Project(models.Model):
