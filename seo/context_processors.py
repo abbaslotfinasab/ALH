@@ -31,7 +31,8 @@ def seo_context(request):
             'seo_title': seo_data.title,
             'seo_description': seo_data.description,
             'seo_keywords': ", ".join([kw.name for kw in seo_data.keywords.all()]),
-            'canonical_url': quote(request.build_absolute_uri(), safe=':/')
+            'canonical_url': request.build_absolute_uri()
+
         }
 
     # --- مقادیر پیش‌فرض ---
@@ -39,5 +40,6 @@ def seo_context(request):
         'seo_title': force_str(settings.SEO['default']['title']),
         'seo_description': force_str(settings.SEO['default']['description']),
         'seo_keywords': ", ".join(settings.SEO['default']['keywords']),
-        'canonical_url': quote(request.build_absolute_uri(), safe=':/')
+        'canonical_url': request.build_absolute_uri()
+
     }
