@@ -5,36 +5,41 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-
-from seo.models import Keyword
 from .serializers import *
 from .permissions import IsStaffOrReadOnly
 
 
 def feed(request, combined_slug=None):
     posts = Post.objects.filter(is_published=True).order_by('-created_at')
+    canonical_url = request.build_absolute_uri()  # پیش‌فرض URL فعلی
 
+    tag = request.GET.get("tag")
+    if tag:
+        posts = posts.filter(keywords__name=tag)  # یا keywords__slug=tag اگه slug داری
+        canonical_url = f"https://abbaslotfinasab.ir/post/?tag={tag}"
+
+    # حالت قدیمی بر اساس slug
+    post = None
     if combined_slug:
-        parts = combined_slug.strip("/").split("/")  # لیست بخش‌ها
+        parts = combined_slug.strip("/").split("/")
         post_slug = parts[0] if len(parts) > 0 else None
         keyword_slug = parts[1] if len(parts) > 1 else None
 
         if post_slug and keyword_slug:
-            # جستجو بر اساس هر دو
             post = get_object_or_404(Post, slug=post_slug, keywords__slug=keyword_slug, is_published=True)
         elif post_slug:
-            # فقط بر اساس slug
             post = get_object_or_404(Post, slug=post_slug, is_published=True)
         elif keyword_slug:
-            # فقط بر اساس keyword
             post = get_object_or_404(Post, keywords__slug=keyword_slug, is_published=True)
-        else:
-            post = None
 
         posts = [post] if post else []
 
-    context = {"posts": posts}
+    context = {
+        "posts": posts,
+        "canonical_url": canonical_url,
+    }
     return render(request, "feed.html", context)
+
 
 
 class PostViewSet(viewsets.ModelViewSet):
