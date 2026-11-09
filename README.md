@@ -28,7 +28,7 @@ Active redesign work is isolated in `redesign/static-brand`. The `main` branch r
 
 ## Planned static-site commands
 
-These commands will become available after the Astro scaffold is added:
+Astro scaffold is now present on the redesign branch. Run these commands from the repository root:
 
 ```bash
 npm install
@@ -37,4 +37,4 @@ npm run build
 npm run preview
 ```
 
-Do not run these commands against the legacy Django app. The Astro package manifest is not part of this preparation-only phase yet.
+Do not run these commands against the legacy Django app. Install dependencies and run the Astro checks before considering the branch ready to merge.
