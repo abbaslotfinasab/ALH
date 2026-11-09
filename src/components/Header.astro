@@ -1,0 +1,47 @@
+---
+import { navigation, profile } from "../data/profile";
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? currentPath === "/" : currentPath.startsWith(href);
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label={profile.latinName}>
+      <span class="brand-mark" aria-hidden="true">AL</span>
+      <span class="brand-copy">
+        <strong>{profile.name}</strong>
+        <small>Digital Business Architect</small>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="ناوبری اصلی">
+      {navigation.map((item) => (
+        <a
+          href={item.href}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <a class="button button--primary header-cta" href="/contact/">
+      شروع گفتگو <span aria-hidden="true">↗</span>
+    </a>
+
+    <details class="mobile-nav">
+      <summary aria-label="باز کردن منو">
+        <span aria-hidden="true">☰</span>
+      </summary>
+      <nav class="mobile-nav-panel" aria-label="ناوبری موبایل">
+        {navigation.map((item) => (
+          <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+            {item.label}
+          </a>
+        ))}
+        <a href="/contact/">شروع گفتگو ↗</a>
+      </nav>
+    </details>
+  </div>
+</header>
