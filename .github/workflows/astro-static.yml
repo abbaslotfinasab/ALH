@@ -1,0 +1,40 @@
+name: Astro static site validation
+
+on:
+  push:
+    branches:
+      - redesign/static-brand
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate and build static site
+        run: npm run build
+
+      - name: Verify static output
+        run: |
+          test -f dist/index.html
+          test -f dist/about/index.html
+          test -f dist/ventures/index.html
+          test -f dist/experience/index.html
+          test -f dist/insights/index.html
+          test -f dist/contact/index.html
