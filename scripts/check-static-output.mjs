@@ -50,6 +50,36 @@ if (htmlFiles.length === 0) {
 
 for (const htmlFile of htmlFiles) {
   const html = await readFile(htmlFile, "utf8");
+  const source = path.relative(outputDirectory, htmlFile);
+
+  if (!/<title>\\s*[^<]+\\s*<\\/title>/i.test(html)) {
+    errors.push(`${source}: missing or empty page title`);
+  }
+
+  const descriptions = [...html.matchAll(/<meta\\s+name=["']description["']\\s+content=["']([^"']*)["'][^>]*>/gi)];
+  if (descriptions.length !== 1 || !descriptions[0][1].trim()) {
+    errors.push(`${source}: expected exactly one non-empty meta description`);
+  }
+
+  const canonicals = [...html.matchAll(/<link\\s+rel=["']canonical["']\\s+href=["']([^"']+)["'][^>]*>/gi)];
+  if (canonicals.length !== 1) {
+    errors.push(`${source}: expected exactly one canonical URL`);
+  } else {
+    try {
+      const canonicalUrl = new URL(canonicals[0][1]);
+      if (canonicalUrl.origin !== "https://abbaslotfinasab.ir") {
+        errors.push(`${source}: canonical URL is outside the configured site origin`);
+      }
+    } catch {
+      errors.push(`${source}: canonical URL is not absolute and valid`);
+    }
+  }
+
+  const imagesWithoutAlt = [...html.matchAll(/<img\\b(?![^>]*\\balt=)[^>]*>/gi)];
+  if (imagesWithoutAlt.length > 0) {
+    errors.push(`${source}: ${imagesWithoutAlt.length} image(s) missing alt attributes`);
+  }
+
   const attributes = html.matchAll(/\b(?:href|src)\s*=\s*["']([^"'<>]+)["']/gi);
 
   for (const [, rawValue] of attributes) {
