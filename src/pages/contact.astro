@@ -1,0 +1,23 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { profile } from "../data/profile";
+---
+<MainLayout title="ارتباط و همکاری" description="ارتباط با عباس لطفی‌نسب برای همکاری‌های حرفه‌ای، ساخت محصولات دیجیتال و معماری سیستم‌های کسب‌وکار.">
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">CONTACT & COLLABORATION</span>
+      <h1>برای ساختن چیزی معنادار، گفتگو را شروع کنیم.</h1>
+      <p>برای همکاری در ساخت محصول، معماری سیستم‌های کسب‌وکار، فناوری Hospitality یا تبادل تجربه پیام بدهید.</p>
+    </div>
+  </section>
+  <section class="container content-panel">
+    <div class="contact-panel">
+      <div>
+        <h2>ارتباط مستقیم</h2>
+        <p>برای شروع گفتگو از طریق ایمیل در دسترس هستم.</p>
+        <p dir="ltr" style="text-align: right; font-weight: 800;">{profile.email}</p>
+      </div>
+      <a class="button button--primary" href={`mailto:${profile.email}?subject=Professional%20Collaboration`}>ارسال ایمیل ↗</a>
+    </div>
+  </section>
+</MainLayout>
