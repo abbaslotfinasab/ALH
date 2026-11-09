@@ -9,15 +9,20 @@ interface Props {
   title?: string;
   description?: string;
   canonicalPath?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
 }
 
 const {
   title = profile.role,
   description = profile.description,
   canonicalPath = Astro.url.pathname,
+  ogImage = "/images/logo.png",
+  ogImageAlt = profile.latinName,
 } = Astro.props;
 
 const canonical = new URL(canonicalPath, profile.website).toString();
+const socialImage = new URL(ogImage, profile.website).toString();
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -57,11 +62,14 @@ const pageTitle = title.includes(profile.latinName)
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL("/images/logo.png", profile.website).toString()} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
     <slot name="head" />
   </head>
   <body>
