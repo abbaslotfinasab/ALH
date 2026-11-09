@@ -35,13 +35,5 @@ jobs:
       - name: Validate and build static site
         run: npm run build
 
-      - name: Verify static output
-        run: |
-          test -f dist/index.html
-          test -f dist/about/index.html
-          test -f dist/ventures/index.html
-          test -f dist/experience/index.html
-          test -f dist/insights/index.html
-          test -d dist/projects
-          test -f dist/projects/index.html
-          test -f dist/contact/index.html
+      - name: Validate generated routes and internal references
+        run: npm run validate:output
