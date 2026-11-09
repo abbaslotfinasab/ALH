@@ -9,10 +9,9 @@
     "preview": "astro preview",
     "check": "astro check"
   },
-  "dependencies": {
-    "astro": "^5.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "astro": "^5.0.0",
     "@astrojs/check": "^0.9.0",
     "typescript": "^5.7.0"
   }
