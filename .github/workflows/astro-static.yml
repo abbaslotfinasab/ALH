@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 22.23.4
 
       - name: Install dependencies
         run: npm install
@@ -30,6 +30,7 @@ jobs:
         run: |
           npm audit --json > /tmp/npm-audit.json || true
           node -e 'const a=require("/tmp/npm-audit.json"); console.log(JSON.stringify(a.metadata?.vulnerabilities ?? {}, null, 2)); for (const [name, item] of Object.entries(a.vulnerabilities ?? {})) console.log(`${name}: ${item.severity} — ${(item.via ?? []).map(v => typeof v === "string" ? v : v.title).join("; ")}`);'
+          npm audit
 
       - name: Validate and build static site
         run: npm run build
