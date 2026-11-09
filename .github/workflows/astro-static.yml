@@ -37,3 +37,6 @@ jobs:
 
       - name: Validate generated routes and internal references
         run: npm run validate:output
+
+      - name: Validate static performance budgets
+        run: npm run validate:performance
