@@ -17,6 +17,7 @@ export const navigation = [
   { label: "خانه", href: "/" },
   { label: "درباره من", href: "/about/" },
   { label: "محصولات", href: "/ventures/" },
+  { label: "پروژه‌ها", href: "/projects/" },
   { label: "تجربه", href: "/experience/" },
   { label: "دیدگاه‌ها", href: "/insights/" },
 ] as const;
