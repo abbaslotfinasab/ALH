@@ -22,9 +22,9 @@
 ## Still awaiting owner/source review
 - Confirm exact company dates, titles, and role descriptions.
 - Review the project list and public descriptions before launch.
-- Export published Experience/Project/Blog/Post records from the source system using authorized read-only access.
+- Confirm which legacy Git-tracked files and static assets are suitable for reuse; there is no Production database or live content source to export.
 - Match uploaded media and validate image rights.
-- Migrate published articles and feed posts with original slugs, canonical metadata, dates, and OG images.
+- Add only reviewed, verified articles and project descriptions to the new static content collections.
 - Decide whether comments, tags, and feed interactions should remain excluded from the static v1.
 - Add local licensed WOFF2 font files.
 - Add and commit `package-lock.json`.
@@ -34,4 +34,4 @@
 - GitHub Actions passed for the Phase 3 code state.
 - npm dependency audit passed.
 - Astro diagnostics and static route checks passed.
-- No Production database, hosting, DNS, deployment, or live site was modified.
+- The site has no Production deployment or live database; no hosting, DNS, or deployment changes were made.
