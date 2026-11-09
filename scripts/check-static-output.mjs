@@ -31,8 +31,8 @@ function localTarget(rawValue) {
 
   let pathname;
   try {
-    const parsed = new URL(rawValue, "https://site-validation.invalid");
-    if (parsed.origin !== "https://site-validation.invalid") return null;
+    const parsed = new URL(rawValue, "https://abbaslotfinasab.ir");
+    if (parsed.origin !== "https://abbaslotfinasab.ir") return null;
     pathname = decodeURIComponent(parsed.pathname);
   } catch {
     errors.push(`Invalid URL in generated HTML: ${rawValue}`);
