@@ -1,47 +1,64 @@
 # Abbas Lotfi Nasab — Personal Brand Website
 
-This repository is being transitioned from the legacy Django-powered personal website to a statically generated Astro website.
+Astro-powered, Persian-first personal website for Abbas Lotfi Nasab.
 
-## Redesign direction
+## Stack
 
-- **Positioning:** Digital Business Architect · Founder & Product Builder
-- **Focus:** AI-driven business systems, digital product architecture, and hospitality technology
-- **Framework target:** Astro + TypeScript
-- **Rendering target:** Static Site Generation (SSG)
-- **Design direction:** Evolve the existing visual identity (Persian-first, RTL-aware, navy/teal palette, restrained UI)
-- **Deployment:** Static hosting after migration and review
+- Astro + TypeScript
+- Static Site Generation (SSG)
+- Persian-first, RTL-aware interface
+- Markdown/MDX content collections for projects and insights
+- Static SEO metadata, sitemap, robots.txt, and output validation
 
-## Repository status
+## Positioning
 
-The current application source is the legacy Django website. It is intentionally retained while the new static site is prepared.
+**Digital Business Architect · Founder · Product Builder**
 
-No Production services, DNS records, database records, or deployed files are changed by work on the redesign branch.
+The site focuses on business architecture, digital product strategy, practical AI and automation, and hospitality technology.
 
-## Content architecture
+## Development
 
-- Editorial content is managed as Markdown/MDX in `src/content/projects/` and `src/content/insights/`.
-- Only entries with `status: published` are included in static output.
-- Collection schemas live in `src/content.config.ts`; filenames define URL slugs.
-- There is no Production database or live content source to migrate from. Add only verified content; do not create placeholder articles or project claims.
+Requirements: Node.js 22 or newer.
+
+```bash
+npm install
+npm run dev
+npm run check
+npm run build
+npm run validate:output
+npm run validate:performance
+npm run preview
+```
+
+## Content
+
+- Projects: `src/content/projects/`
+- Insights: `src/content/insights/`
+- Collection schemas: `src/content.config.ts`
+- Authoring guidance: `docs/content-authoring/`
+
+Only content marked `status: published` is included in the generated site. Publish verified information only; do not invent dates, results, client details, or project claims.
+
+## Repository structure
+
+- `src/`: Astro pages, components, layouts, data, styles, and content
+- `static/`: public static assets
+- `scripts/`: generated-output validation and performance budgets
+- `docs/`: audit, migration, phase notes, and authoring guidance
+
+The retired Django application and its unused templates/assets have been removed. There is no live database or Production content source to migrate.
+
+## Validation
+
+GitHub Actions runs dependency installation and audit, Astro checks/build, generated-route and internal-reference validation, and static output size budgets.
+
+## Deployment
+
+This repository currently builds a static site. No deployment, hosting, DNS, or Production changes are performed by the validation workflow. Configure a static host only after separate release approval.
 
 ## Documentation
 
 - [Repository audit](docs/REDESIGN_AUDIT.md)
 - [Content and URL migration register](docs/CONTENT_MIGRATION.md)
-
-## Working branch
-
-Active redesign work is isolated in `redesign/static-brand`. The `main` branch remains the production baseline until the redesign has been implemented, tested, reviewed, and explicitly approved for release.
-
-## Planned static-site commands
-
-Astro scaffold is now present on the redesign branch. Run these commands from the repository root:
-
-```bash
-npm install
-npm run dev
-npm run build
-npm run preview
-```
-
-Do not run these commands against the legacy Django app. Install dependencies and run the Astro checks before considering the branch ready to merge.
+- [Phase 9 performance guardrails](docs/PHASE_9_PERFORMANCE_GUARDRAILS.md)
+- [Legacy cleanup record](docs/LEGACY_CLEANUP.md)
