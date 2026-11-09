@@ -1,0 +1,107 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { profile } from "../data/profile";
+import { principles } from "../data/principles";
+import { ventures } from "../data/ventures";
+---
+<MainLayout
+  title="معمار کسب‌وکارهای دیجیتال"
+  description="عباس لطفی‌نسب؛ معمار کسب‌وکارهای دیجیتال، بنیان‌گذار و سازنده محصولات فناوری. تمرکز بر سیستم‌های هوشمند، معماری محصول و فناوری صنعت کافه و رستوران."
+>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="eyebrow">DIGITAL BUSINESS ARCHITECT</span>
+        <h1 class="hero-title">
+          از پیچیدگی کسب‌وکار تا <em>هوشمندی دیجیتال.</em>
+        </h1>
+        <p class="hero-description">
+          من {profile.name} هستم؛ معمار کسب‌وکارهای دیجیتال و سازنده محصولات فناوری.
+          کمک می‌کنم فرایندهای پراکنده و پیچیده به سیستم‌هایی یکپارچه، هوشمند و قابل توسعه تبدیل شوند.
+        </p>
+        <div class="hero-actions">
+          <a class="button button--primary" href="/ventures/">محصولات و تجربه‌ها <span aria-hidden="true">↗</span></a>
+          <a class="button button--secondary" href="/about/">بیشتر درباره من</a>
+        </div>
+        <div class="hero-meta" aria-label="حوزه‌های تمرکز">
+          <span>Business Architecture</span>
+          <span>AI & Automation</span>
+          <span>Digital Products</span>
+        </div>
+      </div>
+
+      <div class="hero-visual" role="img" aria-label="تصویر انتزاعی از ارتباط سیستم‌ها و فرایندهای دیجیتال">
+        <div class="visual-grid"></div>
+        <div class="visual-orbit"></div>
+        <div class="visual-core">ALN</div>
+        <span class="visual-label visual-label--one">Business Systems</span>
+        <span class="visual-label visual-label--two">AI & Intelligence</span>
+        <span class="visual-label visual-label--three">Digital Products</span>
+        <div class="hero-visual-caption">
+          <span>THINK IN SYSTEMS</span>
+          <span>BUILD WITH PURPOSE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="intro-strip">
+    <div class="container intro-strip-inner">
+      <strong>فناوری هدف نیست؛ ساخت کسب‌وکارهای بهتر هدف است.</strong>
+      <span>نزدیک به یک دهه تجربه در مهندسی نرم‌افزار و ساخت محصولات دیجیتال</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">HOW I THINK</span>
+      <h2 class="section-heading">راهکار خوب از شناخت مسئله شروع می‌شود.</h2>
+      <p class="section-copy">
+        نگاه من به فناوری، فراتر از انتخاب ابزار و نوشتن کد است. ابتدا باید کسب‌وکار،
+        جریان کار و نقاط اصطکاک آن را شناخت؛ بعد سیستمی طراحی کرد که واقعاً ارزش ایجاد کند.
+      </p>
+
+      <div class="principles-grid">
+        {principles.map((item) => (
+          <article class="principle-card">
+            <span class="principle-number">{item.number}</span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section--compact">
+    <div class="container">
+      {ventures.map((venture) => (
+        <article class="venture-panel">
+          <div class="venture-content">
+            <span class="eyebrow">CURRENT VENTURE / {venture.number}</span>
+            <h2>{venture.name}</h2>
+            <span>{venture.category} · {venture.status}</span>
+            <p>{venture.description}</p>
+            <div class="venture-tags">
+              {venture.focus.map((item) => <span>{item}</span>)}
+            </div>
+            <a class="button" href={venture.href} target="_blank" rel="noreferrer">
+              آشنایی با EatHub <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section--compact">
+    <div class="container contact-panel">
+      <div>
+        <span class="eyebrow">LET'S BUILD SOMETHING MEANINGFUL</span>
+        <h2>یک مسئله واقعی برای حل کردن دارید؟</h2>
+        <p>برای گفت‌وگو درباره ساخت محصول، معماری سیستم یا همکاری حرفه‌ای در ارتباط باشیم.</p>
+      </div>
+      <a class="button button--primary" href="/contact/">شروع گفتگو <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+</MainLayout>
