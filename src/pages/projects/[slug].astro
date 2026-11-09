@@ -5,7 +5,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }) => data.status === "published");
   return projects.map((project) => ({
-    params: { slug: project.id.replace(/\\.(md|mdx)$/, "") },
+    params: { slug: project.id },
     props: { project },
   }));
 }
@@ -14,7 +14,7 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 const title = project.data.seoTitle ?? project.data.title;
 const description = project.data.seoDescription ?? project.data.summary;
-const canonicalPath = project.data.canonicalPath ?? `/projects/${project.id.replace(/\\.(md|mdx)$/, "")}/`;
+const canonicalPath = project.data.canonicalPath ?? `/projects/${project.id}/`;
 ---
 <MainLayout title={title} description={description} canonicalPath={canonicalPath}>
   <article class="container content-panel editorial-page">
