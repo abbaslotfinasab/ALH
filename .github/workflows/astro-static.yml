@@ -42,4 +42,6 @@ jobs:
           test -f dist/ventures/index.html
           test -f dist/experience/index.html
           test -f dist/insights/index.html
+          test -d dist/projects
+          test -f dist/projects/index.html
           test -f dist/contact/index.html
