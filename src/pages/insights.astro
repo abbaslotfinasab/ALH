@@ -1,5 +1,9 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("insights", ({ data }) => data.status === "published"))
+  .sort((a, b) => (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0));
 ---
 <MainLayout title="دیدگاه‌ها و یادداشت‌ها" description="یادداشت‌ها و تحلیل‌های عباس لطفی‌نسب درباره معماری کسب‌وکار دیجیتال، هوش مصنوعی و ساخت محصولات.">
   <section class="page-hero">
@@ -10,10 +14,22 @@ import MainLayout from "../layouts/MainLayout.astro";
     </div>
   </section>
   <section class="container content-panel">
-    <h2>در حال آماده‌سازی</h2>
-    <p>
-      مقالات، روزنوشت‌ها و یادداشت‌های فنی سایت قبلی پس از بررسی محتوا و آدرس‌های فعلی،
-      به این بخش منتقل می‌شوند. محتوای منتشرشده بدون بررسی و تأیید، بازنویسی یا حذف نخواهد شد.
-    </p>
+    {entries.length > 0 ? (
+      <div class="editorial-list">
+        {entries.map((entry) => (
+          <article class="surface editorial-card">
+            <span class="eyebrow">{entry.data.category ?? "INSIGHT"}</span>
+            <h2><a href={`/insights/${entry.id.replace(/\\.(md|mdx)$/, "")}/`}>{entry.data.title}</a></h2>
+            <p>{entry.data.summary}</p>
+            {entry.data.publishedAt && <time datetime={entry.data.publishedAt.toISOString()}>{entry.data.publishedAt.toLocaleDateString("fa-IR")}</time>}
+          </article>
+        ))}
+      </div>
+    ) : (
+      <>
+        <h2>یادداشت‌ها در حال آماده‌سازی‌اند.</h2>
+        <p>محتوای این بخش پس از نگارش یا بازبینی و تأیید نهایی منتشر می‌شود. هیچ مقاله یا تاریخ انتشار ساختگی در این فهرست نمایش داده نخواهد شد.</p>
+      </>
+    )}
   </section>
 </MainLayout>
