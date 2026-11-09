@@ -17,6 +17,13 @@ The current application source is the legacy Django website. It is intentionally
 
 No Production services, DNS records, database records, or deployed files are changed by work on the redesign branch.
 
+## Content architecture
+
+- Editorial content is managed as Markdown/MDX in `src/content/projects/` and `src/content/insights/`.
+- Only entries with `status: published` are included in static output.
+- Collection schemas live in `src/content.config.ts`; filenames define URL slugs.
+- There is no Production database or live content source to migrate from. Add only verified content; do not create placeholder articles or project claims.
+
 ## Documentation
 
 - [Repository audit](docs/REDESIGN_AUDIT.md)
