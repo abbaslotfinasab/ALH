@@ -52,16 +52,16 @@ for (const htmlFile of htmlFiles) {
   const html = await readFile(htmlFile, "utf8");
   const source = path.relative(outputDirectory, htmlFile);
 
-  if (!/<title>\\s*[^<]+\\s*<\\/title>/i.test(html)) {
+  if (!/<title>\s*[^<]+\s*<\/title>/i.test(html)) {
     errors.push(`${source}: missing or empty page title`);
   }
 
-  const descriptions = [...html.matchAll(/<meta\\s+name=["']description["']\\s+content=["']([^"']*)["'][^>]*>/gi)];
+  const descriptions = [...html.matchAll(/<meta\s+name=["']description["']\s+content=["']([^"']*)["'][^>]*>/gi)];
   if (descriptions.length !== 1 || !descriptions[0][1].trim()) {
     errors.push(`${source}: expected exactly one non-empty meta description`);
   }
 
-  const canonicals = [...html.matchAll(/<link\\s+rel=["']canonical["']\\s+href=["']([^"']+)["'][^>]*>/gi)];
+  const canonicals = [...html.matchAll(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["'][^>]*>/gi)];
   if (canonicals.length !== 1) {
     errors.push(`${source}: expected exactly one canonical URL`);
   } else {
@@ -75,7 +75,7 @@ for (const htmlFile of htmlFiles) {
     }
   }
 
-  const imagesWithoutAlt = [...html.matchAll(/<img\\b(?![^>]*\\balt=)[^>]*>/gi)];
+  const imagesWithoutAlt = [...html.matchAll(/<img\b(?![^>]*\balt=)[^>]*>/gi)];
   if (imagesWithoutAlt.length > 0) {
     errors.push(`${source}: ${imagesWithoutAlt.length} image(s) missing alt attributes`);
   }
