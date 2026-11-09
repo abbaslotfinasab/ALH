@@ -23,7 +23,7 @@ const projects = defineCollection({
     category: z.string().optional(),
     role: z.string().optional(),
     technologies: z.array(z.string()).default([]),
-    website: z.string().url().optional(),
+    website: z.url().optional(),
   }),
 });
 
