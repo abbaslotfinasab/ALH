@@ -1243,3 +1243,22 @@
   background: var(--color-surface);
   border-radius: var(--radius-sm);
 }
+
+
+/* Phase 5 — navigation clarity and keyboard accessibility */
+.mobile-nav summary:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.mobile-nav-panel a[aria-current="page"] {
+  background: var(--color-accent-soft);
+  color: var(--color-brand);
+  font-weight: 800;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mobile-nav-panel a {
+    transition: background 160ms ease, color 160ms ease;
+  }
+}
