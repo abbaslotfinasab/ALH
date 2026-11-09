@@ -8,7 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "validate:output": "node scripts/check-static-output.mjs"
+    "validate:output": "node scripts/check-static-output.mjs",
+    "validate:performance": "node scripts/check-performance-budget.mjs"
   },
   "dependencies": {},
   "devDependencies": {
