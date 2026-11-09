@@ -32,7 +32,8 @@ export const GET: APIRoute = async ({ site }) => {
     getCollection("insights", ({ data }) => data.status === "published"),
   ]);
 
-  const entries = [
+  type SitemapEntry = { path: string; lastmod?: Date };
+  const entries: SitemapEntry[] = [
     ...staticPaths.map((path) => ({ path })),
     ...projects.map((project) => ({
       path: `/projects/${encodeURIComponent(project.id)}/`,
