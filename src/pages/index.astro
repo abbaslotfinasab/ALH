@@ -3,34 +3,69 @@ import MainLayout from "../layouts/MainLayout.astro";
 import { profile } from "../data/profile";
 import { principles } from "../data/principles";
 import { ventures } from "../data/ventures";
+
+const capabilities = [
+  {
+    number: "01",
+    title: "معماری کسب‌وکار دیجیتال",
+    description: "شناخت فرایندها، نقاط اصطکاک و ارتباط میان بخش‌های کسب‌وکار؛ پیش از انتخاب ابزار و فناوری.",
+    tags: ["Business Analysis", "System Design"],
+  },
+  {
+    number: "02",
+    title: "استراتژی و معماری محصول",
+    description: "تبدیل مسئله و ایده به نقشه راه، ساختار محصول و تصمیم‌های فنی قابل دفاع.",
+    tags: ["Product Strategy", "Product Architecture"],
+  },
+  {
+    number: "03",
+    title: "اتوماسیون و هوش مصنوعی",
+    description: "استفاده کاربردی از AI و اتوماسیون برای کاهش کار تکراری و بهبود کیفیت تصمیم‌گیری.",
+    tags: ["AI-enabled Workflows", "Automation"],
+  },
+  {
+    number: "04",
+    title: "مهندسی و ساخت محصول",
+    description: "همراهی از طراحی معماری تا توسعه و تکامل محصول؛ با توجه به تجربه کاربر و پایداری سیستم.",
+    tags: ["Web & Mobile", "Software Engineering"],
+  },
+] as const;
+
+const approach = [
+  { number: "۱", title: "شناخت کسب‌وکار", description: "هدف، فرایندها، کاربران و محدودیت‌های واقعی را روشن می‌کنیم." },
+  { number: "۲", title: "طراحی راهکار", description: "معماری، اولویت‌ها و مسیر اجرا را متناسب با مسئله مشخص می‌کنیم." },
+  { number: "۳", title: "ساخت و یکپارچه‌سازی", description: "راهکار را مرحله‌ای می‌سازیم و با سیستم‌ها و جریان‌های موجود هماهنگ می‌کنیم." },
+  { number: "۴", title: "اندازه‌گیری و بهبود", description: "نتیجه را بررسی می‌کنیم و بر اساس بازخورد، سیستم را توسعه می‌دهیم." },
+] as const;
 ---
 <MainLayout
-  title="معمار کسب‌وکارهای دیجیتال"
-  description="عباس لطفی‌نسب؛ معمار کسب‌وکارهای دیجیتال، بنیان‌گذار و سازنده محصولات فناوری. تمرکز بر سیستم‌های هوشمند، معماری محصول و فناوری صنعت کافه و رستوران."
+  title="Digital Business Architect"
+  description="عباس لطفی‌نسب؛ معمار کسب‌وکار دیجیتال، بنیان‌گذار و سازنده محصول. طراحی سیستم‌های کسب‌وکار، معماری محصول، اتوماسیون و کاربرد عملی هوش مصنوعی."
 >
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-content">
         <span class="eyebrow">DIGITAL BUSINESS ARCHITECT</span>
         <h1 class="hero-title">
-          از پیچیدگی کسب‌وکار تا <em>هوشمندی دیجیتال.</em>
+          کسب‌وکار پیچیده را به <em>سیستمی هوشمند</em> تبدیل می‌کنم.
         </h1>
         <p class="hero-description">
-          من {profile.name} هستم؛ معمار کسب‌وکارهای دیجیتال و سازنده محصولات فناوری.
-          کمک می‌کنم فرایندهای پراکنده و پیچیده به سیستم‌هایی یکپارچه، هوشمند و قابل توسعه تبدیل شوند.
+          من {profile.name} هستم؛ بنیان‌گذار و سازنده محصولات دیجیتال.
+          میان مسئله‌های واقعی کسب‌وکار و راهکارهای فناوری پل می‌زنم؛
+          از طراحی فرایند و معماری محصول تا ساخت سیستم‌های یکپارچه و استفاده کاربردی از هوش مصنوعی.
         </p>
         <div class="hero-actions">
           <a class="button button--primary" href="/ventures/">محصولات و تجربه‌ها <span aria-hidden="true">↗</span></a>
-          <a class="button button--secondary" href="/about/">بیشتر درباره من</a>
+          <a class="button button--secondary" href="/contact/">گفت‌وگوی حرفه‌ای</a>
         </div>
         <div class="hero-meta" aria-label="حوزه‌های تمرکز">
           <span>Business Architecture</span>
+          <span>Product Building</span>
           <span>AI & Automation</span>
-          <span>Digital Products</span>
         </div>
       </div>
 
-      <div class="hero-visual" role="img" aria-label="تصویر انتزاعی از ارتباط سیستم‌ها و فرایندهای دیجیتال">
+      <div class="hero-visual" role="img" aria-label="نمایی انتزاعی از معماری و اتصال سیستم‌های کسب‌وکار">
         <div class="visual-grid"></div>
         <div class="visual-orbit"></div>
         <div class="visual-core">ALN</div>
@@ -45,22 +80,100 @@ import { ventures } from "../data/ventures";
     </div>
   </section>
 
-  <section class="intro-strip">
-    <div class="container intro-strip-inner">
-      <strong>فناوری هدف نیست؛ ساخت کسب‌وکارهای بهتر هدف است.</strong>
-      <span>نزدیک به یک دهه تجربه در مهندسی نرم‌افزار و ساخت محصولات دیجیتال</span>
+  <section class="proof-strip" aria-label="خلاصه مسیر حرفه‌ای">
+    <div class="container proof-strip-grid">
+      <div><strong>۱۳۹۷</strong><span>شروع مسیر مهندسی نرم‌افزار</span></div>
+      <div><strong>Mobile → Web</strong><span>تجربه در توسعه محصولات چندسکویی</span></div>
+      <div><strong>Founder</strong><span>ساخت محصول با تمرکز بر مسئله واقعی</span></div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <span class="eyebrow">HOW I THINK</span>
-      <h2 class="section-heading">راهکار خوب از شناخت مسئله شروع می‌شود.</h2>
-      <p class="section-copy">
-        نگاه من به فناوری، فراتر از انتخاب ابزار و نوشتن کد است. ابتدا باید کسب‌وکار،
-        جریان کار و نقاط اصطکاک آن را شناخت؛ بعد سیستمی طراحی کرد که واقعاً ارزش ایجاد کند.
-      </p>
+      <div class="section-intro">
+        <div>
+          <span class="eyebrow">WHAT I DO</span>
+          <h2 class="section-heading">از شناخت مسئله تا ساخت سیستم.</h2>
+        </div>
+        <p class="section-copy">
+          نقطه شروع من تکنولوژی نیست. ابتدا باید فهمید کسب‌وکار چطور کار می‌کند،
+          چه چیزی مانع رشد آن است و کدام تغییر واقعاً ارزش ایجاد می‌کند.
+        </p>
+      </div>
+      <div class="capabilities-grid">
+        {capabilities.map((item) => (
+          <article class="capability-card">
+            <span class="capability-number">{item.number}</span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+            <div class="capability-tags">
+              {item.tags.map((tag) => <span>{tag}</span>)}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
+  <section class="section section--tinted">
+    <div class="container">
+      <div class="section-intro">
+        <div>
+          <span class="eyebrow">HOW I APPROACH</span>
+          <h2 class="section-heading">راهکار خوب، تصادفی ساخته نمی‌شود.</h2>
+        </div>
+        <p class="section-copy">
+          مسیر همکاری باید شفاف و قابل ارزیابی باشد؛ از تعریف مسئله تا سنجش نتیجه.
+        </p>
+      </div>
+      <div class="approach-grid">
+        {approach.map((step, index) => (
+          <article class="approach-step">
+            <span class="approach-index">{step.number}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+            {index !== approach.length - 1 && <span class="approach-arrow" aria-hidden="true">←</span>}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="venture-panel venture-panel--feature">
+        <div class="venture-content">
+          <span class="eyebrow">CURRENT VENTURE / {ventures[0].number}</span>
+          <p class="venture-kicker">{ventures[0].category} · {ventures[0].status}</p>
+          <h2>{ventures[0].name}</h2>
+          <p>{ventures[0].description}</p>
+          <div class="venture-tags">
+            {ventures[0].focus.map((item) => <span>{item}</span>)}
+          </div>
+          <a class="button" href={ventures[0].href} target="_blank" rel="noreferrer">
+            آشنایی با EatHub <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <div class="venture-side-note" aria-hidden="true">
+          <span>ONE BUSINESS</span>
+          <strong>Connected<br />Operations.</strong>
+          <span>PEOPLE · PROCESS · DATA</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--compact">
+    <div class="container">
+      <div class="section-intro">
+        <div>
+          <span class="eyebrow">MY PRINCIPLES</span>
+          <h2 class="section-heading">چند اصل که در تصمیم‌هایم ثابت می‌مانند.</h2>
+        </div>
+        <a class="text-link" href="/about/">بیشتر درباره رویکرد من <span>←</span></a>
+      </div>
       <div class="principles-grid">
         {principles.map((item) => (
           <article class="principle-card">
@@ -74,32 +187,11 @@ import { ventures } from "../data/ventures";
   </section>
 
   <section class="section--compact">
-    <div class="container">
-      {ventures.map((venture) => (
-        <article class="venture-panel">
-          <div class="venture-content">
-            <span class="eyebrow">CURRENT VENTURE / {venture.number}</span>
-            <h2>{venture.name}</h2>
-            <span>{venture.category} · {venture.status}</span>
-            <p>{venture.description}</p>
-            <div class="venture-tags">
-              {venture.focus.map((item) => <span>{item}</span>)}
-            </div>
-            <a class="button" href={venture.href} target="_blank" rel="noreferrer">
-              آشنایی با EatHub <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="section--compact">
     <div class="container contact-panel">
       <div>
         <span class="eyebrow">LET'S BUILD SOMETHING MEANINGFUL</span>
         <h2>یک مسئله واقعی برای حل کردن دارید؟</h2>
-        <p>برای گفت‌وگو درباره ساخت محصول، معماری سیستم یا همکاری حرفه‌ای در ارتباط باشیم.</p>
+        <p>برای گفت‌وگو درباره معماری کسب‌وکار، ساخت محصول یا همکاری حرفه‌ای در ارتباط باشیم.</p>
       </div>
       <a class="button button--primary" href="/contact/">شروع گفتگو <span aria-hidden="true">↗</span></a>
     </div>
