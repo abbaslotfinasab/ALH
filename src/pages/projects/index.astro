@@ -18,7 +18,7 @@ const entries = await getCollection("projects", ({ data }) => data.status === "p
         {entries.map((project) => (
           <article class="surface editorial-card">
             <span class="eyebrow">{project.data.category ?? "PROJECT"}</span>
-            <h2><a href={`/projects/${project.id.replace(/\\.(md|mdx)$/, "")}/`}>{project.data.title}</a></h2>
+            <h2><a href={`/projects/${project.id}/`}>{project.data.title}</a></h2>
             <p>{project.data.summary}</p>
             {project.data.technologies.length > 0 && <p>{project.data.technologies.join(" · ")}</p>}
           </article>
