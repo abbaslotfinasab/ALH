@@ -1,0 +1,34 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+
+const entries = await getCollection("projects", ({ data }) => data.status === "published");
+---
+<MainLayout title="پروژه‌ها" description="نمونه پروژه‌ها و محصولات دیجیتال عباس لطفی‌نسب.">
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">SELECTED PROJECTS</span>
+      <h1>پروژه‌ها و تجربه‌های محصولی.</h1>
+      <p>نمونه‌هایی از مسئله‌ها، تصمیم‌های فنی و محصولاتی که در مسیر حرفه‌ای ساخته یا توسعه داده‌ام.</p>
+    </div>
+  </section>
+  <section class="container content-panel">
+    {entries.length > 0 ? (
+      <div class="editorial-list">
+        {entries.map((project) => (
+          <article class="surface editorial-card">
+            <span class="eyebrow">{project.data.category ?? "PROJECT"}</span>
+            <h2><a href={`/projects/${project.id}/`}>{project.data.title}</a></h2>
+            <p>{project.data.summary}</p>
+            {project.data.technologies.length > 0 && <p>{project.data.technologies.join(" · ")}</p>}
+          </article>
+        ))}
+      </div>
+    ) : (
+      <>
+        <h2>پروژه‌ها در حال آماده‌سازی‌اند.</h2>
+        <p>این بخش با پروژه‌های واقعی و توضیحات تأییدشده تکمیل می‌شود؛ جزئیات محرمانه یا اطلاعات تأییدنشده منتشر نخواهند شد.</p>
+      </>
+    )}
+  </section>
+</MainLayout>

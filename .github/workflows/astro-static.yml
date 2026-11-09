@@ -1,0 +1,42 @@
+name: Astro static site validation
+
+on:
+  push:
+    branches:
+      - redesign/static-brand
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Audit dependency tree
+        run: |
+          npm audit --json > /tmp/npm-audit.json || true
+          node -e 'const a=require("/tmp/npm-audit.json"); console.log(JSON.stringify(a.metadata?.vulnerabilities ?? {}, null, 2)); for (const [name, item] of Object.entries(a.vulnerabilities ?? {})) console.log(`${name}: ${item.severity} — ${(item.via ?? []).map(v => typeof v === "string" ? v : v.title).join("; ")}`);'
+          npm audit
+
+      - name: Validate and build static site
+        run: npm run build
+
+      - name: Validate generated routes and internal references
+        run: npm run validate:output
+
+      - name: Validate static performance budgets
+        run: npm run validate:performance

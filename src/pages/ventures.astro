@@ -1,0 +1,26 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { ventures } from "../data/ventures";
+---
+<MainLayout title="محصولات و کسب‌وکارها" description="محصولات و کسب‌وکارهای دیجیتال در حال ساخت توسط عباس لطفی‌نسب.">
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">VENTURES & PRODUCTS</span>
+      <h1>ایده‌ها وقتی ارزشمند می‌شوند که به محصول واقعی تبدیل شوند.</h1>
+      <p>محصولاتی که با تمرکز بر مسئله‌های واقعی، سیستم‌سازی و خلق ارزش کسب‌وکار ساخته می‌شوند.</p>
+    </div>
+  </section>
+  <section class="container content-panel">
+    {ventures.map((venture) => (
+      <article class="surface" style="padding: clamp(24px, 5vw, 48px); margin-bottom: 24px;">
+        <span class="eyebrow">{venture.category} · {venture.status}</span>
+        <h2 style="margin-top: 18px;">{venture.name}</h2>
+        <p>{venture.description}</p>
+        <ul>
+          {venture.focus.map((item) => <li>{item}</li>)}
+        </ul>
+        <a class="text-link" href={venture.href} target="_blank" rel="noreferrer">مشاهده محصول <span>↗</span></a>
+      </article>
+    ))}
+  </section>
+</MainLayout>

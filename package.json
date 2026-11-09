@@ -1,0 +1,20 @@
+{
+  "name": "abbaslotfinasab-personal-brand",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "validate:output": "node scripts/check-static-output.mjs",
+    "validate:performance": "node scripts/check-performance-budget.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "astro": "^7.4.7",
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^5.9.3"
+  }
+}

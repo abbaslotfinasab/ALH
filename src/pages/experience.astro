@@ -1,0 +1,79 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { professionalExperience, selectedProjects } from "../data/experience";
+---
+<MainLayout title="تجربه حرفه‌ای" description="مسیر حرفه‌ای عباس لطفی‌نسب در مهندسی نرم‌افزار، توسعه موبایل، رهبری فنی و ساخت محصولات دیجیتال.">
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">EXPERIENCE & SELECTED WORK</span>
+      <h1>از مهندسی نرم‌افزار تا ساخت و راهبری محصولات دیجیتال.</h1>
+      <p>مسیر حرفه‌ای من با توسعه موبایل آغاز شد و به معماری محصول، رهبری فنی و نگاه سیستمی به کسب‌وکار گسترش پیدا کرد.</p>
+    </div>
+  </section>
+
+  <section class="container experience-content">
+    <div class="experience-section-heading">
+      <span class="eyebrow">CAREER JOURNEY</span>
+      <h2 class="section-heading">تجربه حرفه‌ای</h2>
+    </div>
+    <div class="career-list">
+      {professionalExperience.map((item, index) => (
+        <article class="career-item">
+          <div class="career-marker">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+          </div>
+          <div class="career-body">
+            <div class="career-heading">
+              <h3>{item.company}</h3>
+              <span>Professional Experience</span>
+            </div>
+            <div class="career-roles">
+              {item.roles.map((role) => (
+                <div class="career-role">
+                  <h4>{role.title}</h4>
+                  <p>{role.summary}</p>
+                </div>
+              ))}
+            </div>
+            <div class="career-tags">
+              {item.focus.map((focus) => <span>{focus}</span>)}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="experience-note">
+      تاریخ دقیق شروع و پایان هر همکاری پس از تطبیق با سوابق اصلی اضافه می‌شود؛
+      در این نسخه از درج تاریخ‌های تخمینی خودداری شده است.
+    </p>
+  </section>
+
+  <section class="section section--tinted">
+    <div class="container">
+      <div class="section-intro">
+        <div>
+          <span class="eyebrow">SELECTED PROJECTS</span>
+          <h2 class="section-heading">بخشی از تجربه ساخت محصول</h2>
+        </div>
+        <p class="section-copy">
+          نمونه‌هایی از مسیر توسعه محصول؛ جزئیات بیشتر پس از بازبینی محتوای عمومی و مجاز منتشر می‌شوند.
+        </p>
+      </div>
+      <div class="selected-projects-grid">
+        {selectedProjects.map((project) => (
+          <article class="selected-project">
+            <span class="eyebrow">{project.category}</span>
+            <h3>{project.name}</h3>
+            <p>{project.summary}</p>
+            {project.technologies.length > 0 && (
+              <div class="career-tags">
+                {project.technologies.map((technology) => <span>{technology}</span>)}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+      <p class="section-copy" style="margin-top: 28px;"><a class="text-link" href="/projects/">مشاهده همه پروژه‌ها <span>←</span></a></p>
+    </div>
+  </section>
+</MainLayout>
