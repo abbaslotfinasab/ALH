@@ -3,16 +3,21 @@ name: Astro static site validation
 on:
   push:
     branches:
-      - redesign/static-brand
+      - develop
+      - main
+      - production
   pull_request:
     branches:
+      - develop
       - main
+      - production
 
 permissions:
   contents: read
 
 jobs:
   build:
+    name: Build and validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,3 +45,16 @@ jobs:
 
       - name: Validate static performance budgets
         run: npm run validate:performance
+
+  require-develop-source:
+    name: Require develop as PR source
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce develop-to-main promotion
+        run: |
+          if [ "${{ github.head_ref }}" != "develop" ]; then
+            echo "Pull requests into main must come from develop."
+            exit 1
+          fi
+          echo "Valid promotion: develop -> main"
