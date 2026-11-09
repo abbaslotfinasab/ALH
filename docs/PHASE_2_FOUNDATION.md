@@ -1,7 +1,7 @@
 # Phase 2 — Astro Foundation & Design System
 
 ## Decisions
-- Astro 5 with TypeScript.
+- Astro 7.4.7 with TypeScript 5.9.x.
 - Static output only (`output: "static"`).
 - Existing legacy assets remain under `static/`; Astro copies that directory as the public asset directory.
 - No Django, database, API, server-side runtime, or third-party UI framework is required by the new site.
@@ -33,3 +33,18 @@ The old stylesheet remains present for legacy reference but is not imported into
 
 ## Validation
 GitHub source files were added, but no local npm install, Astro check, build, browser, or Lighthouse run was executed in this phase. Those checks must be run in a local/CI environment before merge.
+
+## Verified CI result (2026-11-09)
+
+- GitHub Actions workflow: `.github/workflows/astro-static.yml`
+- Result: passed.
+- Astro diagnostics: 0 errors, 0 warnings, 0 hints.
+- Static output: 6 routes generated and verified.
+- npm security audit: 0 vulnerabilities after upgrading to the patched Astro toolchain.
+- Runtime output: static HTML; no server adapter is configured.
+
+## Remaining foundation hardening
+
+- Commit and maintain `package-lock.json` before production deployment for deterministic installs.
+- Review the final font licensing and add local WOFF2 files.
+- Run visual/browser checks at mobile, tablet, and desktop widths; CI currently validates compilation and generated route files, not visual appearance.
