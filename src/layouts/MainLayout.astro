@@ -18,6 +18,24 @@ const {
 } = Astro.props;
 
 const canonical = new URL(canonicalPath, profile.website).toString();
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.latinName,
+  alternateName: profile.name,
+  jobTitle: profile.role,
+  url: profile.website,
+  email: profile.email,
+  description: profile.description,
+  knowsAbout: [
+    "Digital Business Architecture",
+    "Product Strategy",
+    "Software Engineering",
+    "Business Process Automation",
+    "Artificial Intelligence",
+    "Hospitality Technology"
+  ]
+};
 const pageTitle = title.includes(profile.latinName)
   ? title
   : `${title} | ${profile.latinName}`;
@@ -32,7 +50,7 @@ const pageTitle = title.includes(profile.latinName)
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/png" href="/images/simple-logo.png" />
+    <link rel="icon" type="image/png" href="/images/logo.png" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fa_IR" />
     <meta property="og:site_name" content={profile.latinName} />
@@ -40,6 +58,7 @@ const pageTitle = title.includes(profile.latinName)
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL("/images/logo.png", profile.website).toString()} />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
