@@ -16,7 +16,7 @@ const title = entry.data.seoTitle ?? entry.data.title;
 const description = entry.data.seoDescription ?? entry.data.summary;
 const canonicalPath = entry.data.canonicalPath ?? `/insights/${entry.id}/`;
 ---
-<MainLayout title={title} description={description} canonicalPath={canonicalPath}>
+<MainLayout title={title} description={description} canonicalPath={canonicalPath} ogImage={entry.data.coverImage} ogImageAlt={entry.data.coverAlt ?? entry.data.title}>
   <article class="container content-panel editorial-page">
     <a class="text-link" href="/insights/">بازگشت به یادداشت‌ها</a>
     <header class="page-hero">
