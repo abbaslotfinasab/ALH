@@ -2,25 +2,12 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import { ventures } from "../data/ventures";
 ---
-<MainLayout title="محصولات و کسب‌وکارها" description="محصولات و کسب‌وکارهای دیجیتال در حال ساخت توسط عباس لطفی‌نسب.">
-  <section class="page-hero">
-    <div class="container">
-      <span class="eyebrow">VENTURES & PRODUCTS</span>
-      <h1>ایده‌ها وقتی ارزشمند می‌شوند که به محصول واقعی تبدیل شوند.</h1>
-      <p>محصولاتی که با تمرکز بر مسئله‌های واقعی، سیستم‌سازی و خلق ارزش کسب‌وکار ساخته می‌شوند.</p>
-    </div>
-  </section>
-  <section class="container content-panel">
-    {ventures.map((venture) => (
-      <article class="surface" style="padding: clamp(24px, 5vw, 48px); margin-bottom: 24px;">
-        <span class="eyebrow">{venture.category} · {venture.status}</span>
-        <h2 style="margin-top: 18px;">{venture.name}</h2>
-        <p>{venture.description}</p>
-        <ul>
-          {venture.focus.map((item) => <li>{item}</li>)}
-        </ul>
-        <a class="text-link" href={venture.href} target="_blank" rel="noreferrer">مشاهده محصول <span>↗</span></a>
-      </article>
-    ))}
+<MainLayout title="راهکارها و محصولات" description="راهکارهای دیجیتال برای رستوران‌ها، کافه‌ها، باشگاه‌های ورزشی و کسب‌وکارهایی که به مدیریت منظم‌تر نیاز دارند.">
+  <section class="page-hero business-page-hero"><div class="container"><span class="eyebrow">راهکارها و محصولات</span><h1>راهکار مناسب، از شناخت کار واقعی شما شروع می‌شود.</h1><p>در هر کسب‌وکار، بخشی از کار می‌تواند ساده‌تر و منظم‌تر انجام شود. اینجا با محصولاتی آشنا می‌شوید که برای حل همین مسئله‌ها طراحی می‌شوند.</p></div></section>
+  <section class="container business-solutions-content">
+    <article class="business-solution-section" id="restaurants"><div class="business-solution-heading"><span>۰۱ / رستوران و کافه</span><h2>مدیریت رستوران، بدون گم شدن بین فایل‌ها و دفترها.</h2><p>وقتی اطلاعات خرید، مواد اولیه، دستور پخت و سفارش‌ها به هم متصل باشند، کنترل روزانه مجموعه ساده‌تر می‌شود.</p></div><div class="business-solution-body"><div><h3>چه چیزهایی را هدف می‌گیریم؟</h3><ul><li>دید روشن‌تر از مواد اولیه و موجودی انبار</li><li>ثبت و پیگیری خریدها و تأمین‌کنندگان</li><li>دسترسی منظم به دستور پخت و مواد مصرفی</li><li>شناخت بهتر هزینه تمام‌شده غذاها</li><li>مدیریت منظم‌تر سفارش‌های مشتریان</li></ul></div><div class="business-product-card"><span class="eyebrow">محصول در حال توسعه</span><h3>EatHub</h3><p>{ventures[0].description}</p><div class="career-tags">{ventures[0].focus.map((item) => <span>{item}</span>)}</div><a class="text-link" href={ventures[0].href} target="_blank" rel="noreferrer">وب‌سایت EatHub <span>↗</span></a></div></div></article>
+    <article class="business-solution-section" id="gyms"><div class="business-solution-heading"><span>۰۲ / باشگاه ورزشی</span><h2>مدیریت باشگاه باید به اندازه تمرین‌ها منظم باشد.</h2><p>باشگاه‌ها هم فرایندهای روزانه و پیگیری‌های زیادی دارند. هدف، شناخت این فرایندها و طراحی محصولی متناسب با نیاز واقعی مدیران و کارکنان باشگاه است.</p></div><div class="business-planning-card"><span class="planning-status">در مرحله طراحی و برنامه‌ریزی</span><h3>راهکار تخصصی مدیریت باشگاه</h3><p>این محصول در حال شکل‌گیری است. پیش از معرفی امکانات قطعی، می‌خواهیم نیازهای واقعی باشگاه‌ها و شیوه کار مجموعه‌های مختلف را بهتر بشناسیم.</p><a class="text-link" href="/contact/">برای گفت‌وگو درباره نیاز باشگاه <span>←</span></a></div></article>
+    <article class="business-solution-section" id="businesses"><div class="business-solution-heading"><span>۰۳ / سایر کسب‌وکارها</span><h2>اگر نرم‌افزار آماده پاسخ‌گوی نیازتان نیست، راه دیگری هست.</h2><p>گاهی مسئله شما با یک ابزار عمومی حل نمی‌شود. می‌توانیم فرایند فعلی را بررسی کنیم و درباره ساخت یا اتصال یک راهکار متناسب تصمیم بگیریم.</p></div><div class="business-planning-card"><h3>راهکار متناسب با کسب‌وکار شما</h3><p>از ساده‌سازی یک کار تکراری تا طراحی یک نرم‌افزار اختصاصی؛ نقطه شروع، مسئله‌ای است که واقعاً برای شما اهمیت دارد.</p><a class="text-link" href="/contact/">شرح مسئله و دریافت مشاوره <span>←</span></a></div></article>
+    <section class="business-products-list" id="products"><span class="eyebrow">محصولات</span><h2>محصولاتی که روی آن‌ها کار می‌کنم.</h2>{ventures.map((venture) => <article class="business-product-row"><div><span>{venture.category} · {venture.status}</span><h3>{venture.name}</h3><p>{venture.description}</p></div><a class="text-link" href={venture.href} target="_blank" rel="noreferrer">مشاهده وب‌سایت <span>↗</span></a></article>)}</section>
   </section>
 </MainLayout>
