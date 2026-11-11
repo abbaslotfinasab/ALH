@@ -1,8 +1,8 @@
 export const profile = {
   name: "عباس لطفی‌نسب",
   latinName: "Abbas Lotfi Nasab",
-  role: "Digital Business Architect",
-  secondaryRole: "Founder & Product Builder",
+  role: "سازنده محصولات دیجیتال",
+  secondaryRole: "بنیان‌گذار و توسعه‌دهنده نرم‌افزار",
   email: "contact@abbaslotfinasab.ir",
   website: "https://abbaslotfinasab.ir",
   description:
