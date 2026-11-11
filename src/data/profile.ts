@@ -1,23 +1,22 @@
 export const profile = {
   name: "عباس لطفی‌نسب",
   latinName: "Abbas Lotfi Nasab",
-  role: "Digital Business Architect",
-  secondaryRole: "Founder & Product Builder",
+  role: "سازنده محصولات دیجیتال",
+  secondaryRole: "بنیان‌گذار و توسعه‌دهنده نرم‌افزار",
   email: "contact@abbaslotfinasab.ir",
   website: "https://abbaslotfinasab.ir",
   description:
-    "معمار کسب‌وکارهای دیجیتال و سازنده محصولات فناوری؛ متمرکز بر طراحی سیستم‌های هوشمند، معماری محصولات دیجیتال و تحول کسب‌وکارها.",
+    "عباس لطفی‌نسب؛ سازنده محصولات و راهکارهای دیجیتال برای کمک به کسب‌وکارها در مدیریت بهتر، ساده‌سازی کارهای روزمره و رشد هوشمندانه‌تر.",
   shortBio:
-    "کمک می‌کنم پیچیدگی‌های عملیاتی کسب‌وکارها به سیستم‌های دیجیتال، یکپارچه و هوشمند تبدیل شوند.",
-  philosophy: "فناوری هدف نیست؛ ساخت کسب‌وکارهای بهتر هدف است.",
+    "به صاحبان کسب‌وکار کمک می‌کنم کارهای روزمره را ساده‌تر کنند، بخش‌های مختلف کارشان را بهتر به هم وصل کنند و برای تصمیم‌های مهم تصویر روشن‌تری داشته باشند.",
+  philosophy: "فناوری هدف نیست؛ باید کار را برای آدم‌ها و کسب‌وکارها بهتر کند.",
   location: "فعال در همکاری‌های بین‌المللی",
 } as const;
 
 export const navigation = [
   { label: "خانه", href: "/" },
+  { label: "راهکارها", href: "/ventures/" },
+  { label: "محصولات", href: "/ventures/#products" },
   { label: "درباره من", href: "/about/" },
-  { label: "محصولات", href: "/ventures/" },
-  { label: "پروژه‌ها", href: "/projects/" },
-  { label: "تجربه", href: "/experience/" },
-  { label: "دیدگاه‌ها", href: "/insights/" },
+  { label: "تجربه‌ها", href: "/experience/" },
 ] as const;
