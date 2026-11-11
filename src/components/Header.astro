@@ -11,23 +11,20 @@ const isActive = (href: string) =>
       <span class="brand-mark" aria-hidden="true">AL</span>
       <span class="brand-copy">
         <strong>{profile.name}</strong>
-        <small>Digital Business Architect</small>
+        <small>راهکارهای دیجیتال برای کسب‌وکارها</small>
       </span>
     </a>
 
     <nav class="main-nav" aria-label="ناوبری اصلی">
       {navigation.map((item) => (
-        <a
-          href={item.href}
-          aria-current={isActive(item.href) ? "page" : undefined}
-        >
+        <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
           {item.label}
         </a>
       ))}
     </nav>
 
     <a class="button button--primary header-cta" href="/contact/">
-      شروع گفتگو <span aria-hidden="true">↗</span>
+      مشاوره و همکاری <span aria-hidden="true">↗</span>
     </a>
 
     <details class="mobile-nav">
@@ -40,7 +37,7 @@ const isActive = (href: string) =>
             {item.label}
           </a>
         ))}
-        <a href="/contact/">شروع گفتگو ↗</a>
+        <a href="/contact/">مشاوره و همکاری ↗</a>
       </nav>
     </details>
   </div>

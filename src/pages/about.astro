@@ -3,75 +3,12 @@ import MainLayout from "../layouts/MainLayout.astro";
 import { profile } from "../data/profile";
 import { principles } from "../data/principles";
 ---
-<MainLayout title="درباره من" description="عباس لطفی‌نسب؛ مهندس نرم‌افزار، معمار کسب‌وکار دیجیتال و سازنده محصولات فناوری. مسیر حرفه‌ای از توسعه موبایل تا معماری محصول و سیستم‌های کسب‌وکار.">
-  <section class="page-hero">
-    <div class="container">
-      <span class="eyebrow">ABOUT ABBAS</span>
-      <h1>من به نقطه اتصال کسب‌وکار، محصول و فناوری فکر می‌کنم.</h1>
-      <p>{profile.shortBio}</p>
-    </div>
-  </section>
-
+<MainLayout title="درباره من" description="عباس لطفی‌نسب؛ مهندس نرم‌افزار و سازنده محصولات دیجیتال. تمرکز بر حل مسئله‌های واقعی کسب‌وکار با کمک نرم‌افزار، اتوماسیون و فناوری.">
+  <section class="page-hero"><div class="container"><span class="eyebrow">درباره عباس</span><h1>فناوری وقتی ارزش دارد که کار را برای آدم‌ها ساده‌تر کند.</h1><p>{profile.shortBio}</p></div></section>
   <section class="container about-content">
-    <div class="about-lead surface">
-      <span class="eyebrow">THE JOURNEY</span>
-      <h2>از نوشتن کد تا طراحی سیستم‌هایی که مسئله حل می‌کنند.</h2>
-      <p>
-        مسیر حرفه‌ای من از سال ۱۳۹۷ و با توسعه اپلیکیشن‌های اندروید به زبان Java آغاز شد.
-        بعد از آن، تجربه‌ام را در توسعه وب و ساخت محصولات نرم‌افزاری گسترش دادم؛
-        مسیری که باعث شد علاوه بر جزئیات فنی، به معماری محصول، تجربه کاربر و ارتباط اجزای یک کسب‌وکار هم توجه کنم.
-      </p>
-      <p>
-        تحصیلاتم در مهندسی نرم‌افزار، پایه فنی این مسیر را شکل داده است.
-        تجربه کار روی محصولات موبایل و وب نیز به من کمک کرده مسئله را از چند زاویه ببینم:
-        از نیاز کاربر و منطق محصول تا ساختار فنی و نگهداری بلندمدت.
-      </p>
-    </div>
-
-    <aside class="about-facts surface">
-      <span class="eyebrow">AT A GLANCE</span>
-      <dl>
-        <div><dt>حوزه فعالیت</dt><dd>{profile.role}</dd></div>
-        <div><dt>نقش</dt><dd>{profile.secondaryRole}</dd></div>
-        <div><dt>شروع مسیر</dt><dd>۱۳۹۷</dd></div>
-        <div><dt>تحصیلات</dt><dd>کارشناسی مهندسی نرم‌افزار</dd></div>
-        <div><dt>تمرکز فعلی</dt><dd>سیستم‌های کسب‌وکار و فناوری Hospitality</dd></div>
-      </dl>
-    </aside>
+    <div class="about-lead surface"><span class="eyebrow">مسیر من</span><h2>از توسعه اپلیکیشن تا ساخت محصول برای مسئله‌های واقعی.</h2><p>مسیر حرفه‌ای من از سال ۱۳۹۷ و با توسعه اپلیکیشن‌های اندروید آغاز شد. بعد از آن، تجربه‌ام را در توسعه وب و ساخت محصولات نرم‌افزاری گسترش دادم. در این مسیر، علاوه بر ساخت بخش‌های فنی، بیشتر به این موضوع علاقه‌مند شدم که نرم‌افزار چطور می‌تواند بخشی از کار روزانه یک کسب‌وکار را بهتر کند.</p><p>تحصیلاتم در مهندسی نرم‌افزار و تجربه کار روی محصولات موبایل و وب، پایه‌ای فنی برای این نگاه ساخته‌اند. امروز تلاش می‌کنم قبل از پیشنهاد فناوری، مسئله و شیوه واقعی کار افراد را بشناسم.</p></div>
+    <aside class="about-facts surface"><span class="eyebrow">خلاصه</span><dl><div><dt>حوزه فعالیت</dt><dd>ساخت محصولات و راهکارهای دیجیتال</dd></div><div><dt>نقش</dt><dd>بنیان‌گذار و سازنده محصول</dd></div><div><dt>شروع مسیر</dt><dd>۱۳۹۷</dd></div><div><dt>تحصیلات</dt><dd>کارشناسی مهندسی نرم‌افزار</dd></div><div><dt>تمرکز فعلی</dt><dd>راهکارهای مدیریت کسب‌وکار</dd></div></dl></aside>
   </section>
-
-  <section class="section section--tinted">
-    <div class="container">
-      <div class="section-intro">
-        <div>
-          <span class="eyebrow">CURRENT FOCUS</span>
-          <h2 class="section-heading">تمرکز امروز من</h2>
-        </div>
-        <p class="section-copy">
-          ساخت محصول فقط پیاده‌سازی قابلیت‌ها نیست؛ باید دید محصول چطور در جریان واقعی کار یک کسب‌وکار ارزش ایجاد می‌کند.
-        </p>
-      </div>
-      <div class="about-focus-grid">
-        <article><span>01</span><h3>Business Architecture</h3><p>مدل‌سازی فرایندها و طراحی سیستم‌هایی که بخش‌های مختلف کسب‌وکار را به هم متصل می‌کنند.</p></article>
-        <article><span>02</span><h3>Product Building</h3><p>تبدیل مسئله به محصولی قابل استفاده، قابل نگهداری و آماده رشد.</p></article>
-        <article><span>03</span><h3>AI & Automation</h3><p>به‌کارگیری هوش مصنوعی و اتوماسیون در نقاطی که نتیجه عملی و قابل سنجش ایجاد می‌کنند.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <span class="eyebrow">WORKING PRINCIPLES</span>
-      <h2 class="section-heading">اصولی که در کار به آن‌ها پایبندم.</h2>
-      <div class="principles-grid">
-        {principles.map((item) => (
-          <article class="principle-card">
-            <span class="principle-number">{item.number}</span>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
+  <section class="section section--tinted"><div class="container"><div class="section-intro"><div><span class="eyebrow">نگاه من به کار</span><h2 class="section-heading">چطور به یک مسئله نگاه می‌کنم؟</h2></div><p class="section-copy">قبل از اینکه سراغ ساخت نرم‌افزار برویم، باید مطمئن شویم مسئله را درست فهمیده‌ایم و راه‌حل پیشنهادی واقعاً به کار می‌آید.</p></div><div class="about-focus-grid"><article><span>۰۱</span><h3>اول شنیدن و شناختن</h3><p>با مدیران و افرادی که هر روز با فرایندها سروکار دارند صحبت می‌کنم تا مسئله از نزدیک دیده شود.</p></article><article><span>۰۲</span><h3>ساده‌سازی قبل از پیچیده‌سازی</h3><p>هر مشکلی به نرم‌افزار جدید نیاز ندارد. گاهی اصلاح یک فرایند، بهترین راه‌حل است.</p></article><article><span>۰۳</span><h3>ساخت برای استفاده واقعی</h3><p>راهکار باید قابل استفاده، قابل اعتماد و متناسب با شرایط واقعی کسب‌وکار باشد.</p></article></div></div></section>
+  <section class="section"><div class="container"><span class="eyebrow">اصول کاری</span><h2 class="section-heading">چند اصل که در تصمیم‌هایم ثابت می‌مانند.</h2><div class="principles-grid">{principles.map((item) => <article class="principle-card"><span class="principle-number">{item.number}</span><h3>{item.title}</h3><p>{item.description}</p></article>)}</div></div></section>
 </MainLayout>
